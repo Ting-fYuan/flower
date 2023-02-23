@@ -130,10 +130,19 @@ const routes = [
       isAuth: true,
     },
   },
+  //  * 购物车模块
+  {
+    path: "/shopCar",
+    name: "shopCar",
+    component: () => import("@/views/shop_car/ShopCar.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: "hash",
   base: process.env.BASE_URL,
   routes,
 });
