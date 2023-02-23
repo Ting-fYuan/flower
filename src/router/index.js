@@ -154,6 +154,7 @@ const routes = [
       isAuth: true,
     },
   },
+  //  * 购物车模块
 ];
 
 const router = new VueRouter({
