@@ -9,4 +9,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+div {
+  width: 110px;
+  height: 125px;
+  background-color: red;
+}
+</style>

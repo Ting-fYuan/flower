@@ -3,6 +3,8 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
+// px2rem 自适应
+import "lib-flexible";
 
 Vue.config.productionTip = false;
 
