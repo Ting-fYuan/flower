@@ -39,10 +39,4 @@ export default {
 };
 </script>
 
-<style>
-div {
-  width: 110px;
-  height: 125px;
-  background-color: red;
-}
-</style>
+<style></style>
