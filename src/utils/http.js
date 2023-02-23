@@ -1,4 +1,5 @@
 // axios 二次封装
+// import axios from "axios";
 import axios from "axios";
 
 // vant 轻提示
@@ -25,27 +26,35 @@ const http = axios.create({
 });
 
 // 请求拦截器 (每次请求都会触发)
-http.interceptors.request.use(function (config) {
-  // 每次请求显示加载中
-  Toast.loading({
-    message: "加载中...",
-    forbidClick: true, // 禁用点击背景
-    duration: 20000, // 时长
-  });
+http.interceptors.request.use(
+  function (config) {
+    // 每次请求显示加载中
+    Toast.loading({
+      message: "加载中...",
+      forbidClick: true, // 禁用点击背景
+      duration: 20000, // 时长
+    });
 
-  // 是否需要token
-  if (config.headers.isToken) {
-    console.log("需要登录");
-  }
+    // 是否需要token
+    if (config.headers.isToken) {
+      console.log("需要登录");
+    }
 
-  // 是否需要项目id
-  if (config.headers.isId) {
-    // get 请求将项目id放到params
-    if (config.method == "get" || config.method == "GET") {
-      config.params["project_id"] = BASE_PROJECT_ID;
-    } else config.data["project_id"] = BASE_PROJECT_ID;
+    // 是否需要项目id
+    if (config.headers.isId) {
+      // get 请求将项目id放到params
+      if (config.method == "get" || config.method == "GET") {
+        config.params["project_id"] = BASE_PROJECT_ID;
+      } else config.data["project_id"] = BASE_PROJECT_ID;
+    }
+    return config;
+  },
+
+  function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
   }
-});
+);
 
 // 响应拦截器 (每次响应都会触发)
 http.interceptors.response.use(
@@ -56,6 +65,7 @@ http.interceptors.response.use(
     // 响应数据返回出去
     return response.data;
   },
+
   function (error) {
     // console.log(error.response.data);
     // 对响应错误做点什么
