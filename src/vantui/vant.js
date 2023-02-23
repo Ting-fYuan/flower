@@ -1,3 +1,5 @@
 import Vue from "vue";
-import { Button } from "vant";
-Vue.use(Button);
+import { AddressList, Toast } from "vant";
+
+Vue.use(AddressList);
+Vue.use(Toast);
