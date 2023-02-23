@@ -2,22 +2,25 @@
 <template>
   <div class="address">
     <div class="addressHead">
-      <van-icon name="arrow-left" color="#333333" class="arrowLeft" />
-      <span>收货地址</span>
+      <common-head title="收货地址"></common-head>
     </div>
-    <van-address-list
-      v-model="chosenAddressId"
-      :list="list"
-      default-tag-text="默认"
-      @add="onAdd"
-      @edit="onEdit"
-    />
+    <div class="addressList">
+      <van-address-list
+        v-model="chosenAddressId"
+        :list="list"
+        default-tag-text="默认"
+        @add="onAdd"
+        @edit="onEdit"
+        add-button-text="+新建地址"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import { Toast } from "vant";
+import CommonHead from "@/components/CommonHead.vue";
 export default {
+  components: { CommonHead },
   name: "AddressView",
   data() {
     return {
@@ -41,10 +44,10 @@ export default {
   },
   methods: {
     onAdd() {
-      Toast("新增地址");
+      this.$router.push("/addressEdit");
     },
-    onEdit(item, index) {
-      Toast("编辑地址:" + index);
+    onEdit() {
+      this.$router.push("/addressEdit");
     },
   },
 };
@@ -55,34 +58,15 @@ export default {
   width: 100%;
   height: 100%;
   background: #eaebef;
-  .addressHead {
-    width: 375px;
-    height: 51px;
-    opacity: 1;
-    border-bottom: 1px solid rgba(243, 245, 247, 1);
-    background: rgba(255, 255, 255, 1);
-    display: flex;
-    justify-content: flex-start; /* 左对齐 */
-    .arrowLeft {
-      line-height: 51px;
-      font-size: 26px;
-    }
-    span {
-      width: 80px;
-      height: 51px;
-      opacity: 1;
-      color: rgba(85, 85, 85, 1);
-      font-size: 16px;
-      font-weight: 500;
-      line-height: 51px;
-      margin-left: auto; /* 居中对齐的样式 */
-      margin-right: auto;
-    }
+  .addressList {
+    width: 100%;
+    height: calc(100vh - 42px);
+    margin-top: 45px;
   }
 }
 
-::v-deep .van-address-list {
-  background: #eaebef;
-  height: calc(100vh - 51px);
+::v-deep .van-button--danger {
+  border: none;
+  background: #884e22;
 }
 </style>

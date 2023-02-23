@@ -7,65 +7,20 @@
     <div class="couponContent">
       <div class="noCoupon">
         <img src="@/assets/imgs/coupon.png" class="couponImg" alt="" />
-        <span class="notext">暂无内容</span>
+        <span class="notextTop">暂无优惠券</span>
+        <span class="notextBotoom">据说下单后有机会获得大额劵喔~</span>
       </div>
     </div>
-    <!-- 优惠券单元格 -->
-    <!-- <van-coupon-cell
-      :coupons="coupons"
-      :chosen-coupon="chosenCoupon"
-      @click="showList = true"
-    /> -->
-    <!-- 优惠券列表 -->
-    <!-- <van-popup
-      v-model="showList"
-      round
-      position="bottom"
-      style="height: 90%; padding-top: 4px"
-    >
-      <van-coupon-list
-        :coupons="coupons"
-        :chosen-coupon="chosenCoupon"
-        :disabled-coupons="disabledCoupons"
-        @change="onChange"
-        @exchange="onExchange"
-      />
-    </van-popup> -->
   </div>
 </template>
 
 <script>
-// const coupon = {
-//   available: 1,
-//   condition: "无使用门槛\n最多优惠12元",
-//   reason: "",
-//   value: 150,
-//   name: "优惠券名称",
-//   startAt: 1489104000,
-//   endAt: 1514592000,
-//   valueDesc: "1.5",
-//   unitDesc: "元",
-// };
 export default {
   name: "CouponView",
   data() {
-    return {
-      // chosenCoupon: -1,
-      // coupons: [coupon],
-      // disabledCoupons: [coupon],
-      // showList: false,
-    };
+    return {};
   },
-  methods: {
-    // onChange(index) {
-    //   this.showList = false;
-    //   this.chosenCoupon = index;
-    // },
-    // onExchange(code) {
-    //   this.coupons.push(coupon);
-    //   console.log(code);
-    // },
-  },
+  methods: {},
 };
 </script>
 
@@ -113,20 +68,18 @@ export default {
       .couponImg {
         margin-bottom: 10px;
       }
-      .notext {
-        color: #ff734c;
+      .notextTop {
+        color: #555555;
         font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .notextBotoom {
+        color: #555555;
+        font-size: 14px;
+        font-weight: 400;
       }
     }
   }
 }
-
-// ::v-deep .van-cell--clickable {
-//   height: 50px;
-//   font-size: 18px;
-//   line-height: 50px;
-// }
-// ::v-deep .van-cell__right-icon {
-//   line-height: 50px;
-// }
 </style>
