@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import TabBar from "@/components/Tabbar.vue";
+import TabBar from "@/components/TabBar.vue";
 export default {
   name: "HomeView",
   components: { TabBar },

@@ -7,6 +7,9 @@ import {
   CouponList,
   Popup,
   Icon,
+  Form,
+  Field,
+  Button,
   Tabbar,
   TabbarItem,
 } from "vant";
@@ -18,5 +21,8 @@ Vue.use(CouponCell);
 Vue.use(CouponList);
 Vue.use(Popup);
 Vue.use(Icon);
+Vue.use(Form);
+Vue.use(Field);
+Vue.use(Button);
 Vue.use(Tabbar);
 Vue.use(TabbarItem);
