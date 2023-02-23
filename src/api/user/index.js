@@ -1,19 +1,19 @@
 import http from "@/utils/http";
 
 // 登录
-export const login = (params) => {
+export const login = (data) => {
   return http({
     url: "/login",
     method: "POST",
-    params,
+    data,
   });
 };
 
 // 登录
-export const register = (params) => {
+export const register = (data) => {
   return http({
     url: "/register",
     method: "POST",
-    params,
+    data,
   });
 };

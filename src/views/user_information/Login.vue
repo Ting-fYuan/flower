@@ -54,27 +54,20 @@ export default {
   },
   methods: {
     async onSubmit(values) {
-      console.log("submit", values.账号);
-      console.log("submit", values.密码);
+      // console.log("submit", values);
+      // console.log("submit", values["账号"]);
+      // console.log("submit", values["密码"]);
       try {
         // 登录请求
         let loginRes = await login({
-          phone: values.账号,
-          password: values.密码,
+          phone: values["账号"],
+          password: values["密码"],
         });
-        console.log(loginRes);
+        console.log(loginRes.result);
       } catch (error) {
         console.log(error);
       }
     },
-    // 登录请求
-    // async loginRequest() {
-    //   let res = login({
-    //     phone: "13631130000",
-    //     password: "123456",
-    //   });
-    //   console.log(res.data);
-    // },
   },
 };
 </script>
