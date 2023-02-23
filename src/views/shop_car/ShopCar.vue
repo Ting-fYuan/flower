@@ -1,21 +1,14 @@
 <template>
-  <div class="shopcarView">
-    <com-head title="标题"></com-head>
-  </div>
+  <div class="shopcarView"></div>
 </template>
 
 <script>
-import { getAllcity } from "@/api/address";
-
 export default {
   name: "ShopCar",
   data() {
     return {};
   },
-  async created() {
-    const res = await getAllcity();
-    console.log(res);
-  },
+  async created() {},
 };
 </script>
 

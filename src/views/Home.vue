@@ -2,7 +2,7 @@
 <template>
   <div>
     我的
-    <Tabbar />
+    <TabBar />
   </div>
 </template>
 

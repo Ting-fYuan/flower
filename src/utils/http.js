@@ -60,7 +60,7 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   function (response) {
     // 关闭loadding
-    Toast.clear;
+    Toast.clear();
 
     // 响应数据返回出去
     return response.data;
