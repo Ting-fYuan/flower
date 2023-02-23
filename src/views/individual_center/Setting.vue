@@ -1,11 +1,11 @@
-<!-- 地址 -->
+<!-- 设置 -->
 <template>
-  <div>地址</div>
+  <div>设置</div>
 </template>
 
 <script>
 export default {
-  name: "AddressView",
+  name: "SettingView",
 };
 </script>
 
