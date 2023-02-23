@@ -8,6 +8,9 @@ import { Toast } from "vant";
 // 引入 vuex 可直接获取 vuex 数据
 import store from "@/store";
 
+// 引入 router
+import router from "@/router";
+
 // 项目 id
 const BASE_PROJECT_ID = 295;
 
@@ -76,7 +79,22 @@ http.interceptors.response.use(
   function (error) {
     // 关闭loadding
     Toast.clear();
-    // console.log(error.response.data);
+    const { status, data } = error.response;
+    // token过期
+    if (status === 409 && data.msg === "没有该用户信息") {
+      store.commit("loginStore/clearUserInfo");
+      Toast({
+        message: "登录失败，请重新登陆",
+        position: "bottom",
+      });
+      this.$router.push({
+        path: "/login",
+        // 传递完整路径
+        query: {
+          redirect: router.history.current.fullPath,
+        },
+      });
+    }
     // 对响应错误做点什么
     return Promise.reject(error);
   }

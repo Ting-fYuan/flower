@@ -19,6 +19,8 @@
 #### 后台管理
 
 "https://test-adminshop.bluej.cn/#/login"
+账号 13286468316
+密码 20000212ywb
 
 ##### 公共头部设置
 
