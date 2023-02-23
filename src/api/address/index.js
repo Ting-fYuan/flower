@@ -6,8 +6,5 @@ export const getAllcity = (params) => {
     url: "/city",
     method: "GET",
     params,
-    headers: {
-      isId: true,
-    },
   });
 };
