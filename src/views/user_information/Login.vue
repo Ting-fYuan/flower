@@ -51,9 +51,7 @@ export default {
       password: "",
     };
   },
-  created() {
-    // console.log(this.$store.state);
-  },
+  async created() {},
   methods: {
     // 发送数据去vuex执行登录请求
     onSubmit(values) {
