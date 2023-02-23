@@ -45,8 +45,14 @@ http.interceptors.request.use(
     if (config.headers.isId) {
       // get 请求将项目id放到params
       if (config.method == "get" || config.method == "GET") {
-        config.params["project_id"] = BASE_PROJECT_ID;
-      } else config.data["project_id"] = BASE_PROJECT_ID;
+        // 有没有params
+        config.params ? config.params : (config.params = {});
+        config.params.project_id = BASE_PROJECT_ID;
+      } else {
+        // 有没有data
+        config.data ? config.data : (config.data = {});
+        config.data.project_id = BASE_PROJECT_ID;
+      }
     }
     return config;
   },
