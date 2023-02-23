@@ -1,17 +1,39 @@
 <!-- 首页 -->
 <template>
   <div class="box">
-    <div class="top">1</div>
-    <div class="swiper">12</div>
+    <div class="top">
+      <i class="iconfont icon-icon_sousuo"></i>
+      <img src="" alt="" />
+    </div>
+
+    <van-swipe :autoplay="3000" class="swiper">
+      <van-swipe-item v-for="(image, index) in images" :key="index">
+        <img v-lazy="image" />
+      </van-swipe-item>
+    </van-swipe>
   </div>
 </template>
 
 <script>
+import Vue from "vue";
+import { Lazyload } from "vant";
+
+Vue.use(Lazyload);
+
 export default {
   name: "IndexView",
+  components: {},
+
+  created() {},
   data() {
-    return {};
+    return {
+      images: [
+        "https://img01.yzcdn.cn/vant/apple-1.jpg",
+        "https://img01.yzcdn.cn/vant/apple-2.jpg",
+      ],
+    };
   },
+  methods: {},
 };
 </script>
 
@@ -26,14 +48,18 @@ export default {
   .top {
     width: 100%;
     height: 50px;
-    background-color: red;
+    background-color: white;
+    display: flex;
+    align-items: center;
     position: sticky;
     top: 0;
+    i {
+      font-size: 21px;
+    }
   }
   .swiper {
     width: 100%;
     height: 205px;
-    background-color: pink;
   }
 }
 </style>
