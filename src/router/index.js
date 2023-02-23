@@ -23,6 +23,9 @@ import CompleteView from "../views/individual_center/Complete.vue";
 import CouponView from "../views/individual_center/Coupon.vue";
 import AddressView from "../views/individual_center/Address.vue";
 import SettingView from "../views/individual_center/Setting.vue";
+
+import RegisterView from "../views/user_infomation/Register.vue";
+import LoginView from "../views/user_infomation/Login.vue";
 // ******************************************
 Vue.use(VueRouter);
 
@@ -106,6 +109,22 @@ const routes = [
     path: "/complete",
     name: "complete",
     component: CompleteView,
+    meta: {
+      isAuth: true,
+    },
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: LoginView,
+    meta: {
+      isAuth: true,
+    },
+  },
+  {
+    path: "/register",
+    name: "register",
+    component: RegisterView,
     meta: {
       isAuth: true,
     },
