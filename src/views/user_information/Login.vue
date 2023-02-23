@@ -11,21 +11,26 @@
     </header>
     <main>
       <van-form @submit="onSubmit" label-align="right" :show-error="false">
-        <div class="label">账号</div>
-        <van-field
-          v-model="username"
-          name="账号"
-          placeholder="请输入账号"
-          :rules="[{ required: true, message: '请填写账号' }]"
-        />
-        <div class="label">密码</div>
-        <van-field
-          v-model="password"
-          type="password"
-          name="密码"
-          placeholder="请输入密码"
-          :rules="[{ required: true, message: '请填写密码' }]"
-        />
+        <div class="from">
+          <div class="label">账号</div>
+          <van-field
+            v-model="username"
+            name="账号"
+            placeholder="请输入账号"
+            :rules="[{ required: true, message: '请填写账号' }]"
+          />
+        </div>
+        <div class="from">
+          <div class="label">密码</div>
+          <van-field
+            v-model="password"
+            type="password"
+            name="密码"
+            placeholder="请输入密码"
+            :rules="[{ required: true, message: '请填写密码' }]"
+          />
+        </div>
+
         <div style="margin: 16px">
           <van-button round block type="info" native-type="submit"
             >提交</van-button
@@ -38,6 +43,7 @@
 </template>
 
 <script>
+import { login } from "@/api/user/index";
 export default {
   name: "LoginView",
   data() {
@@ -47,15 +53,35 @@ export default {
     };
   },
   methods: {
-    onSubmit(values) {
-      console.log("submit", values);
+    async onSubmit(values) {
+      console.log("submit", values.账号);
+      console.log("submit", values.密码);
+      try {
+        // 登录请求
+        let loginRes = await login({
+          phone: values.账号,
+          password: values.密码,
+        });
+        console.log(loginRes);
+      } catch (error) {
+        console.log(error);
+      }
     },
+    // 登录请求
+    // async loginRequest() {
+    //   let res = login({
+    //     phone: "13631130000",
+    //     password: "123456",
+    //   });
+    //   console.log(res.data);
+    // },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .wrap {
+  padding: 10px;
   // 登录页面头部
   header {
     .login_head {
@@ -81,17 +107,24 @@ export default {
   // 登录页面主体
   main {
     ::v-deep .van-form {
-      .van-cell {
-        position: relative;
-        margin-bottom: 20px;
-        overflow: initial;
-        .van-cell__value {
-          .van-field__body {
-          }
-          .van-field__error-message {
-            position: absolute;
-            bottom: -100%;
-            left: 0;
+      .from {
+        margin-bottom: 30px;
+        .label {
+          font-size: 13px;
+          margin-bottom: 10px;
+        }
+        .van-cell {
+          position: relative;
+          overflow: initial;
+          padding: 0;
+          .van-cell__value {
+            .van-field__body {
+            }
+            .van-field__error-message {
+              position: absolute;
+              bottom: -100%;
+              left: 0;
+            }
           }
         }
       }
