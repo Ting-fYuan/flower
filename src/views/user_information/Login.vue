@@ -10,19 +10,19 @@
       <div class="logo"></div>
     </header>
     <main>
-      <van-form @submit="onSubmit">
+      <van-form @submit="onSubmit" label-align="right" :show-error="false">
+        <div class="label">账号</div>
         <van-field
           v-model="username"
           name="账号"
-          label="账号"
           placeholder="请输入账号"
-          :rules="[{ required: true, message: '请填写用户名' }]"
+          :rules="[{ required: true, message: '请填写账号' }]"
         />
+        <div class="label">密码</div>
         <van-field
           v-model="password"
           type="password"
           name="密码"
-          label="密码"
           placeholder="请输入密码"
           :rules="[{ required: true, message: '请填写密码' }]"
         />
@@ -56,6 +56,7 @@ export default {
 
 <style lang="scss" scoped>
 .wrap {
+  // 登录页面头部
   header {
     .login_head {
       display: flex;
@@ -77,8 +78,26 @@ export default {
       margin: 150px 0;
     }
   }
+  // 登录页面主体
   main {
+    ::v-deep .van-form {
+      .van-cell {
+        position: relative;
+        margin-bottom: 20px;
+        overflow: initial;
+        .van-cell__value {
+          .van-field__body {
+          }
+          .van-field__error-message {
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+          }
+        }
+      }
+    }
   }
+  // 登录页面底部
   footer {
   }
 }
