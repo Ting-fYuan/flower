@@ -1,6 +1,6 @@
-<!-- 搜索 -->
+<!-- 购物车 -->
 <template>
-  <div>搜索</div>
+  <div>购物车</div>
 </template>
 
 <script>
