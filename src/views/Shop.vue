@@ -18,7 +18,9 @@
           <div class="like-more-title">
             <p>猜你喜欢</p>
           </div>
-          <div class="like-more-main"></div>
+          <div class="like-more-main">
+            <div class="commodity"></div>
+          </div>
         </div>
       </div>
     </main>
@@ -37,7 +39,9 @@ export default {
     };
   },
   async created() {
-    await guessLikeApi();
+    // 猜你喜欢
+    const res = await guessLikeApi();
+    console.log(res);
   },
   components: { TabBar },
 };
