@@ -3,7 +3,16 @@
 </template>
 
 <script>
-export default {};
+import { getAllcity } from "@/api/address/index";
+export default {
+  name: "ShopCar",
+  data() {
+    return {};
+  },
+  async created() {
+    await getAllcity({ id: 1 });
+  },
+};
 </script>
 
 <style></style>
