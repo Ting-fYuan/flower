@@ -1,32 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import SearchView from "../views/Search.vue";
-import IndexView from "../views/Index.vue";
-// @分支功能页面（详情页）
-import DetailView from "../views/Detail.vue";
 
-import CategoryView from "../views/Category.vue";
-// @分支功能页面（子分类）
-import ClassificationView from "../views/self_classification/Classification.vue";
-
-import ShopView from "../views/Shop.vue";
-import HomeView from "../views/Home.vue";
-// @分支功能页面（个人中心）
-// ******************************************
-import OrderView from "../views/individual_center/Order.vue";
-
-import PaymentView from "../views/individual_center/Payment.vue";
-import SendingView from "../views/individual_center/Sending.vue";
-import CommentView from "../views/individual_center/Comment.vue";
-import CompleteView from "../views/individual_center/Complete.vue";
-
-import CouponView from "../views/individual_center/Coupon.vue";
-import AddressView from "../views/individual_center/Address.vue";
-import SettingView from "../views/individual_center/Setting.vue";
-
-import RegisterView from "../views/user_infomation/Register.vue";
-import LoginView from "../views/user_infomation/Login.vue";
-// ******************************************
 Vue.use(VueRouter);
 
 const routes = [
@@ -34,57 +8,59 @@ const routes = [
     path: "*",
     redirect: "/index",
   },
+  // 主页
   {
     path: "/index",
     name: "index",
-    component: IndexView,
+    component: () => import("@/views/Index.vue"),
   },
+  // @商品详情页面
   {
     path: "/detail",
     name: "detail",
-    component: DetailView,
+    component: () => import("@/views/Detail.vue"),
   },
+  // 分类
   {
     path: "/category",
     name: "category",
-    component: CategoryView,
+    component: () => import("@/views/Category.vue"),
   },
-  // *************************
+  // @商品子分类
   {
     path: "/classification",
     name: "classification",
-    component: ClassificationView,
+    component: () => import("@/views/self_classification/Classification.vue"),
   },
-  // *************************
   {
     path: "/shop",
     name: "shop",
-    component: ShopView,
+    component: () => import("@/views/Shop.vue"),
   },
   {
     path: "/home",
     name: "home",
-    component: HomeView,
+    component: () => import("@/views/Home.vue"),
   },
   {
     path: "/search",
     name: "search",
-    component: SearchView,
+    component: () => import("@/views/Search.vue"),
   },
-  // @ 分支功能页面(个人中心)
+  // @ 个人中心
   {
     path: "/order",
     name: "order",
-    component: OrderView,
+    component: () => import("@/views/individual_center/Order.vue"),
     meta: {
       isAuth: true,
     },
   },
-  // ************************
+
   {
     path: "/payment",
     name: "payment",
-    component: PaymentView,
+    component: () => import("@/views/individual_center/Payment.vue"),
     meta: {
       isAuth: true,
     },
@@ -92,7 +68,7 @@ const routes = [
   {
     path: "/sending",
     name: "sending",
-    component: SendingView,
+    component: () => import("@/views/individual_center/Sending.vue"),
     meta: {
       isAuth: true,
     },
@@ -100,7 +76,7 @@ const routes = [
   {
     path: "/comment",
     name: "comment",
-    component: CommentView,
+    component: () => import("@/views/individual_center/Comment.vue"),
     meta: {
       isAuth: true,
     },
@@ -108,7 +84,7 @@ const routes = [
   {
     path: "/complete",
     name: "complete",
-    component: CompleteView,
+    component: () => import("@/views/individual_center/Comment.vue"),
     meta: {
       isAuth: true,
     },
@@ -116,7 +92,7 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component: LoginView,
+    component: () => import("@/views/user_information/Login.vue"),
     meta: {
       isAuth: true,
     },
@@ -124,16 +100,16 @@ const routes = [
   {
     path: "/register",
     name: "register",
-    component: RegisterView,
+    component: () => import("@/views/user_information/Register.vue"),
     meta: {
       isAuth: true,
     },
   },
-  // ******************
+
   {
     path: "/coupon",
     name: "coupon",
-    component: CouponView,
+    component: () => import("@/views/individual_center/Coupon.vue"),
     meta: {
       isAuth: true,
     },
@@ -141,7 +117,7 @@ const routes = [
   {
     path: "/address",
     name: "address",
-    component: AddressView,
+    component: () => import("@/views/individual_center/Address.vue"),
     meta: {
       isAuth: true,
     },
@@ -149,7 +125,7 @@ const routes = [
   {
     path: "/setting",
     name: "setting",
-    component: SettingView,
+    component: () => import("@/views/individual_center/Setting.vue"),
     meta: {
       isAuth: true,
     },
