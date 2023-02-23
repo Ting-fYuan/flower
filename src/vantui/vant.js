@@ -14,7 +14,5 @@ Vue.use(Toast);
 Vue.use(Form);
 Vue.use(Field);
 Vue.use(Button);
-Vue.use(AddressList);
-Vue.use(Toast);
 Vue.use(Tabbar);
 Vue.use(TabbarItem);

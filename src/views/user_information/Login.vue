@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import { login } from "@/api/user/index";
 export default {
   name: "LoginView",
   data() {
@@ -52,21 +51,13 @@ export default {
       password: "",
     };
   },
+  created() {
+    console.log(this.$store.state.loginStore.token);
+  },
   methods: {
-    async onSubmit(values) {
-      // console.log("submit", values);
-      // console.log("submit", values["账号"]);
-      // console.log("submit", values["密码"]);
-      try {
-        // 登录请求
-        let loginRes = await login({
-          phone: values["账号"],
-          password: values["密码"],
-        });
-        console.log(loginRes.result);
-      } catch (error) {
-        console.log(error);
-      }
+    onSubmit(values) {
+      console.log("submit", values);
+      this.$store.commit("loginStore", values);
     },
   },
 };
