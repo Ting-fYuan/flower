@@ -52,12 +52,13 @@ export default {
     };
   },
   created() {
-    console.log(this.$store.state.loginStore.token);
+    // console.log(this.$store.state);
   },
   methods: {
+    // 发送数据去vuex执行登录请求
     onSubmit(values) {
-      console.log("submit", values);
-      this.$store.commit("loginStore", values);
+      // console.log("submit", values);
+      this.$store.dispatch("loginStore/loginResquest", values);
     },
   },
 };

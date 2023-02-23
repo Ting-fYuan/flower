@@ -1,26 +1,31 @@
 // 引入api
-import { login } from "@/api/user/index";
+import { login } from "@/api/user";
 // 登录模块vuex
-module.exports = {
+export default {
   // 开启命名空间
-  namescoped: true,
+  namespaced: true,
   state: {
     // token
-    token: sessionStorage.getItem("token") || "1",
+    token: sessionStorage.getItem("token") || "",
+    // 用户信息
+    userInfo: JSON.parse(sessionStorage.getItem("userInfo")) || "",
   },
   getters: {},
-  mutations: {
+  mutations: {},
+  actions: {
     // 登录请求
-    async loginResquest(state, payload) {
-      console.log("state", state);
-      console.log("payload", payload);
+    async loginResquest(ctx, payload) {
+      // console.log("ctx", ctx);
+      // console.log("payload", payload);
       let loginRes = await login({
-        // phone: values["账号"],
-        // password: values["密码"],
+        phone: payload["账号"],
+        password: payload["密码"],
       });
-      console.log(loginRes);
+      // console.log(loginRes);
+      // tokrn数据持久化
+      sessionStorage.setItem("token", loginRes.result.token);
+      // 用户信息数据持久化
+      sessionStorage.setItem("userInfo", JSON.stringify(loginRes.result));
     },
   },
-  actions: {},
-  modules: {},
 };

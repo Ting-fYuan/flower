@@ -6,7 +6,7 @@ import axios from "axios";
 import { Toast } from "vant";
 
 // 引入 vuex 可直接获取 vuex 数据
-// import store from "@/store";
+import store from "@/store";
 
 // 项目 id
 const BASE_PROJECT_ID = 295;
@@ -34,10 +34,11 @@ http.interceptors.request.use(
       forbidClick: true, // 禁用点击背景
       duration: 20000, // 时长
     });
-
+    // 从vuex获取token
+    const token = store.state.loginStore.token;
     // 是否需要token
-    if (config.headers.isToken) {
-      console.log("需要登录");
+    if (token && config.headers.isToken) {
+      config.headers["x-token"] = token;
     }
 
     // 是否需要项目id
@@ -67,6 +68,8 @@ http.interceptors.response.use(
   },
 
   function (error) {
+    // 关闭loadding
+    Toast.clear();
     // console.log(error.response.data);
     // 对响应错误做点什么
     return Promise.reject(error);
