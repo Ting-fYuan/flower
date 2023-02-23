@@ -5,7 +5,7 @@ module.exports = defineConfig({
   publicPath: "./",
   // 配置代理服务器
   devServer: {
-    open: true,
+    open: false,
     host: "localhost",
     port: 8080,
   },
