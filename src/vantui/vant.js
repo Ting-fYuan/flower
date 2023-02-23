@@ -1,11 +1,20 @@
 import Vue from "vue";
-import { AddressList, Toast, Form, Field, Button } from "vant";
+import {
+  AddressList,
+  Toast,
+  Form,
+  Field,
+  Button,
+  Tabbar,
+  TabbarItem,
+} from "vant";
 
 Vue.use(AddressList);
 Vue.use(Toast);
-// 表单验证
 Vue.use(Form);
-// 输入框
 Vue.use(Field);
-// 按钮
 Vue.use(Button);
+Vue.use(AddressList);
+Vue.use(Toast);
+Vue.use(Tabbar);
+Vue.use(TabbarItem);
