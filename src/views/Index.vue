@@ -9,6 +9,9 @@
 <script>
 export default {
   name: "IndexView",
+  data() {
+    return {};
+  },
 };
 </script>
 
