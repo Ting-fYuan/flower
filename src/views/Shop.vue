@@ -8,10 +8,13 @@
         <div class="no-shop" v-else>没有购物车</div>
       </div>
     </main>
+    购物车
+    <TabBar />
   </div>
 </template>
 
 <script>
+import TabBar from "@/components/TabBar.vue";
 export default {
   name: "ShopView",
   data() {
@@ -19,6 +22,7 @@ export default {
       showShopList: false,
     };
   },
+  components: { TabBar },
 };
 </script>
 
