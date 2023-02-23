@@ -3,6 +3,8 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
+// 引入vantUI（按需引入组件）
+import "@/vantui/vant";
 
 Vue.config.productionTip = false;
 
