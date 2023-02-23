@@ -9,7 +9,7 @@
 <script>
 import TabBar from "@/components/TabBar.vue";
 export default {
-  name: "HomeView",
+  name: "HomeView", 
   components: { TabBar },
 };
 </script>
