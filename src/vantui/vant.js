@@ -14,6 +14,8 @@ import {
   Tabbar,
   TabbarItem,
   Search,
+  Tab,
+  Tabs,
 } from "vant";
 
 Vue.use(AddressList);
@@ -30,3 +32,5 @@ Vue.use(Button);
 Vue.use(Tabbar);
 Vue.use(TabbarItem);
 Vue.use(Search);
+Vue.use(Tab);
+Vue.use(Tabs);

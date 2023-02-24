@@ -10,10 +10,10 @@
         shape="round"
       >
         <template>
-          <van-icon name="arrow-left" size="33" slot="left" @click="goback()" />
+          <van-icon name="arrow-left" size="20" slot="left" @click="goback()" />
         </template>
         <template #action>
-          <div @click="Search()">搜索</div>
+          <div @click="Search">搜索</div>
         </template>
       </van-search>
     </div>
