@@ -1,16 +1,18 @@
 // 引入api
-import { login } from "@/api/user";
+import { login, register } from "@/api/user";
 // vant 轻提示
 import { Toast } from "vant";
+// 引入路由
+import router from "@/router";
 // 登录模块vuex
 export default {
   // 开启命名空间
   namespaced: true,
   state: {
     // token
-    token: sessionStorage.getItem("token") || "",
+    token: localStorage.getItem("token") || "",
     // 用户信息
-    userInfo: JSON.parse(sessionStorage.getItem("userInfo")) || "",
+    userInfo: JSON.parse(localStorage.getItem("userInfo")) || "",
   },
   getters: {},
   mutations: {
@@ -18,8 +20,8 @@ export default {
     clearUserInfo(state) {
       state.token = null;
       state.userInfo = null;
-      sessionStorage.removeItem("token");
-      sessionStorage.removeItem("userInfo");
+      localStorage.removeItem("token");
+      localStorage.removeItem("userInfo");
     },
   },
   actions: {
@@ -30,17 +32,45 @@ export default {
           phone: payload["modile"],
           password: payload["password"],
         });
-        if (payload["modile"] != "" && payload["password"] != "") {
-          Toast.success("登陆成功");
-          // tokrn数据持久化
-          localStorage.setItem("token", loginRes.result.token);
-          // 用户信息数据持久化
-          localStorage.setItem("userInfo", JSON.stringify(loginRes.result));
+        console.log(router.history.current.query);
+        if (router.history.current.query.redirect) {
+          router.push(router.history.current.query.redirect);
+        } else {
+          router.push("/");
         }
+        Toast.success("登陆成功");
+
+        // tokrn数据持久化
+        localStorage.setItem("token", loginRes.result.token);
+        // 用户信息数据持久化
+        localStorage.setItem("userInfo", JSON.stringify(loginRes.result));
         // console.log(loginRes);
       } catch (error) {
         console.log(error);
         Toast.fail("账号或密码缺失");
+      }
+    },
+    // 注册请求
+    async registerResquest(ctx, payload) {
+      console.log(payload);
+      try {
+        let registerRes = await register({
+          phone: payload["modile"],
+          password: payload["password"],
+          name: "ccc",
+          sex: 1,
+          realName: "ccc",
+        });
+        console.log(registerRes);
+        Toast.success("注册成功");
+        router.push("login");
+      } catch (error) {
+        if (error.response.data.msg) {
+          Toast.fail("手机号已注册");
+        } else {
+          Toast.fail("注册失败");
+        }
+        console.log(error.response.data.msg);
       }
     },
   },
