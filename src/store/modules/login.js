@@ -11,7 +11,15 @@ export default {
     userInfo: JSON.parse(sessionStorage.getItem("userInfo")) || "",
   },
   getters: {},
-  mutations: {},
+  mutations: {
+    // 清空用户信息
+    clearUserInfo(state) {
+      state.token = null;
+      state.userInfo = null;
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("userInfo");
+    },
+  },
   actions: {
     // 登录请求
     async loginResquest(ctx, payload) {
