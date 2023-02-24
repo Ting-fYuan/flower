@@ -20,6 +20,8 @@ import {
   CheckboxGroup,
   Stepper,
   Search,
+  Divider,
+  Empty,
 } from "vant";
 
 Vue.use(AddressList);
@@ -42,3 +44,5 @@ Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(Stepper);
 Vue.use(Search);
+Vue.use(Divider);
+Vue.use(Empty);
