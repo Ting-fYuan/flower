@@ -209,15 +209,15 @@ export default {
           border-bottom: 0.5px solid #ccc;
 
           .shop-box-right {
-            position: relative;
             display: flex;
-            justify-content: space-between;
-            width: 115%;
+            position: relative;
+            width: 330px;
+            // background-color: pink;
             // 删除
             .delete-shop {
               position: absolute;
               top: 15px;
-              right: 0;
+              right: 6px;
               font-size: 16px;
             }
             img {
@@ -252,11 +252,14 @@ export default {
               }
             }
             .shop-num {
+              position: absolute;
+              bottom: 0;
+              right: 10px;
               display: flex;
               margin-bottom: 5px;
               flex-direction: column;
               justify-content: flex-end;
-              font-size: 14px;
+              font-size: 16px;
             }
           }
         }
@@ -331,9 +334,13 @@ export default {
                 color: #333333;
               }
               .ctn-bottom-box {
-                display: flex;
-                margin: 5px 0;
-                justify-content: space-between;
+                // position: absolute;
+                // bottom: 0;
+                // right: 0;
+                // display: flex;
+                // margin: 5px 0;
+                // justify-content: space-between;
+
                 .price {
                   font-size: 14px;
                   color: #ff734c;
