@@ -91,6 +91,7 @@ export default {
       localStorage.setItem("searchHistory", JSON.stringify(this.history));
       if (res.result.count === 0) {
         Toast("没有该商品信息，请尝试更换关键词");
+        this.value = "";
       } else if (res.result.count != 0) {
         this.$router.push("/category");
       }
