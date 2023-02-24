@@ -3,6 +3,9 @@ import {
   AddressList,
   AddressEdit,
   Toast,
+  Swipe,
+  SwipeItem,
+  Lazyload,
   CouponCell,
   CouponList,
   Popup,
@@ -26,6 +29,11 @@ import {
 
 Vue.use(AddressList);
 Vue.use(AddressEdit);
+Vue.use(Toast);
+Vue.use(Swipe);
+Vue.use(SwipeItem);
+Vue.use(Lazyload);
+Vue.use(AddressList);
 Vue.use(Toast);
 Vue.use(CouponCell);
 Vue.use(CouponList);
