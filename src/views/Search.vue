@@ -17,6 +17,28 @@
         </template>
       </van-search>
     </div>
+    <!-- 历史记录 -->
+    <div class="searchHistory">
+      <div class="history">历史记录</div>
+      <van-icon name="delete-o" size="36" class="delIcon" @click="delAll" />
+      <div class="noHistory" v-if="history == ''">
+        <span class="noText">暂无搜索记录~</span>
+      </div>
+      <div
+        class="historyText"
+        v-else
+        @click="handleClick"
+        v-show="isHitoryEmpty"
+      >
+        <span
+          class="historySpan"
+          v-for="(item, index) in history"
+          :data-value="item"
+          :key="index"
+          >{{ item }} <van-icon name="cross" @click="dleItem(item)"
+        /></span>
+      </div>
+    </div>
     <!-- 热搜 -->
     <div class="hotSearch">
       <div class="hot">热门搜索</div>
@@ -27,21 +49,14 @@
           :key="item.id"
           :data-value="item.name"
         >
+          <img
+            :src="item?.s_goods_photos[0].path"
+            alt=""
+            class="hotImg"
+            @click="goSearch(item.name)"
+          />
           {{ item.name }}
         </div>
-      </div>
-    </div>
-    <!-- 历史记录 -->
-    <div class="searchHistory" v-show="isHitoryEmpty">
-      <div class="history">历史记录</div>
-      <div class="historyText" @click="handleClick">
-        <span
-          class="historySpan"
-          v-for="(item, index) in history"
-          :data-value="item"
-          :key="index"
-          >{{ item }} <van-icon name="cross" @click="dleItem(item)"
-        /></span>
       </div>
     </div>
   </div>
@@ -67,7 +82,7 @@ export default {
   computed: {
     //控制是否显示历史记录，大于0则显示
     isHitoryEmpty() {
-      return this.history.length > 0;
+      return this.history;
     },
   },
   methods: {
@@ -102,6 +117,11 @@ export default {
         this.history = JSON.parse(history);
       }
     },
+    // 点击图片进行搜索
+    goSearch(e) {
+      this.value = e;
+      this.Search(this.valuee);
+    },
     // 点击下面文字进行搜索
     handleClick(event) {
       const childDiv = event.target;
@@ -112,6 +132,11 @@ export default {
         this.value = childDiv.dataset.value;
         this.Search(this.value);
       }
+    },
+    // 点击垃圾桶移除全部历史记录
+    delAll() {
+      localStorage.removeItem("searchHistory");
+      this.history = [];
     },
     // 点击x号移除历史记录
     dleItem(e) {
@@ -131,45 +156,36 @@ export default {
   width: 100%;
   height: 100vh;
   background: #e9ecf0;
-  // 热搜
-  .hotSearch {
-    width: 100%;
-    height: 80px;
-    .hot {
-      width: 60px;
-      height: 21px;
-      font-size: 15px;
-      padding-left: 10px;
-      padding-top: 8px;
-    }
-    .hotText {
-      .hotSpan {
-        display: inline-block;
-        width: 80px;
-        height: 40px;
-        text-align: center;
-        line-height: 40px;
-        font-size: 15px;
-        background: #fff;
-        margin: 5px 10px;
-      }
-    }
-  }
   // 历史记录
   .searchHistory {
     width: 100%;
     height: 150px;
-    padding-top: 38px;
     .history {
-      width: 60px;
+      width: 80px;
       height: 21px;
       font-size: 15px;
       padding-left: 10px;
       padding-top: 20px;
+      display: inline-block;
+    }
+    .delIcon {
+      float: right;
+      top: 10%;
+      right: 5%;
+    }
+    .noHistory {
+      width: 100%;
+      height: 150px;
+      text-align: center;
+      .noText {
+        font-size: 25px;
+        line-height: 150px;
+      }
     }
     .historyText {
       display: flex;
       flex-wrap: wrap;
+      justify-content: space-around;
       .historySpan {
         height: 21px;
         font-size: 13px;
@@ -178,6 +194,37 @@ export default {
         background: #fff;
         flex-basis: calc(50% - 20px);
         margin: 10px;
+      }
+    }
+  }
+  // 热搜
+  .hotSearch {
+    width: 100%;
+    height: 301px;
+    padding-top: 45px;
+    .hot {
+      width: 60px;
+      height: 21px;
+      font-size: 15px;
+      padding-left: 10px;
+      padding-top: 8px;
+    }
+    .hotText {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: center;
+      .hotSpan {
+        width: 48%;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        text-align: center;
+        align-items: center;
+        font-size: 15px;
+        .hotImg {
+          width: 160px;
+        }
       }
     }
   }
