@@ -9,3 +9,13 @@ export const detailSwipe = (params) => {
     params,
   });
 };
+// 获取轮播图单个信息
+export const logoSwiper = (params) => {
+  return http({
+    url: `/carousel/${params}`,
+    method: "GET",
+    headers: {
+      isToken: true,
+    },
+  });
+};
