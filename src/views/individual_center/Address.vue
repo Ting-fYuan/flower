@@ -42,6 +42,7 @@ export default {
       ],
     };
   },
+  created() {},
   methods: {
     onAdd() {
       this.$router.push("/addressEdit");

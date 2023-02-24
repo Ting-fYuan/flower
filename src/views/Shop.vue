@@ -73,7 +73,7 @@
       </div>
       <div class="total">
         <p>合计：￥{{ getTotal || 0 }}</p>
-        <button>去结算({{ list.length }})</button>
+        <button @click="toOrder">去结算({{ list.length }})</button>
       </div>
     </div>
     <TabBar></TabBar>
@@ -182,6 +182,12 @@ export default {
         this.toggleBtn = true;
         this.list = this.shopCarList.map((item) => item.id);
       }
+    },
+    // 跳转结算页面
+    toOrder() {
+      this.$router.push({
+        path: "/fillOrder",
+      });
     },
   },
   components: { TabBar },

@@ -139,11 +139,11 @@ const routes = [
       isAuth: true,
     },
   },
-  //  * 购物车模块
+  // 填写订单
   {
-    path: "/shopCar",
-    name: "shopCar",
-    component: () => import("@/views/shop_car/ShopCar.vue"),
+    path: "/fillOrder",
+    name: "fillOrder",
+    component: () => import("@/views/order/FillOrder.vue"),
     meta: {
       isAuth: true,
     },
