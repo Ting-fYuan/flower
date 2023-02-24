@@ -28,6 +28,29 @@ const routes = [
     path: "/category",
     name: "category",
     component: () => import("@/views/Category.vue"),
+    //子路由
+    children: [
+      {
+        path: "/category/UseView",
+        name: "UseView",
+        component: () => import("@/views/children_route/use.vue"),
+      },
+      {
+        path: "/category/MaterialView",
+        name: "MaterialView",
+        component: () => import("@/views/children_route/material.vue"),
+      },
+      {
+        path: "/category/ClassView",
+        name: "ClassView",
+        component: () => import("@/views/children_route/class.vue"),
+      },
+      {
+        path: "/category/NumberView",
+        name: "NumberView",
+        component: () => import("@/views/children_route/number.vue"),
+      },
+    ],
   },
   // @商品子分类
   {
