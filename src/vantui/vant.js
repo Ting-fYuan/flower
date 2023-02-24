@@ -4,6 +4,7 @@ import {
   Toast,
   Form,
   Field,
+  Radio,
   Button,
   Tabbar,
   TabbarItem,
@@ -12,6 +13,7 @@ import {
 Vue.use(AddressList);
 Vue.use(Toast);
 Vue.use(Form);
+Vue.use(Radio);
 Vue.use(Field);
 Vue.use(Button);
 Vue.use(Tabbar);

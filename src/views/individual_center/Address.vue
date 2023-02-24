@@ -1,6 +1,6 @@
 <!-- 地址 -->
 <template>
-  <div>地址</div>
+  <div></div>
 </template>
 
 <script>
