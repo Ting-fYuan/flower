@@ -15,11 +15,16 @@ import "lib-flexible";
 import "@/vantui/vant";
 // @清除默认样式
 import "./assets/style/reset.css";
+// 引入公共组件
+import CommonHead from "@/components/CommonHead.vue";
 
 Vue.use(Swipe);
 Vue.use(SwipeItem);
+// 生产提示
 Vue.config.productionTip = false;
 
+// 注册全局组件
+Vue.component("com-head", CommonHead);
 new Vue({
   router,
   store,

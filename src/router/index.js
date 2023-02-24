@@ -25,6 +25,29 @@ const routes = [
     path: "/category",
     name: "category",
     component: () => import("@/views/Category.vue"),
+    //子路由
+    children: [
+      {
+        path: "/category/UseView",
+        name: "UseView",
+        component: () => import("@/views/children_route/use.vue"),
+      },
+      {
+        path: "/category/MaterialView",
+        name: "MaterialView",
+        component: () => import("@/views/children_route/material.vue"),
+      },
+      {
+        path: "/category/ClassView",
+        name: "ClassView",
+        component: () => import("@/views/children_route/class.vue"),
+      },
+      {
+        path: "/category/NumberView",
+        name: "NumberView",
+        component: () => import("@/views/children_route/number.vue"),
+      },
+    ],
   },
   // @商品子分类
   {
@@ -130,10 +153,19 @@ const routes = [
       isAuth: true,
     },
   },
+  //  * 购物车模块
+  {
+    path: "/shopCar",
+    name: "shopCar",
+    component: () => import("@/views/shop_car/ShopCar.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: "hash",
   base: process.env.BASE_URL,
   routes,
 });

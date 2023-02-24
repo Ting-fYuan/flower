@@ -3,12 +3,15 @@
   <div class="box">
     <div class="top">
       <i class="iconfont icon-icon_sousuo"></i>
-      <img src="" alt="" />
+      <div class="logo">
+        <img src="../assets/images/微信图片_20230224172052.png" alt="" />
+      </div>
     </div>
 
     <van-swipe :autoplay="3000" class="swiper">
       <van-swipe-item v-for="(image, index) in images" :key="index">
-        <img v-lazy="image" />
+        <div class="back" :style="`background-image:url(${image});`"></div>
+        <!-- <img v-lazy="image" style="width: 100%" /> -->
       </van-swipe-item>
     </van-swipe>
 
@@ -32,23 +35,23 @@
       <div class="classfiles_bottom">
         <ul>
           <li>
-            <div></div>
+            <div><img src="../assets/images/mIndex1.png.webp" alt="" /></div>
             花束
           </li>
           <li>
-            <div></div>
+            <div><img src="../assets/images/mIndex2.png.webp" alt="" /></div>
             礼盒
           </li>
           <li>
-            <div></div>
+            <div><img src="../assets/images/mIndex3.png.webp" alt="" /></div>
             蛋糕
           </li>
           <li>
-            <div></div>
+            <div><img src="../assets/images/mIndex4.png.webp" alt="" /></div>
             花篮
           </li>
           <li>
-            <div></div>
+            <div><img src="../assets/images/mIndex5.png.webp" alt="" /></div>
             绿植
           </li>
         </ul>
@@ -58,33 +61,158 @@
     <div class="chooseflower">
       <div class="chooseflower_top">一秒选花</div>
       <div class="chooseflower_center">
-        <div class="choose_box">
-          <div class="choose_box_bottom">送亲友</div>
-        </div>
-        <div class="choose_box">
-          <div class="choose_box_bottom">送长辈</div>
-        </div>
-        <div class="choose_box">
-          <div class="choose_box_bottom">送恋人</div>
+        <div
+          class="choose_box"
+          v-for="(item, index) in yimiaoxuanhua"
+          :key="index"
+        >
+          <img
+            :src="`${el.path}`"
+            v-for="el in item.s_goods_photos"
+            :key="el.id"
+            alt=""
+          />
+          <div class="choose_box_bottom">{{ item.name }}</div>
         </div>
       </div>
 
       <div class="chooseflower_bottom">
-        <div>
-          生日祝福
-          <img src="" alt="" />
+        <div v-for="(item, index) in yimiaoxuanhua2" :key="index">
+          {{ item.name }}
+          <img
+            :src="`${el.path}`"
+            v-for="el in item.s_goods_photos"
+            :key="el.id"
+            alt=""
+          />
         </div>
       </div>
     </div>
     <main>
-      <div class="main_title">爱情鲜花</div>
+      <div class="main_title">{{ love.name }}</div>
       <div class="xian"></div>
       <div class="main_box">
-        <div class="goods">
-          <img src="https://img01.yzcdn.cn/vant/apple-1.jpg" alt="" />
-          <div class="goods_name">浪漫满屋</div>
+        <div class="goods" v-for="(item, index) in love.s_goods" :key="index">
+          <img
+            :src="`${el.path}`"
+            v-for="el in item.s_goods_photos"
+            :key="el.id"
+            alt=""
+          />
+          <div class="goods_name">{{ item.name }}</div>
           <div class="goods_price">
-            <span class="price">￥111</span>
+            <span class="price">￥{{ item.price }}</span>
+            <span class="number">销量1111笔</span>
+          </div>
+        </div>
+      </div>
+      <div class="btn">查看更多</div>
+
+      <div class="main_title">{{ friendly.name }}</div>
+      <div class="xian"></div>
+      <div class="main_box">
+        <div
+          class="goods"
+          v-for="(item, index) in friendly.s_goods"
+          :key="index"
+        >
+          <img
+            :src="`${el.path}`"
+            v-for="el in item.s_goods_photos"
+            :key="el.id"
+            alt=""
+          />
+          <div class="goods_name">{{ item.name }}</div>
+          <div class="goods_price">
+            <span class="price">￥{{ item.price }}</span>
+            <span class="number">销量1111笔</span>
+          </div>
+        </div>
+      </div>
+      <div class="btn">查看更多</div>
+
+      <div class="main_title">鲜花{{ flowerBox.name }}</div>
+      <div class="xian"></div>
+      <div class="main_box">
+        <div
+          class="goods"
+          v-for="(item, index) in flowerBox.s_goods"
+          :key="index"
+        >
+          <img
+            :src="`${el.path}`"
+            v-for="el in item.s_goods_photos"
+            :key="el.id"
+            alt=""
+          />
+          <div class="goods_name">{{ item.name }}</div>
+          <div class="goods_price">
+            <span class="price">￥{{ item.price }}</span>
+            <span class="number">销量1111笔</span>
+          </div>
+        </div>
+      </div>
+      <div class="btn">查看更多</div>
+
+      <div class="main_title">{{ cake.name }}</div>
+      <div class="xian"></div>
+      <div class="main_box">
+        <div class="goods" v-for="(item, index) in cake.s_goods" :key="index">
+          <img
+            :src="`${el.path}`"
+            v-for="el in item.s_goods_photos"
+            :key="el.id"
+            alt=""
+          />
+          <div class="goods_name">{{ item.name }}</div>
+          <div class="goods_price">
+            <span class="price">￥{{ item.price }}</span>
+            <span class="number">销量1111笔</span>
+          </div>
+        </div>
+      </div>
+      <div class="btn">查看更多</div>
+
+      <div class="main_title">开业{{ startBusinsse.name }}</div>
+      <div class="xian"></div>
+      <div class="main_box">
+        <div
+          class="goods"
+          v-for="(item, index) in startBusinsse.s_goods"
+          :key="index"
+        >
+          <img
+            :src="`${el.path}`"
+            v-for="el in item.s_goods_photos"
+            :key="el.id"
+            alt=""
+          />
+          <div class="goods_name">{{ item.name }}</div>
+          <div class="goods_price">
+            <span class="price">￥{{ item.price }}</span>
+            <span class="number">销量1111笔</span>
+          </div>
+        </div>
+      </div>
+      <div class="btn">查看更多</div>
+
+      <div class="main_title">开业{{ greenFlower.name }}</div>
+      <div class="xian"></div>
+      <div class="main_box">
+        <div
+          class="goods"
+          v-for="(item, index) in greenFlower.s_goods"
+          :key="index"
+        >
+          <img
+            :src="`${el.path}`"
+            v-for="el in item.s_goods_photos"
+            :key="el.id"
+            alt=""
+          />
+          <div class="goods_name">{{ item.name }}</div>
+          <div class="goods_price">
+            <span class="price">￥{{ item.price }}</span>
             <span class="number">销量1111笔</span>
           </div>
         </div>
@@ -96,29 +224,82 @@
       <div class="footer_text1">Copyright©2020 成都勿忘我科技有限公司</div>
       <div class="footer_text2">蜀ICP备20016463号-2</div>
     </footer>
+    <div>
+      <h1>首页</h1>
+      <i class="iconfont icon-caidan"></i>
+      <TabBar />
+    </div>
   </div>
 </template>
 
 <script>
+import TabBar from "@/components/TabBar.vue";
 import Vue from "vue";
 import { Lazyload } from "vant";
-
+import { banner } from "@/api/swiper/index.js";
+import { indexImg } from "@/api/indexImg/index.js";
 Vue.use(Lazyload);
 
 export default {
   name: "IndexView",
-  components: {},
+  components: { TabBar },
 
-  created() {},
+  created() {
+    //获取轮播图数据
+    banner({
+      site_id: 365,
+      // project_id: 295,
+    })
+      .then((res) => {
+        // console.log(res.result);
+        res.result.forEach((item) => {
+          // console.log(item.s_photos[0].path);
+          this.images.push(item.s_photos[0].path);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    //获取首页一秒选花数据
+    indexImg({})
+      .then((res) => {
+        // console.log(res.result[0].children[0]);
+        //获取一秒选花上三宗
+        let arr = res.result[4].children[0].s_goods;
+        this.yimiaoxuanhua = arr;
+        //获取一秒选花下五宗
+        let arr2 = res.result[4].children[1].s_goods;
+        this.yimiaoxuanhua2 = arr2;
+        //获取爱情鲜花
+        this.love = res.result[0].children[0];
+        //获取友情鲜花
+        this.friendly = res.result[0].children[2];
+        //获取鲜花礼盒
+        this.flowerBox = res.result[2].children[1];
+        //获取蛋糕
+        this.cake = res.result[2].children[2];
+        //获取开业花篮
+        this.startBusinsse = res.result[2].children[3];
+        //获取绿植
+        this.greenFlower = res.result[2].children[4];
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   data() {
     return {
-      images: [
-        "https://img01.yzcdn.cn/vant/apple-1.jpg",
-        "https://img01.yzcdn.cn/vant/apple-2.jpg",
-      ],
+      images: [],
+      yimiaoxuanhua: [],
+      yimiaoxuanhua2: [],
+      love: [],
+      friendly: [],
+      flowerBox: [],
+      cake: [],
+      startBusinsse: [],
+      greenFlower: [],
     };
   },
-  methods: {},
 };
 </script>
 
@@ -134,18 +315,38 @@ export default {
     width: 100%;
     height: 50px;
     background-color: white;
+    padding-left: 10px;
     z-index: 999;
     display: flex;
     align-items: center;
     position: sticky;
     top: 0;
+    .logo {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        width: 80px;
+        height: 31px;
+      }
+    }
+
     i {
-      font-size: 21px;
+      font-size: 30px;
+      font-weight: 600;
     }
   }
   .swiper {
     width: 100%;
     height: 205px;
+    .back {
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
   }
   .classflies {
     width: 100%;
@@ -191,8 +392,10 @@ export default {
           div {
             width: 40px;
             height: 40px;
-            background-color: peru;
-            border-radius: 50%;
+            img {
+              width: 100%;
+              height: 100%;
+            }
           }
         }
       }
@@ -226,8 +429,12 @@ export default {
         width: 111px;
         height: 126px;
         border-radius: 10px;
-        background-color: skyblue;
         position: relative;
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 10px;
+        }
         &:nth-of-type(1) .choose_box_bottom {
           background-color: pink;
         }
@@ -269,6 +476,9 @@ export default {
         font-size: 14px;
         font-weight: 600;
         color: #884e22;
+        img {
+          width: 70%;
+        }
       }
     }
   }
@@ -278,7 +488,7 @@ export default {
     margin-top: 8px;
     background-color: white;
     box-sizing: border-box;
-    padding: 29px 15px 0 15px;
+    padding: 29px 15px 5px 15px;
     .main_title {
       width: 100%;
       text-align: center;
@@ -348,6 +558,7 @@ export default {
       border: 1px solid rgba(153, 153, 153, 1);
       text-align: center;
       line-height: 27px;
+      margin-bottom: 20px;
     }
   }
   footer {

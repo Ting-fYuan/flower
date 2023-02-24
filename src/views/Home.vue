@@ -1,11 +1,16 @@
 <!-- 我的 -->
 <template>
-  <div>我的</div>
+  <div>
+    我的
+    <TabBar />
+  </div>
 </template>
 
 <script>
+import TabBar from "@/components/TabBar.vue";
 export default {
   name: "HomeView",
+  components: { TabBar },
 };
 </script>
 

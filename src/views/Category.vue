@@ -13,31 +13,28 @@
 
     <div class="main">
       <nav>
-        <router-link to="">用途</router-link>
-        <router-link to="">花材</router-link>
-        <router-link to="">类别</router-link>
-        <router-link to="">枝数</router-link>
+        <router-link to="/category/UseView">用途</router-link>
+        <router-link to="/category/MaterialView">花材</router-link>
+        <router-link to="/category/ClassView">类别</router-link>
+        <router-link to="/category/NumberView">枝数</router-link>
       </nav>
       <keep-alive>
         <router-view />
       </keep-alive>
-      <ul>
-        <li>用途</li>
-        <li>花材</li>
-        <li>类别</li>
-        <li>枝数</li>
-      </ul>
     </div>
+    <TabBar />
   </div>
 </template>
 
 <script>
+import TabBar from "@/components/TabBar.vue";
 import Vue from "vue";
 import { Search } from "vant";
 
 Vue.use(Search);
 export default {
   name: "CategoryView",
+  components: { TabBar },
 };
 </script>
 
@@ -52,6 +49,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 999;
     .search {
       width: 90%;
       height: 70%;
@@ -78,29 +78,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        &:nth-of-type(1) {
-          color: rgba(136, 78, 34, 1);
-          border-left: 1px solid rgba(136, 78, 34, 1);
-        }
-      }
-    }
-
-    ul {
-      width: 80px;
-      height: 100vh;
-      background-color: white;
-      border: 1px solid rgba(233, 236, 240, 1);
-      box-sizing: border-box;
-      li {
-        width: 80px;
-        height: 40px;
-        margin-top: 15px;
-        font-size: 14px;
-        font-weight: 400;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        &:nth-of-type(1) {
+        &.router-link-exact-active {
           color: rgba(136, 78, 34, 1);
           border-left: 1px solid rgba(136, 78, 34, 1);
         }
