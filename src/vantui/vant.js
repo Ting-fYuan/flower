@@ -21,8 +21,6 @@ import {
   CheckboxGroup,
   Stepper,
   Search,
-  Tab,
-  Tabs,
 } from "vant";
 
 Vue.use(AddressList);
@@ -40,8 +38,6 @@ Vue.use(Tabbar);
 Vue.use(TabbarItem);
 Vue.use(Popover);
 Vue.use(Skeleton);
-Vue.use(Tab);
-Vue.use(Tabs);
 Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(Stepper);

@@ -334,12 +334,9 @@ export default {
                 color: #333333;
               }
               .ctn-bottom-box {
-                // position: absolute;
-                // bottom: 0;
-                // right: 0;
-                // display: flex;
-                // margin: 5px 0;
-                // justify-content: space-between;
+                display: flex;
+                margin: 5px 0;
+                justify-content: space-between;
 
                 .price {
                   font-size: 14px;
