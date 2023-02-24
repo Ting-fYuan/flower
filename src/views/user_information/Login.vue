@@ -120,8 +120,6 @@
 <script>
 // 引入logoApi
 import { logoSwiper } from "@/api/swiper";
-// 引入注册api
-import { register } from "@/api/user";
 export default {
   name: "LoginView",
   data() {
@@ -297,20 +295,16 @@ export default {
         modile: this.form.loginPhone,
         password: this.form.loginPassword,
       };
-      this.$nextTick(() => {
-        this.$store.dispatch("loginStore/loginResquest", values);
-      });
+
+      this.$store.dispatch("loginStore/loginResquest", values);
     },
     // 注册请求
     async regiaterSubmit() {
-      let registerRes = await register({
-        phone: this.form.regPhone,
+      const regValues = {
+        modile: this.form.regPhone,
         password: this.form.regPassword,
-        name: "ccc",
-        sex: 1,
-        realName: "ccc",
-      });
-      console.log(registerRes);
+      };
+      this.$store.dispatch("loginStore/registerResquest", regValues);
     },
     // 回车登录
     keyEnter() {

@@ -32,23 +32,18 @@ export default {
           phone: payload["modile"],
           password: payload["password"],
         });
+        console.log(router.history.current.query);
         if (router.history.current.query.redirect) {
           router.push(router.history.current.query.redirect);
         } else {
           router.push("/");
         }
-        if (payload["modile"] != "" && payload["password"] != "") {
-          Toast.success("登陆成功");
-          // 登录成功跳转
-          // if (condition) {
+        Toast.success("登陆成功");
 
-          // }
-          console.log(router.history.current.query);
-          // tokrn数据持久化
-          localStorage.setItem("token", loginRes.result.token);
-          // 用户信息数据持久化
-          localStorage.setItem("userInfo", JSON.stringify(loginRes.result));
-        }
+        // tokrn数据持久化
+        localStorage.setItem("token", loginRes.result.token);
+        // 用户信息数据持久化
+        localStorage.setItem("userInfo", JSON.stringify(loginRes.result));
         // console.log(loginRes);
       } catch (error) {
         console.log(error);
@@ -56,16 +51,27 @@ export default {
       }
     },
     // 注册请求
-    async registerResquest(payload) {
+    async registerResquest(ctx, payload) {
       console.log(payload);
-      let registerRes = await register({
-        phone: this.form.regPhone,
-        password: this.form.regPassword,
-        name: "ccc",
-        sex: 1,
-        realName: "ccc",
-      });
-      console.log(registerRes);
+      try {
+        let registerRes = await register({
+          phone: payload["modile"],
+          password: payload["password"],
+          name: "ccc",
+          sex: 1,
+          realName: "ccc",
+        });
+        console.log(registerRes);
+        Toast.success("注册成功");
+        router.push("login");
+      } catch (error) {
+        if (error.response.data.msg) {
+          Toast.fail("手机号已注册");
+        } else {
+          Toast.fail("注册失败");
+        }
+        console.log(error.response.data.msg);
+      }
     },
   },
 };
