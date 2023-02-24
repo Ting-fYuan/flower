@@ -32,7 +32,9 @@
         :swipeable="true"
         title-active-color="#804E21"
         color="#804E21"
+        @click="tabsState"
       >
+        <!--登录 -->
         <van-tab title="登录" name="login">
           <!-- 登录模块 -->
           <div class="loginModule module">
@@ -66,6 +68,7 @@
             </div>
           </div>
         </van-tab>
+        <!-- 注册 -->
         <van-tab title="注册" name="register">
           <!-- 注册模块 -->
           <div class="registerModule module">
@@ -179,6 +182,16 @@ export default {
     window.removeEventListener("keydown", this.keyEnter, false);
   },
   methods: {
+    tabsState(e) {
+      if (e == "login") {
+        this.$refs.reg_m_err.classList.remove("errChange");
+        this.$refs.reg_p_err.classList.remove("errChange");
+        this.$refs.reg_cp_err.classList.remove("errChange");
+      } else {
+        this.$refs.login_m_err.classList.remove("errChange");
+        this.$refs.login_p_err.classList.remove("errChange");
+      }
+    },
     // 登录失焦样式变化
     loginBlur(e) {
       // 添加错误提示
@@ -279,7 +292,6 @@ export default {
     loginSubmit() {
       // console.log("submit", values);
       if (this.form.loginPhone == "" && this.form.loginPassword == "") {
-        console.log(1);
         this.err.login_m_err = "手机号不能为空";
         this.err.login_p_err = "密码不能为空";
         this.$refs.login_m_err.classList.add("errChange");
@@ -300,6 +312,33 @@ export default {
     },
     // 注册请求
     async regiaterSubmit() {
+      if (
+        this.form.regPhone == "" &&
+        this.form.regPassword == "" &&
+        this.form.regSamePass == ""
+      ) {
+        this.err.reg_m_err = "手机号不能为空";
+        this.err.reg_p_err = "密码不能为空";
+        this.err.reg_cp_err = "确认密码不能为空";
+        this.$refs.reg_m_err.classList.add("errChange");
+        this.$refs.reg_p_err.classList.add("errChange");
+        this.$refs.reg_cp_err.classList.add("errChange");
+      } else if (this.form.regPhone == "" && this.form.regPassword == "") {
+        this.err.reg_m_err = "手机号不能为空";
+        this.err.reg_p_err = "密码不能为空";
+        this.$refs.reg_m_err.classList.add("errChange");
+        this.$refs.reg_p_err.classList.add("errChange");
+      } else if (this.form.regPhone == "" && this.form.regSamePass == "") {
+        this.err.reg_m_err = "手机号不能为空";
+        this.err.reg_cp_err = "确认密码不能为空";
+        this.$refs.reg_m_err.classList.add("errChange");
+        this.$refs.reg_cp_err.classList.add("errChange");
+      } else if (this.form.regPassword == "" && this.form.regSamePass == "") {
+        this.err.reg_p_err = "密码不能为空";
+        this.err.reg_cp_err = "确认密码不能为空";
+        this.$refs.reg_p_err.classList.add("errChange");
+        this.$refs.reg_cp_err.classList.add("errChange");
+      }
       const regValues = {
         modile: this.form.regPhone,
         password: this.form.regPassword,
