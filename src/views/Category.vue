@@ -21,8 +21,10 @@
       <keep-alive>
         <router-view />
       </keep-alive>
+      <div>
+        <TabBar />
+      </div>
     </div>
-    <TabBar />
   </div>
 </template>
 

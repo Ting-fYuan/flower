@@ -1,17 +1,9 @@
 import http from "@/utils/http.js";
 // 轮播图 api
 console.log(http);
-// import request from "@/utils/request.js";
 
-// export function banner(params) {
-//   return request.get("/api/carousel", params, {
-//     Headers: {
-//       isId: true,
-//     },
-//   });
-// }
-
-export const banner = (params) => {
+// 详情页轮播图
+export const detailSwipe = (params) => {
   return http({
     url: "/carousel",
     method: "GET",

@@ -234,7 +234,7 @@
 import TabBar from "@/components/TabBar.vue";
 import Vue from "vue";
 import { Lazyload } from "vant";
-import { banner } from "@/api/swiper/index.js";
+import { detailSwipe } from "@/api/swiper/index.js";
 import { indexImg } from "@/api/indexImg/index.js";
 Vue.use(Lazyload);
 
@@ -244,7 +244,7 @@ export default {
 
   created() {
     //获取轮播图数据
-    banner({
+    detailSwipe({
       site_id: 365,
       // project_id: 295,
     })
