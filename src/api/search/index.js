@@ -12,6 +12,14 @@ export const goodsSearch = (params) => {
   });
 };
 
+// 获取某个子分类下面的数据
+export const SearchDetails = (id) => {
+  return http({
+    url: `goods/getById/${id}`,
+    method: "GET",
+  });
+};
+
 // 获取热搜
 export const hotSearch = (params) => {
   return http({

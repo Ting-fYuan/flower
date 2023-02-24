@@ -1,11 +1,17 @@
 <!-- 分类 -->
 <template>
-  <div>分类</div>
+  <div>
+    <TabBar />
+  </div>
 </template>
 
 <script>
+import TabBar from "@/components/TabBar.vue";
 export default {
   name: "CategoryView",
+  components: {
+    TabBar,
+  },
 };
 </script>
 
