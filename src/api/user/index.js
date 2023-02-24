@@ -10,7 +10,7 @@ export const login = (data) => {
   });
 };
 
-// 登录
+// 注册
 export const register = (data) => {
   return http({
     url: "/register",

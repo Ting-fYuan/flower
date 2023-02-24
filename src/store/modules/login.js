@@ -1,5 +1,7 @@
 // 引入api
 import { login } from "@/api/user";
+// vant 轻提示
+import { Toast } from "vant";
 // 登录模块vuex
 export default {
   // 开启命名空间
@@ -15,17 +17,23 @@ export default {
   actions: {
     // 登录请求
     async loginResquest(ctx, payload) {
-      // console.log("ctx", ctx);
-      // console.log("payload", payload);
-      let loginRes = await login({
-        phone: payload["账号"],
-        password: payload["密码"],
-      });
-      // console.log(loginRes);
-      // tokrn数据持久化
-      sessionStorage.setItem("token", loginRes.result.token);
-      // 用户信息数据持久化
-      sessionStorage.setItem("userInfo", JSON.stringify(loginRes.result));
+      try {
+        let loginRes = await login({
+          phone: payload["modile"],
+          password: payload["password"],
+        });
+        if (payload["modile"] != "" && payload["password"] != "") {
+          Toast.success("登陆成功");
+          // tokrn数据持久化
+          localStorage.setItem("token", loginRes.result.token);
+          // 用户信息数据持久化
+          localStorage.setItem("userInfo", JSON.stringify(loginRes.result));
+        }
+        // console.log(loginRes);
+      } catch (error) {
+        console.log(error);
+        Toast.fail("账号或密码缺失");
+      }
     },
   },
 };
