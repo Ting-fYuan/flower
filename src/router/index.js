@@ -69,6 +69,14 @@ const routes = [
     },
   },
   {
+    path: "/payfinished",
+    name: "payfinished",
+    component: () => import("@/views/individual_center/PayFinished.vue"),
+    // meta: {
+    //   isAuth: true,
+    // },
+  },
+  {
     path: "/sending",
     name: "sending",
     component: () => import("@/views/individual_center/Sending.vue"),

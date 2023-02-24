@@ -22,7 +22,11 @@
       <div class="history">历史记录</div>
       <van-icon name="delete-o" size="36" class="delIcon" @click="delAll" />
       <div class="noHistory" v-if="history == ''">
-        <span class="noText">暂无搜索记录~</span>
+        <van-empty
+          image="search"
+          image-size="100"
+          description="暂无搜索记录~"
+        />
       </div>
       <div
         class="historyText"
@@ -39,23 +43,26 @@
         /></span>
       </div>
     </div>
+    <van-divider :style="{ color: '#1989fa', borderColor: 'pink' }" />
     <!-- 热搜 -->
     <div class="hotSearch">
       <div class="hot">热门搜索</div>
-      <div class="hotText" @click="handleClick">
-        <div
-          class="hotSpan"
-          v-for="item in hotSearch"
-          :key="item.id"
-          :data-value="item.name"
-        >
+      <div class="like-more-main">
+        <div class="commodity" v-for="item in hotSearch" :key="item.id">
           <img
-            :src="item?.s_goods_photos[0].path"
-            alt=""
-            class="hotImg"
+            :src="item.s_goods_photos[0].path"
+            :alt="item.name"
             @click="goSearch(item.name)"
           />
-          {{ item.name }}
+          <div class="ctn-bottom" @click="handleClick">
+            <p class="goods-name" :data-value="item.name">{{ item.name }}</p>
+            <div class="ctn-bottom-box">
+              <p class="price">￥ {{ item.price }}</p>
+              <p class="sale">
+                销量{{ item.sold_num && item.sold_num.slice(0, 6) }}笔
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -120,13 +127,13 @@ export default {
     // 点击图片进行搜索
     goSearch(e) {
       this.value = e;
-      this.Search(this.valuee);
+      this.Search(this.value);
     },
     // 点击下面文字进行搜索
     handleClick(event) {
       const childDiv = event.target;
       if (
-        childDiv.classList.contains("hotSpan") ||
+        childDiv.classList.contains("goods-name") ||
         childDiv.classList.contains("historySpan")
       ) {
         this.value = childDiv.dataset.value;
@@ -159,7 +166,7 @@ export default {
   // 历史记录
   .searchHistory {
     width: 100%;
-    height: 150px;
+    height: 200px;
     .history {
       width: 80px;
       height: 21px;
@@ -175,12 +182,8 @@ export default {
     }
     .noHistory {
       width: 100%;
-      height: 150px;
+      height: 120px;
       text-align: center;
-      .noText {
-        font-size: 25px;
-        line-height: 150px;
-      }
     }
     .historyText {
       display: flex;
@@ -199,9 +202,6 @@ export default {
   }
   // 热搜
   .hotSearch {
-    width: 100%;
-    height: 301px;
-    padding-top: 45px;
     .hot {
       width: 60px;
       height: 21px;
@@ -209,21 +209,48 @@ export default {
       padding-left: 10px;
       padding-top: 8px;
     }
-    .hotText {
+    .like-more-main {
       display: flex;
+      margin-top: 15px;
+      padding-bottom: 30%;
+      justify-content: space-between;
       flex-wrap: wrap;
-      justify-content: space-around;
-      align-items: center;
-      .hotSpan {
-        width: 48%;
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 20px;
-        text-align: center;
-        align-items: center;
-        font-size: 15px;
-        .hotImg {
-          width: 160px;
+
+      .commodity {
+        margin-bottom: 10px;
+        width: 165px;
+        height: 235px;
+        box-shadow: 0 5px 10px 0 #dee2e5;
+
+        img {
+          width: 100%;
+          height: 165px;
+        }
+        .ctn-bottom {
+          display: flex;
+          margin: 0 5px;
+          justify-content: space-between;
+          flex-direction: column;
+          height: 30%;
+          .goods-name {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #333333;
+          }
+          .ctn-bottom-box {
+            display: flex;
+            margin: 5px 0;
+            justify-content: space-between;
+            .price {
+              font-size: 14px;
+              color: #ff734c;
+              font-weight: 600;
+            }
+            .sale {
+              font-size: 12px;
+              color: #999999;
+            }
+          }
         }
       }
     }
@@ -234,5 +261,9 @@ export default {
   background: #ff734c;
   color: #ffffff;
   border-radius: 50%;
+}
+//历史记录为空时vant的样式
+::v-deep .van-empty {
+  height: 200px;
 }
 </style>
