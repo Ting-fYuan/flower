@@ -12,6 +12,10 @@ import {
   Button,
   Tabbar,
   TabbarItem,
+  Popover,
+  Skeleton,
+  Tab,
+  Tabs,
   Checkbox,
   CheckboxGroup,
   Stepper,
@@ -32,6 +36,10 @@ Vue.use(Field);
 Vue.use(Button);
 Vue.use(Tabbar);
 Vue.use(TabbarItem);
+Vue.use(Popover);
+Vue.use(Skeleton);
+Vue.use(Tab);
+Vue.use(Tabs);
 Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(Stepper);
