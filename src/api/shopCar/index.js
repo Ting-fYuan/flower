@@ -1,7 +1,7 @@
 import http from "@/utils/http.js";
 // 购物车 api
 
-// 获取购物车
+// 获取用户购物车
 export const getShopCarApi = (params) => {
   return http({
     url: "/shoppingCart",
@@ -9,6 +9,7 @@ export const getShopCarApi = (params) => {
     params,
     headers: {
       isToken: true,
+      isId: true,
     },
   });
 };
@@ -20,6 +21,18 @@ export const guessLikeApi = (params) => {
     method: "GET",
     params,
     headers: {
+      isId: true,
+    },
+  });
+};
+
+// 删除购物车
+export const delShopCarApi = ($id) => {
+  return http({
+    url: `/shoppingCart/${$id}`,
+    method: "DELETE",
+    headers: {
+      isToken: true,
       isId: true,
     },
   });

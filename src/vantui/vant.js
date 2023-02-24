@@ -12,6 +12,9 @@ import {
   Button,
   Tabbar,
   TabbarItem,
+  Checkbox,
+  CheckboxGroup,
+  Stepper,
   Search,
 } from "vant";
 
@@ -27,4 +30,7 @@ Vue.use(Field);
 Vue.use(Button);
 Vue.use(Tabbar);
 Vue.use(TabbarItem);
+Vue.use(Checkbox);
+Vue.use(CheckboxGroup);
+Vue.use(Stepper);
 Vue.use(Search);
