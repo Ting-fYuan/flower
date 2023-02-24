@@ -3,6 +3,9 @@ import {
   AddressList,
   AddressEdit,
   Toast,
+  Swipe,
+  SwipeItem,
+  Lazyload,
   CouponCell,
   CouponList,
   Popup,
@@ -20,10 +23,17 @@ import {
   CheckboxGroup,
   Stepper,
   Search,
+  Divider,
+  Empty,
 } from "vant";
 
 Vue.use(AddressList);
 Vue.use(AddressEdit);
+Vue.use(Toast);
+Vue.use(Swipe);
+Vue.use(SwipeItem);
+Vue.use(Lazyload);
+Vue.use(AddressList);
 Vue.use(Toast);
 Vue.use(CouponCell);
 Vue.use(CouponList);
@@ -42,3 +52,5 @@ Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(Stepper);
 Vue.use(Search);
+Vue.use(Divider);
+Vue.use(Empty);
