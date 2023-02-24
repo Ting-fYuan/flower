@@ -122,6 +122,15 @@ const routes = [
       isAuth: true,
     },
   },
+  // 地址编辑页
+  {
+    path: "/addressEdit",
+    name: "addressEdit",
+    component: () => import("@/views/individual_center/AddressEdit.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
   {
     path: "/setting",
     name: "setting",
