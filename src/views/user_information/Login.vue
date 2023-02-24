@@ -107,7 +107,7 @@
             </div>
             <!-- 注册按钮模块 -->
             <div class="form">
-              <button class="btn">注册</button>
+              <button class="btn" @click="regiaterSubmit">注册</button>
             </div>
           </div>
         </van-tab>
@@ -297,7 +297,6 @@ export default {
         modile: this.form.loginPhone,
         password: this.form.loginPassword,
       };
-      console.log(values);
       this.$nextTick(() => {
         this.$store.dispatch("loginStore/loginResquest", values);
       });
