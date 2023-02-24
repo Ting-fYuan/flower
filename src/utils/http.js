@@ -14,6 +14,22 @@ import router from "@/router";
 // 项目 id
 const BASE_PROJECT_ID = 295;
 
+// 错误后的操作
+const errorHandle = (errMsg) => {
+  store.commit("loginStore/clearUserInfo");
+  router.push({
+    path: "/login",
+    // 传递完整路径
+    query: {
+      redirect: router.history.current.fullPath,
+    },
+  });
+  Toast({
+    message: errMsg,
+    position: "bottom",
+  });
+};
+
 // 实例化axios (自定义配置)
 const http = axios.create({
   // 基础请求路径
@@ -79,21 +95,14 @@ http.interceptors.response.use(
   function (error) {
     // 关闭loadding
     Toast.clear();
+
     const { status, data } = error.response;
     // token过期
     if (status === 409 && data.msg === "没有该用户信息") {
-      store.commit("loginStore/clearUserInfo");
-      Toast({
-        message: "登录失败，请重新登陆",
-        position: "bottom",
-      });
-      this.$router.push({
-        path: "/login",
-        // 传递完整路径
-        query: {
-          redirect: router.history.current.fullPath,
-        },
-      });
+      errorHandle("登录失败，请重新登陆");
+    }
+    if (status === 401 && data.msg === "请登录后再进行操作") {
+      errorHandle("请登录后再进行操作");
     }
     // 对响应错误做点什么
     return Promise.reject(error);

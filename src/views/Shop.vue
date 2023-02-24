@@ -4,7 +4,37 @@
     <com-head :showBack="false" title="购物车"></com-head>
     <main>
       <div class="shop-car-box">
-        <div class="shop" v-if="showShopList">有购物车</div>
+        <div class="shop" v-if="showShopList">
+          <van-checkbox-group v-model="list">
+            <van-checkbox
+              v-for="(item, index) in shopCarList"
+              :name="item.id"
+              class="shop-list-box"
+              :key="item.id"
+            >
+              <div class="shop-box-right">
+                <img
+                  :src="item.s_good.s_goods_photos[0].path"
+                  alt="item.s_good.name"
+                />
+                <div class="shop-box-msg">
+                  <p>{{ item.s_good.name }}</p>
+                  <p>
+                    市场价：<span>￥{{ item.s_good.price }}</span>
+                  </p>
+                  <p>
+                    店铺价：<span>￥{{ item.s_good.sale_price }}</span>
+                  </p>
+                </div>
+                <p class="shop-num">x {{ item.num }}</p>
+                <i
+                  class="delete-shop iconfont icon-iconfontshanchu"
+                  @click.stop="delShopCarHandle(item.id, index)"
+                ></i>
+              </div>
+            </van-checkbox>
+          </van-checkbox-group>
+        </div>
         <div class="no-shop" v-else>
           <img
             class="no-shop-img"
@@ -35,43 +65,123 @@
         </div>
       </div>
     </main>
+    <div class="sumUpBox">
+      <div class="toggle">
+        <van-checkbox v-model="toggleBtn" @click="toggleHandle"
+          ><p>全选</p></van-checkbox
+        >
+      </div>
+      <div class="total">
+        <p>合计：￥{{ getTotal || 0 }}</p>
+        <button>去结算({{ list.length }})</button>
+      </div>
+    </div>
     <TabBar></TabBar>
   </div>
 </template>
 
 <script>
-import { getShopCarApi, guessLikeApi } from "@/api/shopCar";
+import { guessLikeApi } from "@/api/shopCar";
 import TabBar from "@/components/TabBar.vue";
 export default {
   name: "ShopView",
   data() {
     return {
+      // 是否有购物车商品
       showShopList: false,
       // 猜你喜欢
       likeList: [],
+      // 选中的商品
+      list: [],
+      // 全选按钮
+      toggleBtn: false,
     };
   },
   computed: {
+    // 判断是否登录
     isLogin() {
       return this.$store.state.loginStore.token;
     },
+    // 获取购物车列表
+    shopCarList() {
+      return this.$store.state.shopCarStore.shopCarList;
+    },
+    // 获取选中商品id数组
+    chooseShopList() {
+      return this.$store.state.shopCarStore.chooseShopList;
+    },
+    // 获取总价
+    getTotal() {
+      return this.$store.getters["shopCarStore/getTotal"];
+    },
+  },
+  watch: {
+    // 监听选中商品
+    list(newData) {
+      // 存储vuex
+      this.$store.commit("shopCarStore/upDataChooseShop", newData);
+      // 全选
+      if (newData.length != 0 && newData.length === this.shopCarList.length) {
+        this.toggleBtn = true;
+      } else {
+        this.toggleBtn = false;
+      }
+    },
+    // 监听购物车列表
+    shopCarList(newData) {
+      // 没有购物车改变状态
+      if (newData.length == 0) {
+        this.showShopList = false;
+      }
+    },
   },
   async created() {
-    // 用户是否登录
+    // 是否登录
     if (this.isLogin) {
-      const res = await getShopCarApi();
-      console.log(res);
+      // 获取购物车列表
+      const { result } = await this.$store.dispatch(
+        "shopCarStore/getShopCarList"
+      );
+      // 是否有购物车商品
+      if (result.length) {
+        // 展示购物车列表
+        this.showShopList = true;
+        console.log("购物车列表", result);
+      } else this.showShopList = false;
+
+      // 是否有选中购物车
+      const { chooseShopList } = this.$store.state.shopCarStore;
+      if (chooseShopList) {
+        this.list = chooseShopList;
+      }
     }
-    // res.result.length = 0
     // 猜你喜欢
     const { result } = await guessLikeApi();
     this.likeList = result;
     console.log("猜你喜欢", result);
   },
   methods: {
+    // 去逛逛
     toIndex() {
       // 跳转至首页
       this.$router.push("index");
+    },
+    // 删除购物车
+    delShopCarHandle($id, $idx) {
+      this.$store.dispatch("shopCarStore/deleteShopCar", {
+        id: $id,
+        idx: $idx,
+      });
+    },
+    // 全选按钮
+    toggleHandle() {
+      if (this.list != 0 && this.list.length === this.shopCarList.length) {
+        this.toggleBtn = false;
+        this.list = [];
+      } else {
+        this.toggleBtn = true;
+        this.list = this.shopCarList.map((item) => item.id);
+      }
     },
   },
   components: { TabBar },
@@ -86,6 +196,64 @@ export default {
     padding: 42px 0 0;
     .shop-car-box {
       .shop {
+        .shop-list-box {
+          display: flex;
+          padding: 15px 10px;
+          background: #fff;
+          border-bottom: 0.5px solid #ccc;
+
+          .shop-box-right {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            width: 115%;
+            // 删除
+            .delete-shop {
+              position: absolute;
+              top: 15px;
+              right: 0;
+              font-size: 16px;
+            }
+            img {
+              width: 135px;
+              height: 135px;
+              background-color: yellowgreen;
+            }
+            .shop-box-msg {
+              display: flex;
+              margin-left: 10px;
+              flex-direction: column;
+              justify-content: center;
+
+              p {
+                font-size: 14px;
+                color: #555555;
+
+                &:first-of-type {
+                  margin-bottom: 13px;
+                  font-size: 16px;
+                  color: #333333;
+                }
+
+                &:nth-of-type(2) span {
+                  color: #a6a6a6;
+                  text-decoration: line-through;
+                }
+
+                &:last-of-type span {
+                  color: #e92d31;
+                }
+              }
+            }
+            .shop-num {
+              display: flex;
+              margin-bottom: 5px;
+              flex-direction: column;
+              justify-content: flex-end;
+              font-size: 14px;
+            }
+          }
+        }
       }
       .no-shop {
         padding: 50px 0 0;
@@ -173,6 +341,45 @@ export default {
             }
           }
         }
+      }
+    }
+  }
+
+  .sumUpBox {
+    position: fixed;
+    display: flex;
+    width: 100%;
+    height: 50px;
+    justify-content: space-between;
+    bottom: 50px;
+    background-color: #fff;
+    z-index: 9;
+    .toggle {
+      display: flex;
+      margin-left: 20px;
+      flex-direction: column;
+      justify-content: center;
+      p {
+        font-size: 14px;
+        color: #999999;
+      }
+    }
+    .total {
+      display: flex;
+      p {
+        margin-right: 10px;
+        line-height: 50px;
+        font-size: 14px;
+        color: #884e22;
+      }
+      button {
+        padding: 0 15px;
+        height: 100%;
+        border: none;
+        text-align: center;
+        color: #ffffff;
+        font-size: 14px;
+        background: rgba(136, 78, 34, 1);
       }
     }
   }

@@ -42,6 +42,7 @@ export default {
   top: 0;
   background: rgba(255, 255, 255, 1);
   border-bottom: 0.5px solid #e4e4e4;
+  z-index: 99;
 
   .head-box-back {
     position: absolute;

@@ -161,7 +161,7 @@ router.beforeEach((to, from, next) => {
       });
       next({
         path: "/login",
-        //   // 完整路径
+        // 完整路径
         query: { redirect: to.fullPath },
       });
     }
