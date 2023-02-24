@@ -3,9 +3,7 @@
   <div class="box">
     <div class="top">
       <i class="iconfont icon-icon_sousuo"></i>
-      <div class="logo">
-        <img src="../assets/images/微信图片_20230224172052.png" alt="" />
-      </div>
+      <img src="../assets/images/微信图片_20230224172052.png" alt="" />
     </div>
 
     <van-swipe :autoplay="3000" class="swiper">
@@ -173,7 +171,7 @@
       </div>
       <div class="btn">查看更多</div>
 
-      <div class="main_title">开业{{ startBusinsse.name }}</div>
+      <div class="main_title">{{ startBusinsse.name }}</div>
       <div class="xian"></div>
       <div class="main_box">
         <div
@@ -196,7 +194,7 @@
       </div>
       <div class="btn">查看更多</div>
 
-      <div class="main_title">开业{{ greenFlower.name }}</div>
+      <div class="main_title">{{ greenFlower.name }}</div>
       <div class="xian"></div>
       <div class="main_box">
         <div
@@ -319,23 +317,20 @@ export default {
     z-index: 999;
     display: flex;
     align-items: center;
+    justify-content: center;
     position: sticky;
     top: 0;
-    .logo {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      img {
-        width: 80px;
-        height: 31px;
-      }
+
+    img {
+      width: 80px;
+      height: 31px;
     }
 
     i {
       font-size: 30px;
       font-weight: 600;
+      position: absolute;
+      left: 10px;
     }
   }
   .swiper {
@@ -509,7 +504,7 @@ export default {
       margin-top: 20px;
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      justify-content: space-around;
       .goods {
         width: 165px;
         height: 215px;

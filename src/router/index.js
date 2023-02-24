@@ -1,5 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+// 引入 vuex
+import vuex from "@/store";
+import { Toast } from "vant";
 
 Vue.use(VueRouter);
 
@@ -116,9 +119,6 @@ const routes = [
     path: "/login",
     name: "login",
     component: () => import("@/views/user_information/Login.vue"),
-    meta: {
-      isAuth: true,
-    },
   },
   {
     path: "/register",
@@ -145,6 +145,15 @@ const routes = [
       isAuth: true,
     },
   },
+  // 地址编辑页
+  {
+    path: "/addressEdit",
+    name: "addressEdit",
+    component: () => import("@/views/individual_center/AddressEdit.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
   {
     path: "/setting",
     name: "setting",
@@ -153,11 +162,11 @@ const routes = [
       isAuth: true,
     },
   },
-  //  * 购物车模块
+  // 填写订单
   {
-    path: "/shopCar",
-    name: "shopCar",
-    component: () => import("@/views/shop_car/ShopCar.vue"),
+    path: "/fillOrder",
+    name: "fillOrder",
+    component: () => import("@/views/order/FillOrder.vue"),
     meta: {
       isAuth: true,
     },
@@ -168,6 +177,30 @@ const router = new VueRouter({
   mode: "hash",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  // 判断页面是否需要授权
+  if (to.matched.some((item) => item.meta.isAuth)) {
+    // 判断是否登录
+    if (vuex.state.loginStore["token"]) {
+      // 已登录放行
+      next();
+    } else {
+      Toast({
+        message: "请先登录",
+        position: "bottom",
+      });
+      next({
+        path: "/login",
+        // 完整路径
+        query: { redirect: to.fullPath },
+      });
+    }
+  } else {
+    // 不需要授权
+    next();
+  }
 });
 
 export default router;
