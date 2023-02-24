@@ -152,9 +152,6 @@ const routes = [
     path: "/fillOrder",
     name: "fillOrder",
     component: () => import("@/views/order/FillOrder.vue"),
-    meta: {
-      isAuth: true,
-    },
   },
 ];
 
