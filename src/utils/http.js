@@ -17,16 +17,16 @@ const BASE_PROJECT_ID = 295;
 // 错误后的操作
 const errorHandle = (errMsg) => {
   store.commit("loginStore/clearUserInfo");
+  Toast({
+    message: errMsg,
+    position: "bottom",
+  });
   router.push({
     path: "/login",
     // 传递完整路径
     query: {
       redirect: router.history.current.fullPath,
     },
-  });
-  Toast({
-    message: errMsg,
-    position: "bottom",
   });
 };
 

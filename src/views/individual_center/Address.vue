@@ -12,6 +12,7 @@
         @add="onAdd"
         @edit="onEdit"
         add-button-text="+新建地址"
+        @select="changeAddressHandle"
       />
     </div>
   </div>
@@ -43,12 +44,20 @@ export default {
     };
   },
   created() {},
+  computed: {
+    isToken() {
+      return this.$store.state.loginStore.token;
+    },
+  },
   methods: {
     onAdd() {
       this.$router.push("/addressEdit");
     },
     onEdit() {
       this.$router.push("/addressEdit");
+    },
+    changeAddressHandle(e) {
+      console.log(e);
     },
   },
 };
@@ -62,7 +71,6 @@ export default {
   .addressList {
     width: 100%;
     height: calc(100vh - 42px);
-    margin-top: 45px;
   }
 }
 
