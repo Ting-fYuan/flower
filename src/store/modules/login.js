@@ -46,31 +46,38 @@ export default {
         localStorage.setItem("userInfo", JSON.stringify(loginRes.result));
         // console.log(loginRes);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         Toast.fail("账号或密码缺失");
       }
     },
     // 注册请求
     async registerResquest(ctx, payload) {
-      console.log(payload);
+      // console.log(payload);
       try {
-        let registerRes = await register({
+        // 截取四位手机号码放进名字（后期可改个人信息）
+        const RandomNum = payload["modile"].substr(2, 4);
+        const registerRes = await register({
+          // 唯一值
           phone: payload["modile"],
           password: payload["password"],
-          name: "ccc",
+          // 唯一值
+          name: `${RandomNum}+ccc`,
           sex: 1,
+          // verify: "1234",
           realName: "ccc",
         });
-        console.log(registerRes);
-        Toast.success("注册成功");
-        router.push("login");
-      } catch (error) {
-        if (error.response.data.msg) {
-          Toast.fail("手机号已注册");
-        } else {
-          Toast.fail("注册失败");
+        if (registerRes) {
+          Toast.success("注册成功，请切换登录");
+          router.go();
         }
-        console.log(error.response.data.msg);
+      } catch (error) {
+        console.log(error);
+        if (error.response.data.msg === "手机号码已注册") {
+          Toast.fail("手机号码已注册");
+        } else {
+          Toast.fail("注册失败，参数不对或缺失");
+        }
+        // console.log(error.response.data.msg);
       }
     },
   },
