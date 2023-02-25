@@ -63,20 +63,21 @@ export default {
           // 唯一值
           name: `${RandomNum}+ccc`,
           sex: 1,
-          verify: "1234",
+          // verify: "1234",
           realName: "ccc",
         });
-        console.log(registerRes);
-        Toast.success("注册成功");
-        router.go();
+        if (registerRes) {
+          Toast.success("注册成功，请切换登录");
+          router.go();
+        }
       } catch (error) {
         console.log(error);
-        if (error.response.data.msg == "手机号已注册") {
-          Toast.fail("手机号已注册");
+        if (error.response.data.msg === "手机号码已注册") {
+          Toast.fail("手机号码已注册");
         } else {
           Toast.fail("注册失败，参数不对或缺失");
         }
-        console.log(error.response.data.msg);
+        // console.log(error.response.data.msg);
       }
     },
   },
