@@ -26,6 +26,8 @@ import {
   Search,
   Divider,
   Empty,
+  SwipeCell,
+  Card,
 } from "vant";
 
 Vue.use(AddressList);
@@ -56,3 +58,5 @@ Vue.use(Tab);
 Vue.use(Tabs);
 Vue.use(Divider);
 Vue.use(Empty);
+Vue.use(SwipeCell);
+Vue.use(Card);

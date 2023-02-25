@@ -2,7 +2,13 @@
 <template>
   <div class="order">
     <div class="orderHead">
-      <com-head title="我的订单"></com-head>
+      <van-icon
+        name="arrow-left"
+        color="#333333"
+        class="arrowLeft"
+        @click="goBack()"
+      />
+      <span>我的订单</span>
     </div>
     <div class="orderTab">
       <keep-alive>
@@ -49,12 +55,10 @@ export default {
       ],
     };
   },
-  mounted() {
-    // 从 localStorage 获取当前选中的 tab
-    const activeTab = localStorage.getItem("routeId");
-    if (activeTab) {
-      this.active = parseInt(activeTab);
-    }
+  methods: {
+    goBack() {
+      this.$router.push("/");
+    },
   },
 };
 </script>
@@ -63,10 +67,34 @@ export default {
 .order {
   width: 100%;
   height: 100%;
+  .orderHead {
+    width: 100%;
+    height: 42px;
+    opacity: 1;
+    border-bottom: 1px solid rgba(243, 245, 247, 1);
+    background: rgba(255, 255, 255, 1);
+    display: flex;
+    justify-content: flex-start; /* 左对齐 */
+    .arrowLeft {
+      line-height: 42px;
+      font-size: 26px;
+    }
+    span {
+      width: 80px;
+      height: 42px;
+      opacity: 1;
+      color: rgba(85, 85, 85, 1);
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 42px;
+      margin-left: auto; /* 居中对齐的样式 */
+      margin-right: auto;
+    }
+  }
   .orderTab {
     width: 100%;
     height: calc(100vh - 42px);
-    margin-top: 45px;
+    margin-top: 13px;
   }
 }
 </style>

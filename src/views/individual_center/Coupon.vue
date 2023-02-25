@@ -6,7 +6,7 @@
     </div>
     <div class="couponContent">
       <div class="noCoupon">
-        <img src="@/assets/imgs/coupon.png" class="couponImg" alt="" />
+        <img src="@/assets/images/coupon.png" class="couponImg" alt="" />
         <span class="notextTop">暂无优惠券</span>
         <span class="notextBotoom">据说下单后有机会获得大额劵喔~</span>
       </div>
@@ -46,7 +46,7 @@ export default {
       height: 51px;
       opacity: 1;
       color: rgba(85, 85, 85, 1);
-      font-size: 16px;
+      font-size: 13px;
       font-weight: 500;
       line-height: 51px;
       margin-left: auto; /* 居中对齐的样式 */
