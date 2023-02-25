@@ -6,7 +6,22 @@
         <div class="receiving" @click="toAddressHandle">
           <p class="receivingLeft">收货信息</p>
           <div class="txtRight">
-            <p>请选择收货信息</p>
+            <div class="addressBox">
+              <p>
+                {{
+                  chooseAddress &&
+                  chooseAddress.name + "  " + chooseAddress.phone
+                }}
+              </p>
+              <p>
+                {{
+                  chooseAddress &&
+                  chooseAddress.area_name +
+                    "  " +
+                    chooseAddress.desc.slice(0, 10)
+                }}
+              </p>
+            </div>
             &nbsp;&nbsp;
             <i class="iconfont icon-youjiantou"></i>
           </div>
@@ -129,6 +144,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "FillOrder",
   data() {
@@ -138,10 +154,18 @@ export default {
     };
   },
   beforeDestroy() {},
+  created() {
+    // 获取默认地址
+    this.$store.dispatch("fillOrderStore/getDeaultAddress");
+  },
+  computed: {
+    // 地址
+    ...mapState("fillOrderStore", ["chooseAddress"]),
+  },
   methods: {
     // 跳转填写地址
     toAddressHandle() {
-      this.$router.push("addressEdit");
+      this.$router.push("address");
     },
   },
 };
@@ -184,6 +208,14 @@ export default {
       .receiving {
         @include ComInput();
         padding-top: 0;
+        .addressBox {
+          p {
+            font-size: 12px;
+            &:last-child {
+              margin-top: 5px;
+            }
+          }
+        }
       }
       .delivery {
         @include ComInput();

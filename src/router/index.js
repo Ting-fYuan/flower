@@ -192,14 +192,14 @@ router.beforeEach((to, from, next) => {
       // 已登录放行
       next();
     } else {
-      Toast({
-        message: "请先登录",
-        position: "bottom",
-      });
       next({
         path: "/login",
         // 完整路径
         query: { redirect: to.fullPath },
+      });
+      Toast({
+        message: "请先登录",
+        position: "bottom",
       });
     }
   } else {
