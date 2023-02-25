@@ -120,8 +120,6 @@ export default {
 <style lang="scss" scoped>
 .loginArea {
   box-sizing: border-box;
-  padding-top: 42px;
-
   width: 100vw;
   height: 100vh;
   background-color: #e8ecef;
