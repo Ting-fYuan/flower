@@ -26,6 +26,7 @@ import {
   Search,
   Divider,
   Empty,
+  Cascader,
 } from "vant";
 
 Vue.use(AddressList);
@@ -56,3 +57,4 @@ Vue.use(Tab);
 Vue.use(Tabs);
 Vue.use(Divider);
 Vue.use(Empty);
+Vue.use(Cascader);
