@@ -9,3 +9,25 @@ export const getAllcity = (params) => {
     params,
   });
 };
+
+// 获取用户默认地址
+export const defaultAddressApi = () => {
+  return http({
+    url: "/defalutAddress",
+    method: "GET",
+    headers: {
+      isToken: true,
+    },
+  });
+};
+
+// 获取用户地址
+export const getAddressApi = () => {
+  return http({
+    url: "/address",
+    method: "GET",
+    headers: {
+      isToken: true,
+    },
+  });
+};
