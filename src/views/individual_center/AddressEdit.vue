@@ -1,7 +1,7 @@
 <template>
   <div class="addressEdit">
     <div class="editHead">
-      <common-head title="新增收货地址"></common-head>
+      <com-head title="新增收货地址"></com-head>
     </div>
     <div class="editContent">
       <van-address-edit
@@ -16,10 +16,8 @@
 </template>
 
 <script>
-import CommonHead from "@/components/CommonHead.vue";
 import { Toast } from "vant";
 export default {
-  components: { CommonHead },
   data() {
     return {};
   },

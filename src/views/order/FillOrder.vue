@@ -3,7 +3,7 @@
     <com-head title="填写订单"></com-head>
     <main>
       <div class="telandarea">
-        <div class="receiving">
+        <div class="receiving" @click="toAddressHandle">
           <p class="receivingLeft">收货信息</p>
           <div class="txtRight">
             <p>请选择收货信息</p>
@@ -138,6 +138,12 @@ export default {
     };
   },
   beforeDestroy() {},
+  methods: {
+    // 跳转填写地址
+    toAddressHandle() {
+      this.$router.push("addressEdit");
+    },
+  },
 };
 </script>
 

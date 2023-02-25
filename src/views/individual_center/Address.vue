@@ -62,7 +62,6 @@ export default {
   .addressList {
     width: 100%;
     height: calc(100vh - 42px);
-    margin-top: 45px;
   }
 }
 
