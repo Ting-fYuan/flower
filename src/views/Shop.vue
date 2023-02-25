@@ -65,7 +65,7 @@
         </div>
       </div>
     </main>
-    <div class="sumUpBox">
+    <div class="sumUpBox" v-if="isLogin">
       <div class="toggle">
         <van-checkbox v-model="toggleBtn" @click="toggleHandle"
           ><p>全选</p></van-checkbox
@@ -133,6 +133,10 @@ export default {
       if (newData.length == 0) {
         this.showShopList = false;
       }
+    },
+    // ! （暂时）进入页面刷新
+    $route() {
+      this.$router.go(0);
     },
   },
   async created() {

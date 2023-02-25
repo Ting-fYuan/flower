@@ -32,7 +32,6 @@ export default {
           phone: payload["modile"],
           password: payload["password"],
         });
-        console.log(router.history.current.query);
         if (router.history.current.query.redirect) {
           router.push(router.history.current.query.redirect);
         } else {
