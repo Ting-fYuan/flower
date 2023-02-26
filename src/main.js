@@ -23,6 +23,8 @@ Vue.use(SwipeItem);
 // 生产提示
 Vue.config.productionTip = false;
 
+Vue.prototype.$bus = new Vue();
+
 // 注册全局组件
 Vue.component("com-head", CommonHead);
 new Vue({

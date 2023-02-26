@@ -26,6 +26,8 @@ import {
   Search,
   Divider,
   Empty,
+  SwipeCell,
+  Card,
   Cascader,
 } from "vant";
 
@@ -57,4 +59,6 @@ Vue.use(Tab);
 Vue.use(Tabs);
 Vue.use(Divider);
 Vue.use(Empty);
+Vue.use(SwipeCell);
+Vue.use(Card);
 Vue.use(Cascader);
