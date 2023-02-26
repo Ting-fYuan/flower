@@ -184,6 +184,42 @@ const routes = [
     name: "fillOrder",
     component: () => import("@/views/order/FillOrder.vue"),
   },
+  // 订购人页面
+  {
+    path: "/subscriber",
+    name: "subscriber",
+    component: () => import("@/views/order/SubscriberView.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 发票页面
+  {
+    path: "/receipt",
+    name: "receipt",
+    component: () => import("@/views/order/ReceiptEdit.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 结算订单
+  {
+    path: "/paysuccess",
+    name: "paysuccess",
+    component: () => import("@/views/order/PaySuccess.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 订单详情
+  {
+    path: "/orderdetails",
+    name: "orderdetails",
+    component: () => import("@/views/order/OrderDetails.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
 ];
 
 const router = new VueRouter({
