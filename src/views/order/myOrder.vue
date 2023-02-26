@@ -1,13 +1,13 @@
 <template>
   <div class="myorder">
-    <!-- 待付款status为0 -->
-    <div class="noobligation" v-if="routeId == 1 && orderList == ''">
+    <!-- 待付款 -->
+    <div class="noobligation" v-if="routeId == 1">
       <div class="noobligationContent">
         <img src="@/assets/images/coupon.png" class="obligationImg" alt="" />
         <span class="obligationText">暂无内容</span>
       </div>
     </div>
-    <div class="obligation" v-if="routeId == 1 && orderList != ''">
+    <!-- <div class="obligation" v-if="routeId == 1 && orderList != ''">
       <div class="obligationContent">
         <div class="obligationGoods" v-for="item in orderList" :key="item.id">
           <van-swipe-cell>
@@ -35,7 +35,7 @@
           </van-swipe-cell>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 派送中 -->
     <div class="nodelivery" v-if="routeId == 2 && orderList == ''">
@@ -47,14 +47,18 @@
     </div>
     <div class="delivery" v-if="routeId == 2 && orderList != ''">
       <div class="deliveryContent">
-        <div class="deliveryGoods" v-for="item in orderList" :key="item.id">
+        <div
+          class="deliveryGoods"
+          v-for="item in orderList"
+          :key="JSON.parse(item.id)"
+        >
           <van-swipe-cell>
             <van-card
-              :num="item.num"
-              :price="item.price"
-              :desc="item.desc"
-              :title="item.goods_name"
-              :thumb="item?.s_goods_photos[0].path"
+              :num="JSON.parse(item.goods_info)[0]?.num"
+              :price="JSON.parse(item.goods_info)[0]?.price"
+              :desc="JSON.parse(item.goods_info)[0]?.desc"
+              :title="JSON.parse(item.goods_info)[0]?.goods_name"
+              :thumb="JSON.parse(item.goods_info)[0]?.s_goods_photos[0].path"
               disabled="true"
             />
             <div class="deliveryBtn">
@@ -80,11 +84,11 @@
         <div class="evaluateGoods" v-for="item in orderList" :key="item.id">
           <van-swipe-cell>
             <van-card
-              :num="item.num"
-              :price="item.price"
-              :desc="item.desc"
-              :title="item.goods_name"
-              :thumb="item?.s_goods_photos[0].path"
+              :num="JSON.parse(item.goods_info)[0]?.num"
+              :price="JSON.parse(item.goods_info)[0]?.price"
+              :desc="JSON.parse(item.goods_info)[0]?.desc"
+              :title="JSON.parse(item.goods_info)[0]?.goods_name"
+              :thumb="JSON.parse(item.goods_info)[0]?.s_goods_photos[0].path"
             />
             <template #right>
               <van-button
@@ -152,40 +156,40 @@ export default {
       routeId: "",
       checked: true,
       orderList: [
-        {
-          id: 4975,
-          goods_name: "咖喱鸡肉 ",
-          price: 14.8,
-          sale_price: 2,
-          sold_num: 20,
-          desc: "糖点是衡量食物对血糖波动影响的指标。人净含有碳水化合物后，血糖浓度就会升高。",
-          s_admin: { id: 260, name: "13729471401" },
-          s_goods_photos: [
-            {
-              id: 26779,
-              path: "http://shops-1251395798.cos.ap-nanjing.myqcloud.com/_%E9%BB%98%E8%AE%A4%E9%A1%B9%E7%9B%AE_1670412072167_banner01.webp",
-            },
-          ],
-          updatedAt: "2023-02-22T11:18:27.848Z",
-          num: 1,
-        },
-        {
-          id: 4983,
-          goods_name: "日式寿司",
-          price: 46.8,
-          sale_price: 4,
-          sold_num: 34,
-          desc: "寿司是日本人最喜爱的传统食物之一，主要材料是用醋调味过的冷饭（简称醋饭），再加上鱼肉，海鲜，蔬菜或鸡蛋等作配料，其味道鲜美，很受日本民众的喜爱。",
-          s_admin: { id: 260, name: "13729471401" },
-          s_goods_photos: [
-            {
-              id: 26787,
-              path: "http://shops-1251395798.cos.ap-nanjing.myqcloud.com/_%E9%BB%98%E8%AE%A4%E9%A1%B9%E7%9B%AE_1670415425891_special%20.webp",
-            },
-          ],
-          updatedAt: "2023-02-22T11:18:27.858Z",
-          num: 3,
-        },
+        // {
+        //   id: 4975,
+        //   goods_name: "咖喱鸡肉 ",
+        //   price: 14.8,
+        //   sale_price: 2,
+        //   sold_num: 20,
+        //   desc: "糖点是衡量食物对血糖波动影响的指标。人净含有碳水化合物后，血糖浓度就会升高。",
+        //   s_admin: { id: 260, name: "13729471401" },
+        //   s_goods_photos: [
+        //     {
+        //       id: 26779,
+        //       path: "http://shops-1251395798.cos.ap-nanjing.myqcloud.com/_%E9%BB%98%E8%AE%A4%E9%A1%B9%E7%9B%AE_1670412072167_banner01.webp",
+        //     },
+        //   ],
+        //   updatedAt: "2023-02-22T11:18:27.848Z",
+        //   num: 1,
+        // },
+        // {
+        //   id: 4983,
+        //   goods_name: "日式寿司",
+        //   price: 46.8,
+        //   sale_price: 4,
+        //   sold_num: 34,
+        //   desc: "寿司是日本人最喜爱的传统食物之一，主要材料是用醋调味过的冷饭（简称醋饭），再加上鱼肉，海鲜，蔬菜或鸡蛋等作配料，其味道鲜美，很受日本民众的喜爱。",
+        //   s_admin: { id: 260, name: "13729471401" },
+        //   s_goods_photos: [
+        //     {
+        //       id: 26787,
+        //       path: "http://shops-1251395798.cos.ap-nanjing.myqcloud.com/_%E9%BB%98%E8%AE%A4%E9%A1%B9%E7%9B%AE_1670415425891_special%20.webp",
+        //     },
+        //   ],
+        //   updatedAt: "2023-02-22T11:18:27.858Z",
+        //   num: 3,
+        // },
       ],
     };
   },
@@ -385,7 +389,6 @@ export default {
 ::v-deep .van-card {
   margin-top: 8px;
   width: 98vw;
-  background: #a9e4b4;
 }
 ::v-deep .van-button--danger {
   height: 100%;

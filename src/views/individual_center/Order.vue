@@ -30,6 +30,8 @@
 </template>
 
 <script>
+// import { getShopCarApi } from "@/api/shopCar/index";
+// import { orderPay, getOrder } from "@/api/order/index";
 export default {
   name: "OrderView",
   data() {
@@ -55,6 +57,15 @@ export default {
       ],
     };
   },
+  // async created() {
+  //   let shopRes = await getShopCarApi();
+  //   console.log(shopRes.result);
+  //   let order = await orderPay();
+  //   console.log(order);
+
+  //   let getorder = await getOrder({ order_id: "1677340591856", status: "1" });
+  //   console.log(getorder.result);
+  // },
   methods: {
     goBack() {
       this.$router.push("/");

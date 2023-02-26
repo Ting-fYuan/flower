@@ -28,6 +28,7 @@ import {
   Empty,
   SwipeCell,
   Card,
+  Cascader,
 } from "vant";
 
 Vue.use(AddressList);
@@ -60,3 +61,4 @@ Vue.use(Divider);
 Vue.use(Empty);
 Vue.use(SwipeCell);
 Vue.use(Card);
+Vue.use(Cascader);

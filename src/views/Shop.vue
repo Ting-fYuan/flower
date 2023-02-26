@@ -203,7 +203,6 @@ export default {
   height: 100vh;
   background-color: #e8ecef;
   main {
-    padding: 42px 0 0;
     .shop-car-box {
       .shop {
         .shop-list-box {

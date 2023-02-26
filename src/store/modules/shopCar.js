@@ -14,7 +14,7 @@ export default {
   getters: {
     // 计算总价
     getTotal(state) {
-      let total = null;
+      let total = 0;
       state.selectShopMsg.forEach((item) => {
         total += item.num * item.s_good.sale_price;
       });

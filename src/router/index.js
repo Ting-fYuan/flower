@@ -79,9 +79,9 @@ const routes = [
     name: "order",
     redirect: "/order/myorder/1",
     component: () => import("@/views/individual_center/Order.vue"),
-    // meta: {
-    //   isAuth: true,
-    // },
+    meta: {
+      isAuth: true,
+    },
     children: [
       {
         path: "/order/myorder/:id",
