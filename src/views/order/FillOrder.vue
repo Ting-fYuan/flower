@@ -45,14 +45,35 @@
         />
       </van-popup>
       <!-- 提交订单 -->
-      <van-popup
+      <van-action-sheet
         v-model="showSumbit"
-        round
-        closeable
-        position="bottom"
+        title="确认付款"
         :style="{ height: '80%' }"
+      >
+        <div id="sumbit-content">
+          <p>￥{{ total.toFixed(2) }}</p>
+          <div class="sumbit-box">
+            <p>支付宝账号</p>
+            <p>{{ userInfo.phone }}</p>
+          </div>
+          <div class="sumbit-box">
+            <p>支付宝方式</p>
+            <p>线上支付</p>
+          </div>
+          <div class="sumbit-button" @click="showPsw = true">输入密码</div>
+        </div>
+      </van-action-sheet>
+      <!-- 密码 -->
+      <van-popup
+        v-model="showPsw"
+        round
+        position="bottom"
+        :style="{ height: '50%' }"
         :safe-area-inset-bottom="true"
       >
+        <van-password-input :value="keyWrodValue" :focused="showKeyboard" />
+        <!-- 数字键盘 -->
+        <van-number-keyboard v-model="keyWrodValue" :show="showKeyboard" />
       </van-popup>
       <div class="telandarea">
         <div class="receiving" @click="toAddressHandle">
@@ -201,7 +222,9 @@
 </template>
 
 <script>
+import { Toast } from "vant";
 import { mapState } from "vuex";
+import { addOrder, orderPay } from "@/api/order";
 export default {
   name: "FillOrder",
   data() {
@@ -218,6 +241,8 @@ export default {
       showMethod: false,
       // 提交订单
       showSumbit: false,
+      // 唤起密码框
+      showPsw: false,
       // 时间组件列表
       timeColumns: [
         { text: "不限时段" },
@@ -234,6 +259,10 @@ export default {
       ],
       // 配送方式组件列表
       methodColumns: ["市区免费配送", "近郊+30.00运费", "近郊+50.00运费"],
+      // 密码
+      keyWrodValue: "",
+      // 密码聚焦
+      showKeyboard: true,
     };
   },
   beforeDestroy() {},
@@ -253,7 +282,68 @@ export default {
     this.nowDate = nowTime;
     this.$store.commit("fillOrderStore/changeDate", nowTime);
   },
-  watch: {},
+  watch: {
+    async keyWrodValue(value) {
+      if (value.length === 6 && value !== "123456") {
+        this.keyWrodValue = "";
+        Toast({
+          message: "密码错误！",
+          position: "bottom",
+        });
+      } else if (value == "123456") {
+        // 选中的地址id
+        const { id } = this.$store.state.fillOrderStore.chooseAddress;
+        // 商品组信息
+        const GoodsList = this.selectShopMsg?.map((item) => {
+          return {
+            id: item.goods_id,
+            num: item.num,
+          };
+        });
+        // 购物车id
+        const CarList = this.selectShopMsg?.map((item) => item.id);
+        try {
+          const res = await addOrder({
+            goods_info: GoodsList,
+            addr_id: id,
+            shoppingCartIds: CarList,
+          });
+          this.showPsw = false;
+          this.showSumbit = false;
+          this.keyWrodValue = "";
+          // ! bug 库存不足
+          if (res.code == 1) {
+            Toast({
+              message: res.msg,
+              position: "bottom",
+            });
+          }
+          // 添加订单成功
+          if (res.msg == "添加成功") {
+            const payRes = await orderPay({
+              id: res.result.id,
+              status: 1,
+            });
+            if (payRes.code === 200) {
+              // 清空选中购物车
+              this.$store.commit("shopCarStore/clearShopCar");
+              this.$router.replace({
+                path: "/paysuccess",
+                query: {
+                  order_id: payRes.data.order_id,
+                  id: payRes.data.id,
+                },
+              });
+              // 更新购物车
+              this.$store.dispatch("shopCarStore/getShopCarList");
+            }
+          }
+        } catch (err) {
+          return err;
+        }
+      }
+    },
+  },
   computed: {
     // 获取选中商品的信息
     ...mapState("shopCarStore", ["selectShopMsg"]),
@@ -267,6 +357,8 @@ export default {
     ...mapState("fillOrderStore", ["delivery"]),
     // 发票信息
     ...mapState("fillOrderStore", ["billData"]),
+    // 用户信息
+    ...mapState("loginStore", ["userInfo"]),
     // 总价
     total() {
       return this.$store.getters["shopCarStore/getTotal"];
@@ -320,21 +412,7 @@ export default {
     },
     // 提交订单
     sumbitHadnle() {
-      // 选中的地址id
-      const { id } = this.$store.state.fillOrderStore.chooseAddress;
-      // 商品组信息
-      const GoodsList = this.selectShopMsg?.map((item) => {
-        return {
-          id: item.goods_id,
-          num: item.num,
-        };
-      });
-      // 购物车id
-      const CarList = this.selectShopMsg?.map((item) => item.id);
-      console.log(id, GoodsList, CarList);
-      if ((id, GoodsList, CarList)) {
-        this.showSumbit = true;
-      }
+      this.showSumbit = true;
     },
   },
 };
@@ -513,9 +591,6 @@ export default {
       .priceBoxTop {
         display: flex;
         justify-content: space-between;
-        p {
-          flex: 1;
-        }
       }
       .priceBoxBtm {
         margin-top: 10px;
@@ -555,6 +630,35 @@ export default {
 
     .footerBox {
       min-height: 50px;
+    }
+  }
+  #sumbit-content {
+    padding: 0 10px;
+    border-top: 1px solid #f0f0f0;
+    & > p {
+      padding: 40px 0;
+      width: 100%;
+      color: #000;
+      text-align: center;
+      font-weight: 600;
+      font-size: 28px;
+    }
+    .sumbit-box {
+      display: flex;
+      justify-content: space-between;
+      padding: 18px 0;
+      border-bottom: 0.5px solid #d0d0d0;
+      p {
+        font-size: 16px;
+      }
+    }
+    .sumbit-button {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 20px;
+      font-size: 16px;
+      color: blue;
     }
   }
 }

@@ -53,6 +53,12 @@ export default {
     delShop(state, $id) {
       state.shopCarList.splice($id, 1);
     },
+    // 清空购物车
+    clearShopCar(state) {
+      state.chooseShopList = [];
+      state.selectShopMsg = [];
+      sessionStorage.clear();
+    },
   },
   actions: {
     // 获取购物车列表

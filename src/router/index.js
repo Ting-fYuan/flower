@@ -202,6 +202,24 @@ const routes = [
       isAuth: true,
     },
   },
+  // 结算订单
+  {
+    path: "/paysuccess",
+    name: "paysuccess",
+    component: () => import("@/views/order/PaySuccess.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 订单详情
+  {
+    path: "/orderdetails",
+    name: "orderdetails",
+    component: () => import("@/views/order/OrderDetails.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
 ];
 
 const router = new VueRouter({

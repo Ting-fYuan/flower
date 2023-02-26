@@ -149,9 +149,8 @@ export default {
       if (result.length) {
         // 展示购物车列表
         this.showShopList = true;
-        console.log("购物车列表", result);
+        // console.log("购物车列表", result);
       } else this.showShopList = false;
-
       // 是否有选中购物车
       const { chooseShopList } = this.$store.state.shopCarStore;
       if (chooseShopList) {
@@ -161,7 +160,7 @@ export default {
     // 猜你喜欢
     const { result } = await guessLikeApi();
     this.likeList = result;
-    console.log("猜你喜欢", result);
+    // console.log("猜你喜欢", result);
   },
   methods: {
     // 去逛逛
