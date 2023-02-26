@@ -148,6 +148,8 @@
 </template>
 
 <script>
+// import { getShopCarApi } from "@/api/shopCar/index";
+// import { getOrder } from "@/api/order/index";
 import { Toast } from "vant";
 export default {
   name: "MyOrder",
@@ -209,6 +211,12 @@ export default {
   beforeRouteUpdate(to, from, next) {
     next(); // 一定要调用 next 函数，否则路由会一直处于等待状态
   },
+  async created() {
+    // let shopres = await getShopCarApi();
+    // console.log(shopres);
+    // let orderres = await getOrder();
+    // console.log(orderres);
+  },
   methods: {
     // 右滑时点击的删除按钮
     delCard(e) {
@@ -254,7 +262,6 @@ export default {
 <style lang="scss" scoped>
 .myorder {
   width: 100%;
-  height: calc(100vh - 84px);
   // 没有订单时显示
   .noobligation,
   .nodelivery,
@@ -310,7 +317,8 @@ export default {
             height: 25px;
             font-size: 14px;
             background: #fff;
-            border-radius: 35%;
+            border-radius: 50px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
             color: red;
           }
           .cancle,
@@ -348,7 +356,8 @@ export default {
             height: 25px;
             font-size: 14px;
             background: #fff;
-            border-radius: 35%;
+            border-radius: 50px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
           }
           .check {
             margin-right: 10px;
@@ -374,7 +383,8 @@ export default {
             height: 25px;
             font-size: 14px;
             background: #fff;
-            border-radius: 35%;
+            border-radius: 50px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
             color: red;
           }
         }
