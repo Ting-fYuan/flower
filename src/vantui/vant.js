@@ -26,6 +26,8 @@ import {
   Search,
   Divider,
   Empty,
+  SwipeCell,
+  Card,
   Cascader,
   Calendar,
   Picker,
@@ -59,6 +61,8 @@ Vue.use(Tab);
 Vue.use(Tabs);
 Vue.use(Divider);
 Vue.use(Empty);
+Vue.use(SwipeCell);
+Vue.use(Card);
 Vue.use(Cascader);
 Vue.use(Calendar);
 Vue.use(Picker);
