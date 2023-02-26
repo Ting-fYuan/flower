@@ -176,6 +176,24 @@ const routes = [
     name: "fillOrder",
     component: () => import("@/views/order/FillOrder.vue"),
   },
+  // 订购人页面
+  {
+    path: "/subscriber",
+    name: "subscriber",
+    component: () => import("@/views/order/SubscriberView.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 发票页面
+  {
+    path: "/receipt",
+    name: "receipt",
+    component: () => import("@/views/order/ReceiptEdit.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
 ];
 
 const router = new VueRouter({

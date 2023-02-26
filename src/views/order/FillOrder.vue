@@ -2,6 +2,58 @@
   <div class="fillOrderBox">
     <com-head title="填写订单"></com-head>
     <main>
+      <!-- 日历组件 -->
+      <van-calendar
+        v-model="showCalendar"
+        @confirm="onConfirm"
+        color="#884E22"
+      />
+      <!-- 时间组件 -->
+      <van-popup
+        v-model="showTime"
+        round
+        position="bottom"
+        :style="{ height: '50%' }"
+        :safe-area-inset-bottom="true"
+      >
+        <van-picker
+          title="时间选择"
+          show-toolbar
+          :columns="timeColumns"
+          @confirm="timeConfirm"
+          visible-item-count="7"
+          item-height="70px"
+          @cancel="showTime = false"
+        />
+      </van-popup>
+      <!-- 配送方式 -->
+      <van-popup
+        v-model="showMethod"
+        round
+        position="bottom"
+        :style="{ height: '50%' }"
+        :safe-area-inset-bottom="true"
+      >
+        <van-picker
+          title="配送方式选择"
+          show-toolbar
+          :columns="methodColumns"
+          @confirm="methodConfirm"
+          visible-item-count="7"
+          item-height="70px"
+          @cancel="showMethod = false"
+        />
+      </van-popup>
+      <!-- 提交订单 -->
+      <van-popup
+        v-model="showSumbit"
+        round
+        closeable
+        position="bottom"
+        :style="{ height: '80%' }"
+        :safe-area-inset-bottom="true"
+      >
+      </van-popup>
       <div class="telandarea">
         <div class="receiving" @click="toAddressHandle">
           <p class="receivingLeft">收货信息</p>
@@ -26,37 +78,37 @@
             <i class="iconfont icon-youjiantou"></i>
           </div>
         </div>
-        <div class="delivery">
+        <div class="delivery" @click="showCalendar = true">
           <p class="deliveryLeft">送达日期</p>
           <div class="txtRight">
-            <p>请填写送达日期</p>
+            <p>{{ date }}</p>
             &nbsp;&nbsp;
             <i class="iconfont icon-youjiantou"></i>
           </div>
         </div>
-        <div class="time">
+        <div class="time" @click="showTime = true">
           <p class="timeLeft">配送时间</p>
           <div class="txtRight">
-            <p>不限时段</p>
+            <p>{{ time }}</p>
             &nbsp;&nbsp;
             <i class="iconfont icon-youjiantou"></i>
           </div>
         </div>
-        <div class="dMethod">
+        <div class="dMethod" @click="showMethod = true">
           <p class="dMethodLeft">配送方式</p>
           <div class="txtRight">
-            <p>市区免费配送</p>
+            <p>{{ delivery }}</p>
             &nbsp;&nbsp;
             <i class="iconfont icon-youjiantou"></i>
           </div>
         </div>
         <div class="bordered"></div>
       </div>
-      <div class="subscriber">
+      <div class="subscriber" @click="toBill">
         <p class="subscriberLeft">订购人信息</p>
         <div class="subscriberRight">
           <div class="txtRight">
-            <p>请填写</p>
+            <p>{{ billData }}</p>
             &nbsp;&nbsp;
             <i class="iconfont icon-youjiantou"></i>
           </div>
@@ -83,19 +135,22 @@
           </div>
         </div>
       </div>
-      <div class="goodsMsg">
+      <div class="goodsMsg" v-for="item in selectShopMsg" :key="item.id">
         <div class="goodsMsgLeft">
-          <img src="" alt="" />
+          <img
+            :src="item.s_good.s_goods_photos[0].path"
+            :alt="item.s_good[0]?.name"
+          />
           <div class="goodsMsgText">
-            <p>永恒回忆</p>
-            <p>x 1</p>
+            <p>{{ item.s_good.name }}</p>
+            <p>{{ "x " + item.num }}</p>
           </div>
         </div>
-        <p class="price">￥ 329</p>
+        <p class="price">{{ "￥" + item.s_good.sale_price * item.num }}</p>
       </div>
       <div class="payMethods">
         <p class="payTitle">支付方式</p>
-        <div class="wechatBox">
+        <!-- <div class="wechatBox">
           <div class="payMainLeft">
             <i class="iconfont icon-weixinzhifu2"></i>
             <p>微信</p>
@@ -103,7 +158,7 @@
           <div class="payMainRight">
             <i class="iconfont icon-zhengque1"></i>
           </div>
-        </div>
+        </div> -->
         <div class="alipayBox">
           <div class="payMainLeft">
             <i class="iconfont icon-zhifubaozhifu"></i>
@@ -114,7 +169,7 @@
           </div>
         </div>
       </div>
-      <div class="billBox">
+      <div class="billBox" @click="toReceipt">
         <p>发票</p>
         <div class="txtRight">
           <p>选填</p>
@@ -124,19 +179,21 @@
       </div>
       <div class="priceBox">
         <div class="priceBoxTop">
-          <p>共 一 件商品</p>
-          <p>优惠: -￥ 1</p>
+          <p>共 {{ selectShopMsg.length }} 件商品</p>
+          <p>优惠： -￥{{ discount }}</p>
         </div>
         <div class="priceBoxBtm">
-          <p>运费￥ 0</p>
-          <p>商品总价: <span>￥169</span></p>
+          <p>运费￥ {{ deliveryfee }}</p>
+          <p>
+            商品总价: <span>￥{{ total }}</span>
+          </p>
         </div>
       </div>
     </main>
     <footer>
       <div class="footerMain">
-        <p class="footerLeft">实付款：￥1222222222</p>
-        <button class="footerRight">提交订单</button>
+        <p class="footerLeft">实付款：￥{{ total }}</p>
+        <button class="footerRight" @click="sumbitHadnle">提交订单</button>
       </div>
       <div class="footerBox"></div>
     </footer>
@@ -149,23 +206,135 @@ export default {
   name: "FillOrder",
   data() {
     return {
+      // 今日时间
+      nowDate: null,
       // 支付方式
       checkPayMethods: "1",
+      // 是否展示日历组件
+      showCalendar: false,
+      // 是否展示时间组件
+      showTime: false,
+      // 是否展示配送方式组件
+      showMethod: false,
+      // 提交订单
+      showSumbit: false,
+      // 时间组件列表
+      timeColumns: [
+        { text: "不限时段" },
+        { id: 10, text: "8:00-10:00" },
+        { id: 12, text: "10:00-12:00" },
+        { id: 14, text: "12:00-14:00" },
+        { id: 16, text: "14:00-16:00" },
+        { id: 18, text: "16:00-18:00" },
+        { id: 20, text: "18:00-20:00" },
+        { id: 22, text: "20:00-22:00" },
+        { type: 0, text: "上午" },
+        { type: 1, text: "下午" },
+        { type: 2, text: "晚上" },
+      ],
+      // 配送方式组件列表
+      methodColumns: ["市区免费配送", "近郊+30.00运费", "近郊+50.00运费"],
     };
   },
   beforeDestroy() {},
   created() {
+    // 没有商品跳转首页
+    if (!this.$store.state.shopCarStore.chooseShopList.length) {
+      return this.$router.push("/");
+    }
     // 获取默认地址
     this.$store.dispatch("fillOrderStore/getDeaultAddress");
+    // 获取今日时间
+    const time = new Date();
+    // 默认送达时间设置为今天
+    const nowTime = `${time.getFullYear()}-${
+      time.getMonth() + 1
+    }-${time.getDate()}`;
+    this.nowDate = nowTime;
+    this.$store.commit("fillOrderStore/changeDate", nowTime);
   },
+  watch: {},
   computed: {
-    // 地址
+    // 获取选中商品的信息
+    ...mapState("shopCarStore", ["selectShopMsg"]),
+    // 收货地址
     ...mapState("fillOrderStore", ["chooseAddress"]),
+    // 收货日期
+    ...mapState("fillOrderStore", ["date"]),
+    // 收货时间
+    ...mapState("fillOrderStore", ["time"]),
+    // 配送方式
+    ...mapState("fillOrderStore", ["delivery"]),
+    // 发票信息
+    ...mapState("fillOrderStore", ["billData"]),
+    // 总价
+    total() {
+      return this.$store.getters["shopCarStore/getTotal"];
+    },
+    // 优惠价
+    discount() {
+      return this.$store.getters["shopCarStore/getDiscount"];
+    },
+    // 运费
+    deliveryfee() {
+      return this.$store.getters["fillOrderStore/getDeliveryfee"];
+    },
+    // 商品信息
   },
   methods: {
     // 跳转填写地址
     toAddressHandle() {
       this.$router.push("address");
+    },
+    // 日历
+    formatDate(date) {
+      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    },
+    // 修改收货日期
+    onConfirm($date) {
+      // 关闭面版
+      this.showCalendar = false;
+      // 修改日期
+      const date = this.formatDate($date);
+      this.$store.commit("fillOrderStore/changeDate", date);
+    },
+    // 修改收货时间
+    timeConfirm($time) {
+      // 关闭面版
+      this.showTime = false;
+      this.$store.commit("fillOrderStore/changeTime", $time.text);
+    },
+    // 修改配送方式
+    methodConfirm($data) {
+      // 关闭面版
+      this.showMethod = false;
+      this.$store.commit("fillOrderStore/changeDelivery", $data);
+    },
+    // 跳转订购人页面
+    toBill() {
+      this.$router.push("/subscriber");
+    },
+    // 跳转发票页面
+    toReceipt() {
+      this.$router.push("/receipt");
+    },
+    // 提交订单
+    sumbitHadnle() {
+      // 选中的地址id
+      const { id } = this.$store.state.fillOrderStore.chooseAddress;
+      // 商品组信息
+      const GoodsList = this.selectShopMsg?.map((item) => {
+        return {
+          id: item.goods_id,
+          num: item.num,
+        };
+      });
+      // 购物车id
+      const CarList = this.selectShopMsg?.map((item) => item.id);
+      console.log(id, GoodsList, CarList);
+      if ((id, GoodsList, CarList)) {
+        this.showSumbit = true;
+      }
     },
   },
 };
@@ -381,7 +550,6 @@ export default {
         background-color: #884f22;
         color: #fff;
         font-size: 14px;
-        border-radius: 5px;
       }
     }
 

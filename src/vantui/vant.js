@@ -27,6 +27,8 @@ import {
   Divider,
   Empty,
   Cascader,
+  Calendar,
+  Picker,
 } from "vant";
 
 Vue.use(AddressList);
@@ -58,3 +60,5 @@ Vue.use(Tabs);
 Vue.use(Divider);
 Vue.use(Empty);
 Vue.use(Cascader);
+Vue.use(Calendar);
+Vue.use(Picker);

@@ -55,9 +55,7 @@
                 <p class="goods-name">{{ item.name }}</p>
                 <div class="ctn-bottom-box">
                   <p class="price">￥ {{ item.price }}</p>
-                  <p class="sale">
-                    销量{{ item.sold_num && item.sold_num.slice(0, 6) }}笔
-                  </p>
+                  <p class="sale">销量{{ item.sold_num && item.sold_num }}笔</p>
                 </div>
               </div>
             </div>
@@ -83,6 +81,7 @@
 <script>
 import { guessLikeApi } from "@/api/shopCar";
 import TabBar from "@/components/TabBar.vue";
+import { Toast } from "vant";
 export default {
   name: "ShopView",
   data() {
@@ -189,9 +188,16 @@ export default {
     },
     // 跳转结算页面
     toOrder() {
-      this.$router.push({
-        path: "/fillOrder",
-      });
+      if (this.chooseShopList.length) {
+        this.$router.push({
+          path: "/fillOrder",
+        });
+      } else {
+        Toast({
+          message: "请先选择商品",
+          position: "bottom",
+        });
+      }
     },
   },
   components: { TabBar },

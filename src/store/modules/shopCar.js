@@ -9,7 +9,7 @@ export default {
     // 选中商品id数组
     chooseShopList: JSON.parse(sessionStorage.getItem("chooseShopList")) || [],
     // 选中商品的信息
-    selectShopMsg: [],
+    selectShopMsg: JSON.parse(sessionStorage.getItem("selectShopMsg")) || [],
   },
   getters: {
     // 计算总价
@@ -19,6 +19,14 @@ export default {
         total += item.num * item.s_good.sale_price;
       });
       return total;
+    },
+    // 优惠了多少
+    getDiscount(state) {
+      let sum = 0;
+      state.selectShopMsg.forEach((item) => {
+        sum += item.num * item.s_good.price - item.num * item.s_good.sale_price;
+      });
+      return sum;
     },
   },
   mutations: {
@@ -35,6 +43,10 @@ export default {
       sessionStorage.setItem("chooseShopList", JSON.stringify(payload));
       state.selectShopMsg = state.shopCarList.filter((item) =>
         payload.includes(item.id)
+      );
+      sessionStorage.setItem(
+        "selectShopMsg",
+        JSON.stringify(state.selectShopMsg)
       );
     },
     // 删除购物车
