@@ -14,7 +14,7 @@
     <div class="obligation" v-if="routeId == 1 && notPayment != ''">
       <div class="obligationContent">
         <div class="obligationGoods" v-for="item in notPayment" :key="item.id">
-          <van-swipe-cell v-if="item.status == 0">
+          <van-swipe-cell v-if="item.status == 0 || item.status == 1">
             <van-card
               :num="JSON.parse(item.goods_info)[0]?.num"
               :price="item.total_price"
@@ -74,9 +74,8 @@
             />
             <div class="deliveryBtn">
               <span>待收货</span>
-              <button class="check" @click="checkDeli()">查看物流</button>
-              <button class="confirm" @click="confirmDeli(item.id)">
-                确认收货
+              <button class="check" @click="checkDeli(item.order_id)">
+                查看物流
               </button>
             </div>
           </van-swipe-cell>
@@ -159,6 +158,7 @@
               />
             </template>
             <div class="finished">
+              <span>已完成</span>
               <button class="delOrder" @click="delOrder(item.id)">
                 删除订单
               </button>
@@ -174,7 +174,7 @@
 </template>
 
 <script>
-import { getOrder, deleteOrder, updateOrder } from "@/api/order/index";
+import { getOrder, deleteOrder } from "@/api/order/index";
 import { Toast } from "vant";
 export default {
   name: "MyOrder",
@@ -210,7 +210,7 @@ export default {
 
       // 管理待付款的数组
       orderres.result.rows.forEach((e) => {
-        if (e.status == 0) {
+        if (e.status == 0 || e.status == 1) {
           this.notPayment = orderres.result.rows;
         }
       });
@@ -258,15 +258,9 @@ export default {
       Toast("正在跳转支付~~");
       // 获取参数跳转支付页面
     },
-    // 派送中区域两个按钮
-    checkDeli() {
-      Toast("暂无物流信息~~");
-    },
-    confirmDeli(e) {
-      // 需要将订单中的status改为6
-      updateOrder(e).then((res) => {
-        console.log(res);
-      });
+    // 派送中区域按钮
+    checkDeli(e) {
+      this.$router.push({ path: "/logistics", query: { id: e } });
     },
     // 待评价区域的按钮
     goComment() {
@@ -349,6 +343,11 @@ export default {
           justify-content: flex-end;
           align-items: center;
           padding: 10px;
+          span {
+            flex: 1;
+            font-size: 14px;
+            color: #884e22;
+          }
           button {
             margin-right: 9px;
             border: 1px solid #884e22;
@@ -394,14 +393,10 @@ export default {
             width: 75px;
             height: 25px;
             font-size: 14px;
+            margin-right: 0px;
             background: #fff;
             border-radius: 50px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
-          }
-          .check {
-            margin-right: 10px;
-            border: 1px solid #fff;
-            color: #666;
           }
         }
       }
@@ -434,6 +429,10 @@ export default {
 
 ::v-deep .van-swipe-cell__wrapper {
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+::v-deep .van-tabs__line {
+  background-color: #884e22 !important;
 }
 
 ::v-deep .van-swipe-cell {

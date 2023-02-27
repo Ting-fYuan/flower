@@ -34,6 +34,8 @@ import {
   ActionSheet,
   PasswordInput,
   NumberKeyboard,
+  Step,
+  Steps,
 } from "vant";
 
 Vue.use(AddressList);
@@ -72,3 +74,5 @@ Vue.use(Picker);
 Vue.use(ActionSheet);
 Vue.use(PasswordInput);
 Vue.use(NumberKeyboard);
+Vue.use(Step);
+Vue.use(Steps);

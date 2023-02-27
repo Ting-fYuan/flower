@@ -51,11 +51,11 @@ export const updateOrder = (id) => {
 };
 
 // 创建物流信息
-export const createLogistics = (data) => {
+export const getLogistics = (params) => {
   return http({
-    url: "/createLogistics",
-    method: "POST",
-    data,
+    url: "/getLogistics",
+    method: "GET",
+    params,
     headers: {
       isToken: true,
       isId: true,
