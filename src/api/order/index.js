@@ -54,14 +54,8 @@ export const getSingleOrder = ($id) => {
 // 更新订单信息
 export const updateOrder = (id) => {
   return http({
-<<<<<<< HEAD
     url: `/order/${id}`,
     method: "PUT",
-=======
-    url: "/order/:id",
-    method: "PUT",
-    data,
->>>>>>> master
     headers: {
       isToken: true,
     },
