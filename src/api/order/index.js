@@ -39,18 +39,23 @@ export const getOrder = (params) => {
   });
 };
 
-<<<<<<< HEAD
 // 获取单条订单信息
 export const getSingleOrder = ($id) => {
   return http({
     url: `/order/${$id}`,
     method: "GET",
-=======
+    headers: {
+      isToken: true,
+      isId: true,
+    },
+  });
+};
+
 // 更新订单信息
 export const updateOrder = (data) => {
   return http({
     url: "/order/:id",
-    method: "UPDATE",
+    method: "PUT",
     data,
     headers: {
       isToken: true,
@@ -65,7 +70,6 @@ export const createLogistics = (data) => {
     url: "/createLogistics",
     method: "POST",
     data,
->>>>>>> master
     headers: {
       isToken: true,
       isId: true,

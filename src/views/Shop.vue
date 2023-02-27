@@ -63,7 +63,7 @@
         </div>
       </div>
     </main>
-    <div class="sumUpBox" v-if="isLogin">
+    <div class="sumUpBox" v-if="isLogin && chooseShopList.length">
       <div class="toggle">
         <van-checkbox v-model="toggleBtn" @click="toggleHandle"
           ><p>全选</p></van-checkbox
