@@ -1,247 +1,249 @@
 <!-- 首页 -->
 <template>
-  <div class="box">
-    <div class="top">
-      <i class="iconfont icon-icon_sousuo" @click="toSearch"></i>
-      <img src="../assets/images/微信图片_20230224172052.png" alt="" />
+  <van-skeleton title avatar :row="3" :loading="loading">
+    <div class="box">
+      <div class="top">
+        <i class="iconfont icon-icon_sousuo" @click="toSearch"></i>
+        <img src="../assets/images/微信图片_20230224172052.png" alt="" />
+      </div>
+
+      <van-swipe :autoplay="3000" class="swiper">
+        <van-swipe-item
+          v-for="(image, index) in images"
+          :key="index"
+          @click="toswipe(index)"
+        >
+          <div class="back" :style="`background-image:url(${image});`"></div>
+          <!-- <img v-lazy="image" style="width: 100%" /> -->
+        </van-swipe-item>
+      </van-swipe>
+
+      <div class="classflies">
+        <!-- 文字连接 -->
+        <div class="classfiles_top">
+          <ul @click="loveMore">
+            <li><i class="iconfont icon-a-ziyuan642"></i>品牌鲜花网</li>
+            <li><i class="iconfont icon-a-ziyuan642"></i>实拍秀</li>
+            <li><i class="iconfont icon-a-ziyuan642"></i>1小时送达</li>
+            <li><i class="iconfont icon-a-ziyuan642"></i>50w+好评</li>
+          </ul>
+        </div>
+        <div class="classfiles_bottom">
+          <!-- 五个圆形图片连接 -->
+          <ul>
+            <li @click="toPosy">
+              <div><img src="../assets/images/mIndex1.png.webp" alt="" /></div>
+              花束
+            </li>
+            <li @click="toGiftbox">
+              <div><img src="../assets/images/mIndex2.png.webp" alt="" /></div>
+              礼盒
+            </li>
+            <li @click="toCake">
+              <div><img src="../assets/images/mIndex3.png.webp" alt="" /></div>
+              蛋糕
+            </li>
+            <li @click="toBasketflower">
+              <div><img src="../assets/images/mIndex4.png.webp" alt="" /></div>
+              花篮
+            </li>
+            <li @click="toGreenflower">
+              <div><img src="../assets/images/mIndex5.png.webp" alt="" /></div>
+              绿植
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="chooseflower">
+        <div class="chooseflower_top">一秒选花</div>
+        <div class="chooseflower_center">
+          <div
+            class="choose_box"
+            v-for="(item, index) in yimiaoxuanhua"
+            :key="index"
+            @click="yimiaoxuanhuaTo(item)"
+          >
+            <img
+              :src="`${img.path}`"
+              v-for="img in item.s_goods_photos"
+              :key="img.id"
+              alt=""
+              v-lazy="img.path"
+            />
+            <div class="choose_box_bottom">{{ item.name }}</div>
+          </div>
+        </div>
+
+        <div class="chooseflower_bottom">
+          <div
+            v-for="(item, index) in yimiaoxuanhua2"
+            :key="index"
+            @click="yimiaoxuanhuaTo2(item)"
+          >
+            {{ item.name }}
+            <img
+              :src="`${img.path}`"
+              v-for="img in item.s_goods_photos"
+              :key="img.id"
+              alt=""
+              v-lazy="img.path"
+            />
+          </div>
+        </div>
+      </div>
+      <main>
+        <div class="main_title">{{ love.name }}</div>
+        <div class="xian"></div>
+        <div class="main_box">
+          <div
+            class="goods"
+            @click="toShop(item, index)"
+            v-for="(item, index) in love.s_goods"
+            :key="index"
+          >
+            <img
+              :src="item.s_goods_photos[0].path"
+              alt=""
+              v-lazy="item.s_goods_photos[0].path"
+            />
+
+            <div class="goods_name">{{ item.name }}</div>
+            <div class="goods_price">
+              <span class="price">￥{{ item.price }}</span>
+              <span class="number">销量1111笔</span>
+            </div>
+          </div>
+        </div>
+        <div class="btn" @click="loveMore">查看更多</div>
+
+        <div class="main_title">{{ friendly.name }}</div>
+        <div class="xian"></div>
+        <div class="main_box">
+          <div
+            class="goods"
+            @click="toShop(item, index)"
+            v-for="(item, index) in friendly.s_goods"
+            :key="index"
+          >
+            <img
+              :src="item.s_goods_photos[0].path"
+              alt=""
+              v-lazy="item.s_goods_photos[0].path"
+            />
+            <div class="goods_name">{{ item.name }}</div>
+            <div class="goods_price">
+              <span class="price">￥{{ item.price }}</span>
+              <span class="number">销量1111笔</span>
+            </div>
+          </div>
+        </div>
+        <div class="btn" @click="friendlyMore">查看更多</div>
+
+        <div class="main_title">鲜花{{ flowerBox.name }}</div>
+        <div class="xian"></div>
+        <div class="main_box">
+          <div
+            class="goods"
+            @click="toShop(item, index)"
+            v-for="(item, index) in flowerBox.s_goods"
+            :key="index"
+          >
+            <img
+              :src="item.s_goods_photos[0].path"
+              alt=""
+              v-lazy="item.s_goods_photos[0].path"
+            />
+            <div class="goods_name">{{ item.name }}</div>
+            <div class="goods_price">
+              <span class="price">￥{{ item.price }}</span>
+              <span class="number">销量1111笔</span>
+            </div>
+          </div>
+        </div>
+        <div class="btn" @click="flowerBoxMore">查看更多</div>
+
+        <div class="main_title">{{ cake.name }}</div>
+        <div class="xian"></div>
+        <div class="main_box">
+          <div
+            class="goods"
+            @click="toShop(item, index)"
+            v-for="(item, index) in cake.s_goods"
+            :key="index"
+          >
+            <img
+              :src="item.s_goods_photos[0].path"
+              alt=""
+              v-lazy="item.s_goods_photos[0].path"
+            />
+            <div class="goods_name">{{ item.name }}</div>
+            <div class="goods_price">
+              <span class="price">￥{{ item.price }}</span>
+              <span class="number">销量1111笔</span>
+            </div>
+          </div>
+        </div>
+        <div class="btn" @click="cakeMore">查看更多</div>
+
+        <div class="main_title">{{ startBusinsse.name }}</div>
+        <div class="xian"></div>
+        <div class="main_box">
+          <div
+            class="goods"
+            @click="toShop(item, index)"
+            v-for="(item, index) in startBusinsse.s_goods"
+            :key="index"
+          >
+            <img
+              :src="item.s_goods_photos[0].path"
+              alt=""
+              v-lazy="item.s_goods_photos[0].path"
+            />
+            <div class="goods_name">{{ item.name }}</div>
+            <div class="goods_price">
+              <span class="price">￥{{ item.price }}</span>
+              <span class="number">销量1111笔</span>
+            </div>
+          </div>
+        </div>
+        <div class="btn" @click="businsseMore">查看更多</div>
+
+        <div class="main_title">{{ greenFlower.name }}</div>
+        <div class="xian"></div>
+        <div class="main_box">
+          <div
+            class="goods"
+            @click="toShop(item, index)"
+            v-for="(item, index) in greenFlower.s_goods"
+            :key="index"
+          >
+            <img
+              :src="item.s_goods_photos[0].path"
+              alt=""
+              v-lazy="item.s_goods_photos[0].path"
+            />
+            <div class="goods_name">{{ item.name }}</div>
+            <div class="goods_price">
+              <span class="price">￥{{ item.price }}</span>
+              <span class="number">销量1111笔</span>
+            </div>
+          </div>
+        </div>
+        <div class="btn" @click="greenMore">查看更多</div>
+      </main>
+
+      <footer>
+        <div class="footer_text1">Copyright©2020 成都勿忘我科技有限公司</div>
+        <div class="footer_text2">蜀ICP备20016463号-2</div>
+      </footer>
+      <div>
+        <h1>首页</h1>
+        <i class="iconfont icon-caidan"></i>
+        <TabBar />
+      </div>
     </div>
-
-    <van-swipe :autoplay="3000" class="swiper">
-      <van-swipe-item v-for="(image, index) in images" :key="index">
-        <div class="back" :style="`background-image:url(${image});`"></div>
-        <!-- <img v-lazy="image" style="width: 100%" /> -->
-      </van-swipe-item>
-    </van-swipe>
-
-    <div class="classflies">
-      <div class="classfiles_top">
-        <ul>
-          <li>
-            <a href=""><i class="iconfont icon-a-ziyuan642"></i>品牌鲜花网</a>
-          </li>
-          <li>
-            <a href=""><i class="iconfont icon-a-ziyuan642"></i>实拍秀</a>
-          </li>
-          <li>
-            <a href=""><i class="iconfont icon-a-ziyuan642"></i>1小时送达</a>
-          </li>
-          <li>
-            <a href=""><i class="iconfont icon-a-ziyuan642"></i>50w+好评</a>
-          </li>
-        </ul>
-      </div>
-      <div class="classfiles_bottom">
-        <ul>
-          <li>
-            <div><img src="../assets/images/mIndex1.png.webp" alt="" /></div>
-            花束
-          </li>
-          <li>
-            <div><img src="../assets/images/mIndex2.png.webp" alt="" /></div>
-            礼盒
-          </li>
-          <li>
-            <div><img src="../assets/images/mIndex3.png.webp" alt="" /></div>
-            蛋糕
-          </li>
-          <li>
-            <div><img src="../assets/images/mIndex4.png.webp" alt="" /></div>
-            花篮
-          </li>
-          <li>
-            <div><img src="../assets/images/mIndex5.png.webp" alt="" /></div>
-            绿植
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="chooseflower">
-      <div class="chooseflower_top">一秒选花</div>
-      <div class="chooseflower_center">
-        <div
-          class="choose_box"
-          v-for="(item, index) in yimiaoxuanhua"
-          :key="index"
-        >
-          <img
-            :src="`${el.path}`"
-            v-for="el in item.s_goods_photos"
-            :key="el.id"
-            alt=""
-          />
-          <div class="choose_box_bottom">{{ item.name }}</div>
-        </div>
-      </div>
-
-      <div class="chooseflower_bottom">
-        <div v-for="(item, index) in yimiaoxuanhua2" :key="index">
-          {{ item.name }}
-          <img
-            :src="`${el.path}`"
-            v-for="el in item.s_goods_photos"
-            :key="el.id"
-            alt=""
-          />
-        </div>
-      </div>
-    </div>
-    <main>
-      <div class="main_title">{{ love.name }}</div>
-      <div class="xian"></div>
-      <div class="main_box">
-        <div
-          class="goods"
-          @click="toShop(item, index)"
-          v-for="(item, index) in love.s_goods"
-          :key="index"
-        >
-          <img
-            :src="`${el.path}`"
-            v-for="el in item.s_goods_photos"
-            :key="el.id"
-            alt=""
-          />
-          <div class="goods_name">{{ item.name }}</div>
-          <div class="goods_price">
-            <span class="price">￥{{ item.price }}</span>
-            <span class="number">销量1111笔</span>
-          </div>
-        </div>
-      </div>
-      <div class="btn">查看更多</div>
-
-      <div class="main_title">{{ friendly.name }}</div>
-      <div class="xian"></div>
-      <div class="main_box">
-        <div
-          class="goods"
-          @click="toShop(item, index)"
-          v-for="(item, index) in friendly.s_goods"
-          :key="index"
-        >
-          <img
-            :src="`${el.path}`"
-            v-for="el in item.s_goods_photos"
-            :key="el.id"
-            alt=""
-          />
-          <div class="goods_name">{{ item.name }}</div>
-          <div class="goods_price">
-            <span class="price">￥{{ item.price }}</span>
-            <span class="number">销量1111笔</span>
-          </div>
-        </div>
-      </div>
-      <div class="btn">查看更多</div>
-
-      <div class="main_title">鲜花{{ flowerBox.name }}</div>
-      <div class="xian"></div>
-      <div class="main_box">
-        <div
-          class="goods"
-          @click="toShop(item, index)"
-          v-for="(item, index) in flowerBox.s_goods"
-          :key="index"
-        >
-          <img
-            :src="`${el.path}`"
-            v-for="el in item.s_goods_photos"
-            :key="el.id"
-            alt=""
-          />
-          <div class="goods_name">{{ item.name }}</div>
-          <div class="goods_price">
-            <span class="price">￥{{ item.price }}</span>
-            <span class="number">销量1111笔</span>
-          </div>
-        </div>
-      </div>
-      <div class="btn">查看更多</div>
-
-      <div class="main_title">{{ cake.name }}</div>
-      <div class="xian"></div>
-      <div class="main_box">
-        <div
-          class="goods"
-          @click="toShop(item, index)"
-          v-for="(item, index) in cake.s_goods"
-          :key="index"
-        >
-          <img
-            :src="`${el.path}`"
-            v-for="el in item.s_goods_photos"
-            :key="el.id"
-            alt=""
-          />
-          <div class="goods_name">{{ item.name }}</div>
-          <div class="goods_price">
-            <span class="price">￥{{ item.price }}</span>
-            <span class="number">销量1111笔</span>
-          </div>
-        </div>
-      </div>
-      <div class="btn">查看更多</div>
-
-      <div class="main_title">{{ startBusinsse.name }}</div>
-      <div class="xian"></div>
-      <div class="main_box">
-        <div
-          class="goods"
-          @click="toShop(item, index)"
-          v-for="(item, index) in startBusinsse.s_goods"
-          :key="index"
-        >
-          <img
-            :src="`${el.path}`"
-            v-for="el in item.s_goods_photos"
-            :key="el.id"
-            alt=""
-          />
-          <div class="goods_name">{{ item.name }}</div>
-          <div class="goods_price">
-            <span class="price">￥{{ item.price }}</span>
-            <span class="number">销量1111笔</span>
-          </div>
-        </div>
-      </div>
-      <div class="btn">查看更多</div>
-
-      <div class="main_title">{{ greenFlower.name }}</div>
-      <div class="xian"></div>
-      <div class="main_box">
-        <div
-          class="goods"
-          @click="toShop(item, index)"
-          v-for="(item, index) in greenFlower.s_goods"
-          :key="index"
-        >
-          <img
-            :src="`${el.path}`"
-            v-for="el in item.s_goods_photos"
-            :key="el.id"
-            alt=""
-          />
-          <div class="goods_name">{{ item.name }}</div>
-          <div class="goods_price">
-            <span class="price">￥{{ item.price }}</span>
-            <span class="number">销量1111笔</span>
-          </div>
-        </div>
-      </div>
-      <div class="btn">查看更多</div>
-    </main>
-
-    <footer>
-      <div class="footer_text1">Copyright©2020 成都勿忘我科技有限公司</div>
-      <div class="footer_text2">蜀ICP备20016463号-2</div>
-    </footer>
-    <div>
-      <h1>首页</h1>
-      <i class="iconfont icon-caidan"></i>
-      <TabBar />
-    </div>
-  </div>
+  </van-skeleton>
 </template>
 
 <script>
@@ -284,6 +286,7 @@ export default {
         this.yimiaoxuanhua2 = arr2;
         //获取爱情鲜花
         this.love = res.result[0].children[0];
+        console.log(res.result[0].children[0]);
         //获取友情鲜花
         this.friendly = res.result[0].children[2];
         //获取鲜花礼盒
@@ -310,7 +313,11 @@ export default {
       cake: [],
       startBusinsse: [],
       greenFlower: [],
+      loading: true,
     };
+  },
+  mounted() {
+    this.loading = false;
   },
   methods: {
     //去详情页
@@ -324,9 +331,146 @@ export default {
     toSearch() {
       this.$router.push("/search");
     },
-    // toMore(item) {
-    //   console.log(item);
-    // },
+    //去花束页面
+    toPosy() {
+      this.$router.push({
+        path: "/classification",
+        query: { id: 2619, name: "花束" },
+      });
+    },
+    //去礼盒页面
+    toGiftbox() {
+      this.$router.push({
+        path: "/classification",
+        query: { id: 2620, name: "礼盒" },
+      });
+    },
+    //去蛋糕页面
+    toCake() {
+      this.$router.push({
+        path: "/classification",
+        query: { id: 2621, name: "蛋糕" },
+      });
+    },
+    //去花篮页面
+    toBasketflower() {
+      this.$router.push({
+        path: "/classification",
+        query: { id: 2622, name: "花篮" },
+      });
+    },
+    //去绿植页面
+    toGreenflower() {
+      this.$router.push({
+        path: "/classification",
+        query: { id: 2623, name: "绿植" },
+      });
+    },
+    //一秒选花页面点击跳转页面
+    yimiaoxuanhuaTo(item) {
+      if (item.id == 5111) {
+        this.$router.push({
+          path: "/classification",
+          query: { id: 2602, name: "爱情鲜花_送女同学" },
+        });
+      } else if (item.id == 5112) {
+        this.$router.push({
+          path: "/classification",
+          query: { id: 2607, name: "给长辈送花_问候长辈" },
+        });
+      } else if (item.id == 5113) {
+        this.$router.push({
+          path: "/classification",
+          query: { id: 2606, name: "友情鲜花_送给朋友的鲜花" },
+        });
+      }
+    },
+    yimiaoxuanhuaTo2(item) {
+      console.log(item.id);
+      if (item.id == 5114) {
+        this.$router.push({
+          path: "/classification",
+          query: { id: 2603, name: "生日鲜花_过生日送花" },
+        });
+      } else if (item.id == 5115) {
+        this.$router.push({
+          path: "/classification",
+          query: { id: 2602, name: "爱情鲜花_送未来老婆" },
+        });
+      } else if (item.id == 5116) {
+        this.$router.push({
+          path: "/classification",
+          query: { id: 2622, name: "花篮_开业花篮" },
+        });
+      } else if (item.id == 5117) {
+        this.$router.push({
+          path: "/classification",
+          query: { id: 2623, name: "绿植_开业绿植_办公室" },
+        });
+      }
+    },
+    //爱情更多
+    loveMore() {
+      this.$router.push({
+        path: "/classification",
+        query: { id: 2602, name: "爱情鲜花_送女同学" },
+      });
+    },
+    //友情更多
+    friendlyMore() {
+      this.$router.push({
+        path: "/classification",
+        query: { id: 2606, name: "友情鲜花_送给朋友的鲜花" },
+      });
+    },
+    //鲜花礼盒更多
+    flowerBoxMore() {
+      this.$router.push({
+        path: "/classification",
+        query: { id: 2620, name: "鲜花礼盒_心型礼盒" },
+      });
+    },
+    //蛋糕更多
+    cakeMore() {
+      this.$router.push({
+        path: "/classification",
+        query: { id: 2621, name: "蛋糕店_订蛋糕" },
+      });
+    },
+    //开业花篮更多
+    businsseMore() {
+      this.$router.push({
+        path: "/classification",
+        query: { id: 2622, name: "花篮_开业花篮" },
+      });
+    },
+    //绿植更多
+    greenMore() {
+      this.$router.push({
+        path: "/classification",
+        query: { id: 2623, name: "绿植_开业绿植_办公室" },
+      });
+    },
+    //点击轮播图
+    toswipe(index) {
+      console.log(index);
+      if (index == 0) {
+        this.$router.push({
+          path: "/classification",
+          query: { id: 2621, name: "蛋糕店_订蛋糕" },
+        });
+      } else if (index == 1) {
+        this.$router.push({
+          path: "/classification",
+          query: { id: 2603, name: "给生日鲜花_生日鲜花" },
+        });
+      } else if (index == 2) {
+        this.$router.push({
+          path: "/classification",
+          query: { id: 2602, name: "送女神_表白鲜花" },
+        });
+      }
+    },
   },
 };
 </script>
@@ -387,12 +531,9 @@ export default {
 
         li {
           font-size: 13px;
-          a {
-            color: black;
-            i {
-              font-size: 14px;
-              margin-right: 4px;
-            }
+          i {
+            font-size: 14px;
+            margin-right: 4px;
           }
         }
       }

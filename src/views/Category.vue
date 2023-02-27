@@ -2,7 +2,10 @@
 <template>
   <div class="box">
     <div class="top">
-      <div class="search"></div>
+      <div class="search" @click="toSearch">
+        <i class="iconfont icon-icon_sousuo"></i>
+        搜索鲜花、蛋糕、礼品
+      </div>
       <!-- <van-search
         v-model="value"
         shape="round"
@@ -41,6 +44,12 @@ Vue.use(Search);
 export default {
   name: "CategoryView",
   components: { TabBar },
+  methods: {
+    //去搜索页
+    toSearch() {
+      this.$router.push("/search");
+    },
+  },
 };
 </script>
 
@@ -63,6 +72,14 @@ export default {
       height: 70%;
       background-color: rgba(243, 245, 247, 1);
       border-radius: 20px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #71797f;
+      i {
+        font-size: 25px;
+        margin: 0 10px;
+      }
     }
   }
   .main {
