@@ -26,6 +26,9 @@ import {
   Search,
   Divider,
   Empty,
+  GoodsAction,
+  GoodsActionIcon,
+  GoodsActionButton,
 } from "vant";
 
 Vue.use(AddressList);
@@ -56,3 +59,6 @@ Vue.use(Tab);
 Vue.use(Tabs);
 Vue.use(Divider);
 Vue.use(Empty);
+Vue.use(GoodsAction);
+Vue.use(GoodsActionButton);
+Vue.use(GoodsActionIcon);
