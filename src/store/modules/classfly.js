@@ -1,6 +1,6 @@
 export default {
   //开启命名空间
-  namespace: true,
+  namespaced: true,
   state: {
     //存放细分类组件的请求的数据
     arr: [],

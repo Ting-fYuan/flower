@@ -52,11 +52,22 @@ export const getSingleOrder = ($id) => {
 };
 
 // 更新订单信息
-export const updateOrder = (data) => {
+export const updateOrder = (id) => {
   return http({
-    url: "/order/:id",
+    url: `/order/${id}`,
     method: "PUT",
-    data,
+    headers: {
+      isToken: true,
+    },
+  });
+};
+
+// 创建物流信息
+export const getLogistics = (params) => {
+  return http({
+    url: "/getLogistics",
+    method: "GET",
+    params,
     headers: {
       isToken: true,
       isId: true,
@@ -64,12 +75,11 @@ export const updateOrder = (data) => {
   });
 };
 
-// 创建物流信息
-export const createLogistics = (data) => {
+//删除订单
+export const deleteOrder = (id) => {
   return http({
-    url: "/createLogistics",
-    method: "POST",
-    data,
+    url: `/order/${id}`,
+    method: "DELETE",
     headers: {
       isToken: true,
       isId: true,
