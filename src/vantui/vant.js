@@ -26,6 +26,11 @@ import {
   Search,
   Divider,
   Empty,
+  Cascader,
+  Image as VanImage,
+  ActionSheet,
+  Dialog,
+  Uploader,
 } from "vant";
 
 Vue.use(AddressList);
@@ -56,3 +61,8 @@ Vue.use(Tab);
 Vue.use(Tabs);
 Vue.use(Divider);
 Vue.use(Empty);
+Vue.use(Cascader);
+Vue.use(VanImage);
+Vue.use(ActionSheet);
+Vue.use(Dialog);
+Vue.use(Uploader);

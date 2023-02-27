@@ -44,7 +44,7 @@
         <!--登录 -->
         <van-tab title="登录" name="login">
           <!-- 登录模块 -->
-          <div class="loginModule">
+          <form>
             <!-- 登录手机号码 -->
             <div class="form">
               <div class="label" ref="loginMobileL">手机号码</div>
@@ -56,7 +56,9 @@
                 @focus="loginFocus"
               />
               <!-- 错误提示 -->
-              <div class="err_msg" ref="login_m_err">{{ err.login_m_err }}</div>
+              <div class="err_msg" ref="login_m_err">
+                {{ err.login_m_err }}
+              </div>
             </div>
             <!-- 登录密码 -->
             <div class="form">
@@ -70,7 +72,9 @@
                 ref="loginRef"
               />
               <!-- 错误提示 -->
-              <div class="err_msg" ref="login_p_err">{{ err.login_p_err }}</div>
+              <div class="err_msg" ref="login_p_err">
+                {{ err.login_p_err }}
+              </div>
               <!-- 眼睛 -->
               <van-icon name="closed-eye" size="40" @click="loginEye" />
             </div>
@@ -78,7 +82,7 @@
             <div class="form">
               <button class="btn" @click="loginSubmit">登录</button>
             </div>
-          </div>
+          </form>
         </van-tab>
         <!-- 注册 -->
         <van-tab title="注册" name="register">
@@ -281,12 +285,12 @@ export default {
         }
       } else {
         if (this.form.loginPhone == "" && this.form.loginPassword == "") {
-          this.$refs.login_m_err.classList.remove("errChange");
-          this.$refs.login_p_err.classList.remove("errChange");
+          this.classHandel("errRemove", "login_m_err");
+          this.classHandel("errRemove", "login_p_err");
         } else if (this.form.loginPassword == "") {
-          this.$refs.login_p_err.classList.remove("errChange");
+          this.classHandel("errRemove", "login_p_err");
         } else if (this.form.loginPhone == "") {
-          this.$refs.login_m_err.classList.remove("errChange");
+          this.classHandel("errRemove", "login_m_err");
         }
       }
     },
@@ -466,6 +470,7 @@ export default {
     },
     // 登录密码点击是否显示密码
     loginEye(e) {
+      console.log(e);
       this.eyeHandle(e, "loginRef");
     },
     // 注册密码点击是否显示密码
@@ -612,6 +617,10 @@ export default {
         border: none;
         border-radius: 20px;
         font-size: 16px;
+      }
+      input::-ms-clear,
+      input::-ms-reveal {
+        display: none;
       }
       // icon
       .van-icon {

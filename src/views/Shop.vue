@@ -65,7 +65,7 @@
         </div>
       </div>
     </main>
-    <div class="sumUpBox">
+    <div class="sumUpBox" v-if="isLogin">
       <div class="toggle">
         <van-checkbox v-model="toggleBtn" @click="toggleHandle"
           ><p>全选</p></van-checkbox
@@ -134,6 +134,10 @@ export default {
         this.showShopList = false;
       }
     },
+    // ! （暂时）进入页面刷新
+    $route() {
+      this.$router.go(0);
+    },
   },
   async created() {
     // 是否登录
@@ -199,7 +203,6 @@ export default {
   height: 100vh;
   background-color: #e8ecef;
   main {
-    padding: 42px 0 0;
     .shop-car-box {
       .shop {
         .shop-list-box {

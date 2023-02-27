@@ -129,9 +129,9 @@ const routes = [
     component: () => import("@/views/user_information/Login.vue"),
   },
   {
-    path: "/register",
-    name: "register",
-    component: () => import("@/views/user_information/Register.vue"),
+    path: "/personalInfo",
+    name: "personalInfo",
+    component: () => import("@/views/user_information/personalInfo.vue"),
     meta: {
       isAuth: true,
     },
@@ -192,14 +192,14 @@ router.beforeEach((to, from, next) => {
       // 已登录放行
       next();
     } else {
-      Toast({
-        message: "请先登录",
-        position: "bottom",
-      });
       next({
         path: "/login",
         // 完整路径
         query: { redirect: to.fullPath },
+      });
+      Toast({
+        message: "请先登录",
+        position: "bottom",
       });
     }
   } else {
