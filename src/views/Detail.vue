@@ -38,6 +38,7 @@
         </div>
       </div>
     </div>
+    <!-- 富文本上部分数据 -->
     <div class="conston">
       <div class="constop">
         <p v-html="consonptop"></p>
@@ -121,7 +122,6 @@ export default {
     return {
       // 详情轮播图数据
       swipeArrs: [],
-      // 产品详情
       // 商品名称
       resname: "",
       // 商品原价
@@ -129,17 +129,20 @@ export default {
       // 商品优惠价格
       consale_price: "",
       conspush: "",
+      // 后台副文本上半部分数据
       consonptop: "",
+      // 后台副文本下半部分数据
       consonbottom: "",
+      // 数量
       value: 1,
       shopsId: "",
     };
   },
   created() {
-    this.consonfn();
     // 获取商品id
-    // this.shopsId = this.$route.query.id;
-    // console.log(this.shopsId);
+    this.shopsId = this.$route.query.id;
+    console.log(this.shopsId);
+    this.consonfn();
   },
   methods: {
     // 后退按钮
@@ -147,7 +150,8 @@ export default {
       this.$router.back(1);
     },
     async consonfn() {
-      let res = await consondend();
+      let res = await consondend(this.shopsId);
+      // 轮播图取消第一个数据
       this.swipeArrs = res.result.s_goods_photos.splice(0, 1);
       // 轮播图数据
       this.swipeArrs = res.result.s_goods_photos;
@@ -158,6 +162,7 @@ export default {
       // 商品优惠价格
       this.consale_price = res.result.sale_price;
       this.conspush = res.result.rich_text;
+      // 分隔后台数据
       if (this.conspush) {
         this.consonptop = this.conspush.split(
           "<blockquote><br></blockquote>"

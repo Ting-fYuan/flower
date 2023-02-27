@@ -5,6 +5,5 @@ export const consondend=(id)=>{
     return http({
     url: `goods/${id}`,
     method: "GET",
-    
    })
 }
