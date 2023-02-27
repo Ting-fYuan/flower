@@ -31,8 +31,12 @@
         </template>
         <div class="ContentBox">
           <div v-for="goodsInfo of ClassifyGoodsList" :key="goodsInfo.id">
-            <img :src="goodsInfo['s_goods_photos'][0].path" />
-            <div>
+            <!-- <van-image :src="goodsInfo['s_goods_photos'][0].path" /> -->
+            <img
+              :src="goodsInfo['s_goods_photos'][0].path"
+              v-lazy="goodsInfo['s_goods_photos'][0].path"
+            />
+            <div class="GoodsInfo">
               <p>{{ goodsInfo.name }}</p>
               <p>
                 <span>
@@ -65,8 +69,12 @@
         </template>
         <div class="ContentBox">
           <div v-for="goodsInfo of ClassifyGoodsList" :key="goodsInfo.id">
-            <img :src="goodsInfo['s_goods_photos'][0].path" />
-            <div>
+            <!-- <van-image :src="goodsInfo['s_goods_photos'][0].path" /> -->
+            <img
+              :src="goodsInfo['s_goods_photos'][0].path"
+              v-lazy="goodsInfo['s_goods_photos'][0].path"
+            />
+            <div class="GoodsInfo">
               <p>{{ goodsInfo.name }}</p>
               <p>
                 <span>
@@ -99,8 +107,8 @@
         </template>
         <div class="ContentBox">
           <div v-for="goodsInfo of ClassifyGoodsList" :key="goodsInfo.id">
-            <img :src="goodsInfo['s_goods_photos'][0].path" />
-            <div>
+            <van-image :src="goodsInfo['s_goods_photos'][0].path" />
+            <div class="GoodsInfo">
               <p>{{ goodsInfo.name }}</p>
               <p>
                 <span>
@@ -132,6 +140,7 @@
                 <span
                   v-for="childrenClass of parentClass.children"
                   :key="childrenClass.id"
+                  @click="goClassifyPage(childrenClass)"
                   >{{ childrenClass.name }}</span
                 >
               </div>
@@ -146,6 +155,8 @@
 <script>
 import { SearchDetails } from "@/api/search";
 import { indexImg } from "@/api/indexImg";
+import debounce from "lodash/debounce";
+
 export default {
   name: "ClassificationView",
   data() {
@@ -174,8 +185,8 @@ export default {
   },
 
   methods: {
-    // todo:请求子类下的商品
-    async getClassifyGoods() {
+    // todo:请求子类下的商品(节流)
+    getClassifyGoods: debounce(async function () {
       try {
         let SearchRes = await SearchDetails(this.$route.query.id);
         this.ClassifyGoodsList = SearchRes.result;
@@ -183,7 +194,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },
+    }, 1000),
 
     // todo:获取到所有的商品分类
     async getAllClassify() {
@@ -261,6 +272,17 @@ export default {
           this.getAllClassify();
           break;
       }
+    },
+
+    // todo:点击子类跳转到分类页面
+    goClassifyPage(data) {
+      // console.log(data.name, data.id);
+      this.$router.replace({
+        path: "/classification",
+        query: { id: data.id, name: data.name },
+      });
+      this.active = "综合";
+      this.getClassifyGoods();
     },
 
     // @置空样操作
@@ -378,13 +400,21 @@ export default {
       border-radius: 0px 0px 6px 6px;
       background-color: #fff;
       box-shadow: 1px 1px 8px #9d9d9d;
-      > img {
-        width: 165px;
+      ::v-deep .van-image__img {
+        margin: 0;
+        padding: 0;
         height: 165px;
-        background-color: pink;
+        background-color: #eeeeee;
+      }
+
+      img {
+        margin: 0;
+        padding: 0;
+        height: 165px;
+        background-color: #eeeeee;
       }
       // 信息区域
-      > div {
+      .GoodsInfo {
         margin-top: 10px;
         padding: 0px 4px;
         display: flex;
