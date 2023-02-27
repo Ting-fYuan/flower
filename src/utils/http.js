@@ -24,6 +24,7 @@ const errorHandle = (errMsg) => {
       redirect: router.history.current.fullPath,
     },
   });
+  Toast.clear();
   Toast({
     message: errMsg,
     position: "bottom",
