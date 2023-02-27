@@ -274,6 +274,7 @@ export default {
       .catch((err) => {
         console.log(err);
       });
+
     //获取首页一秒选花数据
     indexImg({})
       .then((res) => {
