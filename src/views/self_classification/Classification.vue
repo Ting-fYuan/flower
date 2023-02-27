@@ -1,7 +1,7 @@
 <!-- 子分类 -->
 <template>
   <div class="SearchPages">
-    <com-head title="子分类"></com-head>
+    <com-head :title="this.$route.query.name"></com-head>
     <div :class="topShow" @click="SetTop">
       <i class="iconfont icon-zhiding"></i>
     </div>
@@ -122,6 +122,20 @@
             <i>筛选</i>
           </div>
         </template>
+        <div class="ContentBox">
+          <ul>
+            <li v-for="parentClass of ClassifyNamesList" :key="parentClass.id">
+              <h4>{{ parentClass.name }}</h4>
+              <div class="labelName">
+                <span
+                  v-for="childrenClass of parentClass.children"
+                  :key="childrenClass.id"
+                  >{{ childrenClass.name }}</span
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
       </van-tab>
     </van-tabs>
   </div>
@@ -129,6 +143,7 @@
 
 <script>
 import { SearchDetails } from "@/api/search";
+import { indexImg } from "@/api/indexImg";
 export default {
   name: "ClassificationView",
   data() {
@@ -137,6 +152,7 @@ export default {
       show: false,
       actions: [{ name: "选项一" }, { name: "选项二" }, { name: "选项三" }],
       ClassifyGoodsList: [],
+      ClassifyNamesList: [],
       topShow: "backTop backTopHidden", // 控制显示与隐藏置顶按钮
       // @ 控制升序和降序
       saleNumberSort: true, //销量
@@ -152,15 +168,27 @@ export default {
   mounted() {
     // todo:首次进入页面的数据渲染
     this.getClassifyGoods();
+    console.log(this.$route.query.name, this.$route.query.id);
   },
 
   methods: {
     // todo:请求子类下的商品
     async getClassifyGoods() {
       try {
-        let SearchRes = await SearchDetails(2602);
+        let SearchRes = await SearchDetails(this.$route.query.id);
         this.ClassifyGoodsList = SearchRes.result;
         console.log("初始化数据", this.ClassifyGoodsList);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    // todo:获取到所有的商品分类
+    async getAllClassify() {
+      try {
+        let AllClassify = await indexImg();
+        this.ClassifyNamesList = AllClassify.result.slice(0, -1);
+        console.log(AllClassify);
       } catch (error) {
         console.log(error);
       }
@@ -224,6 +252,7 @@ export default {
 
         default:
           console.log("筛选");
+          this.getAllClassify();
           break;
       }
     },
@@ -257,7 +286,7 @@ export default {
   width: 100vw;
   height: 100%;
   box-sizing: border-box;
-  background-color: #eaebef;
+  // background-color: #eaebef;
 
   // @置顶
   .backTop {
@@ -394,6 +423,27 @@ export default {
             font-weight: 400;
             font-family: "PingFang SC";
             text-align: left;
+          }
+        }
+      }
+    }
+    ul {
+      width: 100%;
+      li {
+        h4 {
+          font-size: 20px;
+        }
+        > .labelName {
+          width: 100%;
+          height: 60px;
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          span {
+            color: #894e22;
+            padding: 2px 2px;
+            font-size: 16px;
+            background-color: #d2d2d2;
           }
         }
       }

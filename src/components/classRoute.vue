@@ -37,7 +37,13 @@ export default {
   methods: {
     toClassification(item) {
       console.log(item.id);
-      this.$router.push({ path: "/classification", query: item.id });
+      this.$router.push({
+        path: "/classification",
+        query: {
+          id: item.id,
+          name: item.name,
+        },
+      });
     },
   },
 };
