@@ -322,9 +322,7 @@ export default {
     //去详情页
     toShop(item) {
       console.log(item.id);
-      console.log(
-        this.$router.push({ path: "/detail", query: { id: item.id } })
-      );
+      this.$router.push({ path: "/detail", query: { id: item.id } });
     },
     //去搜索页
     toSearch() {
