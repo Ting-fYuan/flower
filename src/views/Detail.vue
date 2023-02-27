@@ -138,8 +138,8 @@ export default {
   created() {
     this.consonfn();
     // 获取商品id
-    // this.shopsId = this.$route.query.id;
-    // console.log(this.shopsId);
+    this.shopsId = this.$route.query.id;
+    console.log(this.shopsId);
   },
   methods: {
     // 后退按钮
@@ -147,7 +147,7 @@ export default {
       this.$router.back(1);
     },
     async consonfn() {
-      let res = await consondend();
+      let res = await consondend(this.shopsId);
       this.swipeArrs = res.result.s_goods_photos.splice(0, 1);
       // 轮播图数据
       this.swipeArrs = res.result.s_goods_photos;
