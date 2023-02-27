@@ -12,9 +12,8 @@
     </div>
     <div class="orderTab">
       <keep-alive>
-        <van-tabs v-model="active">
+        <van-tabs v-model="active" animated>
           <van-tab
-            animated="true"
             v-for="item in titleList"
             :key="item.id"
             :title="item.title"
@@ -31,8 +30,6 @@
 </template>
 
 <script>
-// import { getShopCarApi } from "@/api/shopCar/index";
-// import { getOrder } from "@/api/order/index";
 export default {
   name: "OrderView",
   data() {
@@ -57,6 +54,13 @@ export default {
         },
       ],
     };
+  },
+  mounted() {
+    // 从 localStorage 获取当前选中的 tab
+    const activeTab = localStorage.getItem("routeId");
+    if (activeTab) {
+      this.active = parseInt(activeTab);
+    }
   },
   async created() {
     // let shopRes = await getShopCarApi();

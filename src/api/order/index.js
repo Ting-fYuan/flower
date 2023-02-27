@@ -38,3 +38,29 @@ export const getOrder = (params) => {
     },
   });
 };
+
+// 更新订单信息
+export const updateOrder = (data) => {
+  return http({
+    url: "/order/:id",
+    method: "UPDATE",
+    data,
+    headers: {
+      isToken: true,
+      isId: true,
+    },
+  });
+};
+
+// 创建物流信息
+export const createLogistics = (data) => {
+  return http({
+    url: "/createLogistics",
+    method: "POST",
+    data,
+    headers: {
+      isToken: true,
+      isId: true,
+    },
+  });
+};
