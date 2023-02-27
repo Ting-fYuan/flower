@@ -33,6 +33,7 @@ const routes = [
       {
         path: "/category/UseView",
         name: "UseView",
+        // props: ["id"],
         component: () => import("@/views/children_route/use.vue"),
       },
       {
