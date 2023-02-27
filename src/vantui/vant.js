@@ -26,6 +26,9 @@ import {
   Search,
   Divider,
   Empty,
+  GoodsAction,
+  GoodsActionIcon,
+  GoodsActionButton,
   SwipeCell,
   Card,
   Cascader,
@@ -69,6 +72,9 @@ Vue.use(Tab);
 Vue.use(Tabs);
 Vue.use(Divider);
 Vue.use(Empty);
+Vue.use(GoodsAction);
+Vue.use(GoodsActionButton);
+Vue.use(GoodsActionIcon);
 Vue.use(SwipeCell);
 Vue.use(Card);
 Vue.use(Cascader);
