@@ -2,7 +2,7 @@
 <template>
   <div class="wrap">
     <header>
-      <van-icon name="arrow-left" size="60" @click="toggle" />
+      <van-icon name="arrow-left" size="40" @click="toggle" />
       <p>个人信息</p>
     </header>
     <main>
@@ -20,7 +20,7 @@
         </div>
         <div class="Modify">
           <van-uploader image-fit="cover" :after-read="onSelectHead" />
-          <van-icon name="arrow" size="40" />
+          <van-icon name="arrow" size="35" />
         </div>
       </div>
       <van-divider />
@@ -31,14 +31,14 @@
             <span class="userName">昵称</span>
             <div class="nameShow">
               <span>{{ userInfo.name }}</span>
-              <van-icon name="arrow" size="40" />
+              <van-icon name="arrow" size="35" />
             </div>
           </li>
           <li class="sex" @click="showSet.sexPanel = true">
             <span class="userName">性别</span>
             <div class="nameShow">
               <span>{{ modelSet.sex }}</span>
-              <van-icon name="arrow" size="40" />
+              <van-icon name="arrow" size="35" />
             </div>
           </li>
           <li class="modile">
@@ -83,6 +83,7 @@ import { uqdateUserInfo, logout } from "@/api/user";
 import { SingleFile } from "@/api/upload";
 // 引入加密模块文件
 import { Decrypt } from "@/utils/encryption";
+// 引入vant组件提示
 import { Toast } from "vant";
 export default {
   name: "personalView",
@@ -242,7 +243,7 @@ export default {
     ::v-deep .van-icon {
       position: absolute;
       top: 0;
-      left: 0;
+      left: 10px;
     }
     p {
       font-size: 19px;
