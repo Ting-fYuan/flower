@@ -63,7 +63,7 @@
         </div>
       </div>
     </main>
-    <div class="sumUpBox" v-if="isLogin">
+    <div class="sumUpBox" v-if="isLogin && chooseShopList.length">
       <div class="toggle">
         <van-checkbox v-model="toggleBtn" @click="toggleHandle"
           ><p>全选</p></van-checkbox
@@ -146,7 +146,7 @@ export default {
         "shopCarStore/getShopCarList"
       );
       // 是否有购物车商品
-      if (result.length) {
+      if (result?.length) {
         // 展示购物车列表
         this.showShopList = true;
         // console.log("购物车列表", result);
