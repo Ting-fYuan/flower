@@ -95,25 +95,29 @@ export default {
       this.$router.go(-1);
     },
     async Search() {
-      if (this.value === "") return false;
-      let res = await goodsSearch({ name: this.value });
-      // 添加到历史记录
-      this.history.unshift(this.value);
-      let historySet = new Set(this.history);
-      this.history = Array.from(historySet); //历史记录去重
-      const maxHistoryLength = 8; //限制历史搜索数量
-      if (this.history.length > maxHistoryLength) {
-        this.history.splice(
-          maxHistoryLength - 1,
-          this.history.length - maxHistoryLength
-        );
-      }
-      localStorage.setItem("searchHistory", JSON.stringify(this.history));
-      if (res.result.count === 0) {
-        Toast("没有该商品信息，请尝试更换关键词");
-        this.value = "";
-      } else if (res.result.count != 0) {
-        this.$router.push("/category");
+      try {
+        if (this.value === "") return false;
+        let res = await goodsSearch({ name: this.value });
+        // 添加到历史记录
+        this.history.unshift(this.value);
+        let historySet = new Set(this.history);
+        this.history = Array.from(historySet); //历史记录去重
+        const maxHistoryLength = 8; //限制历史搜索数量
+        if (this.history.length > maxHistoryLength) {
+          this.history.splice(
+            maxHistoryLength - 1,
+            this.history.length - maxHistoryLength
+          );
+        }
+        localStorage.setItem("searchHistory", JSON.stringify(this.history));
+        if (res.result.count === 0) {
+          Toast("没有该商品信息，请尝试更换关键词");
+          this.value = "";
+        } else if (res.result.count != 0) {
+          this.$router.push("/category");
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
     loadHistory() {
