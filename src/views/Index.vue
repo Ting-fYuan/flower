@@ -265,9 +265,7 @@ export default {
       // project_id: 295,
     })
       .then((res) => {
-        // console.log(res.result);
         res.result.forEach((item) => {
-          // console.log(item.s_photos[0].path);
           this.images.push(item.s_photos[0].path);
         });
       })
