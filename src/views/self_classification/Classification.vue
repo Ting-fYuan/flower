@@ -257,7 +257,6 @@ export default {
   width: 100vw;
   height: 100%;
   box-sizing: border-box;
-  padding-top: 42px;
   background-color: #eaebef;
 
   // @置顶

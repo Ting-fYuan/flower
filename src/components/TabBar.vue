@@ -17,7 +17,7 @@
         </template>
       </van-tabbar-item>
 
-      <van-tabbar-item to="/category/UseView">
+      <van-tabbar-item to="/category/UseView?id=0">
         <span>分类</span>
         <template #icon="category">
           <i

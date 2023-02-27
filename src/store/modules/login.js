@@ -23,6 +23,15 @@ export default {
       localStorage.removeItem("token");
       localStorage.removeItem("userInfo");
     },
+    // 更新用户数据
+    updateUserInfo(state, payload) {
+      state.token = payload.token;
+      state.userInfo = payload;
+      // tokrn数据持久化
+      localStorage.setItem("token", payload.token);
+      // 用户信息数据持久化
+      localStorage.setItem("userInfo", JSON.stringify(payload));
+    },
   },
   actions: {
     // 登录请求
@@ -32,19 +41,15 @@ export default {
           phone: payload["modile"],
           password: payload["password"],
         });
-        console.log(router.history.current.query);
-        if (router.history.current.query.redirect) {
+        Toast.success("登陆成功");
+        // 存储到vuex
+        ctx.commit("updateUserInfo", loginRes.result);
+        // 是否进入过鉴权页面
+        if (loginRes && router.history.current.query.redirect) {
           router.push(router.history.current.query.redirect);
         } else {
           router.push("/");
         }
-        Toast.success("登陆成功");
-
-        // tokrn数据持久化
-        localStorage.setItem("token", loginRes.result.token);
-        // 用户信息数据持久化
-        localStorage.setItem("userInfo", JSON.stringify(loginRes.result));
-        // console.log(loginRes);
       } catch (error) {
         // console.log(error);
         Toast.fail("账号或密码缺失");

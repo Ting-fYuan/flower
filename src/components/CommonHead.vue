@@ -1,9 +1,12 @@
 <template>
-  <nav class="common-head-box">
-    <div v-if="showBack" class="head-box-back" @click.stop="backHandle">
-      <i class="iconfont icon-yiliaohangyedeICON- backBtn" />
+  <nav>
+    <div class="common-head-box">
+      <div v-if="showBack" class="head-box-back" @click.stop="backHandle">
+        <i class="iconfont icon-yiliaohangyedeICON- backBtn" />
+      </div>
+      <div class="head-box-center">{{ title }}</div>
     </div>
-    <div class="head-box-center">{{ title }}</div>
+    <div class="seize"></div>
   </nav>
 </template>
 
@@ -34,11 +37,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+nav {
+  height: 40;
+  width: 100%;
+}
+.seize {
+  height: 40px;
+}
 .common-head-box {
   position: fixed;
   display: flex;
-  width: 100vw;
-  height: 42px;
+  width: 100%;
+  height: 40px;
   top: 0;
   background: rgba(255, 255, 255, 1);
   border-bottom: 0.5px solid #e4e4e4;

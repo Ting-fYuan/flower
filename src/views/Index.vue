@@ -2,7 +2,7 @@
 <template>
   <div class="box">
     <div class="top">
-      <i class="iconfont icon-icon_sousuo"></i>
+      <i class="iconfont icon-icon_sousuo" @click="toSearch"></i>
       <img src="../assets/images/微信图片_20230224172052.png" alt="" />
     </div>
 
@@ -90,7 +90,12 @@
       <div class="main_title">{{ love.name }}</div>
       <div class="xian"></div>
       <div class="main_box">
-        <div class="goods" v-for="(item, index) in love.s_goods" :key="index">
+        <div
+          class="goods"
+          @click="toShop(item, index)"
+          v-for="(item, index) in love.s_goods"
+          :key="index"
+        >
           <img
             :src="`${el.path}`"
             v-for="el in item.s_goods_photos"
@@ -111,6 +116,7 @@
       <div class="main_box">
         <div
           class="goods"
+          @click="toShop(item, index)"
           v-for="(item, index) in friendly.s_goods"
           :key="index"
         >
@@ -134,6 +140,7 @@
       <div class="main_box">
         <div
           class="goods"
+          @click="toShop(item, index)"
           v-for="(item, index) in flowerBox.s_goods"
           :key="index"
         >
@@ -155,7 +162,12 @@
       <div class="main_title">{{ cake.name }}</div>
       <div class="xian"></div>
       <div class="main_box">
-        <div class="goods" v-for="(item, index) in cake.s_goods" :key="index">
+        <div
+          class="goods"
+          @click="toShop(item, index)"
+          v-for="(item, index) in cake.s_goods"
+          :key="index"
+        >
           <img
             :src="`${el.path}`"
             v-for="el in item.s_goods_photos"
@@ -176,6 +188,7 @@
       <div class="main_box">
         <div
           class="goods"
+          @click="toShop(item, index)"
           v-for="(item, index) in startBusinsse.s_goods"
           :key="index"
         >
@@ -199,6 +212,7 @@
       <div class="main_box">
         <div
           class="goods"
+          @click="toShop(item, index)"
           v-for="(item, index) in greenFlower.s_goods"
           :key="index"
         >
@@ -298,6 +312,22 @@ export default {
       greenFlower: [],
     };
   },
+  methods: {
+    //去详情页
+    toShop(item) {
+      console.log(item.id);
+      console.log(
+        this.$router.push({ path: "/detail", query: { id: item.id } })
+      );
+    },
+    //去搜索页
+    toSearch() {
+      this.$router.push("/search");
+    },
+    // toMore(item) {
+    //   console.log(item);
+    // },
+  },
 };
 </script>
 
@@ -313,7 +343,6 @@ export default {
     width: 100%;
     height: 50px;
     background-color: white;
-    padding-left: 10px;
     z-index: 999;
     display: flex;
     align-items: center;
