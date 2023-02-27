@@ -5,11 +5,11 @@
         <i class="iconfont icon-yiliaohangyedeICON- backBtn" />
       </div>
       <div class="head-box-center">
-        <p>{{ title }}</p>
+        <p v-if="!showMid">{{ title }}</p>
         <slot name="header-center"></slot>
       </div>
       <div class="head-box-right">
-        <slot slot="header-right"></slot>
+        <slot name="header-right"></slot>
       </div>
     </div>
     <div class="seize"></div>
@@ -30,6 +30,11 @@ export default {
       type: String,
       default: "标题",
     },
+    // 是否展示中间插槽
+    showMid: {
+      type: String || Boolean,
+      default: null,
+    },
   },
   data() {
     return {};
@@ -47,7 +52,7 @@ nav {
   width: 100%;
 }
 .seize {
-  height: 40px;
+  height: 50px;
 }
 .common-head-box {
   position: fixed;

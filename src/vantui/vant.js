@@ -29,9 +29,12 @@ import {
   SwipeCell,
   Card,
   Cascader,
+  Image as VanImage,
+  ActionSheet,
+  Dialog,
+  Uploader,
   Calendar,
   Picker,
-  ActionSheet,
   PasswordInput,
   NumberKeyboard,
 } from "vant";
@@ -67,8 +70,11 @@ Vue.use(Empty);
 Vue.use(SwipeCell);
 Vue.use(Card);
 Vue.use(Cascader);
+Vue.use(VanImage);
+Vue.use(ActionSheet);
+Vue.use(Dialog);
+Vue.use(Uploader);
 Vue.use(Calendar);
 Vue.use(Picker);
-Vue.use(ActionSheet);
 Vue.use(PasswordInput);
 Vue.use(NumberKeyboard);

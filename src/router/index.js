@@ -138,9 +138,9 @@ const routes = [
     component: () => import("@/views/user_information/Login.vue"),
   },
   {
-    path: "/register",
-    name: "register",
-    component: () => import("@/views/user_information/Register.vue"),
+    path: "/personalInfo",
+    name: "personalInfo",
+    component: () => import("@/views/user_information/personalInfo.vue"),
     meta: {
       isAuth: true,
     },

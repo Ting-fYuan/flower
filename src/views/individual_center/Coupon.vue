@@ -1,14 +1,6 @@
 <template>
   <div class="coupon">
-    <com-head title="优惠券" mid>
-      <template slot="header-center">
-        <img
-          src=""
-          alt=""
-          style="width: 100px; height: 20px; background-color: red"
-        />
-      </template>
-    </com-head>
+    <com-head title="优惠券"></com-head>
     <div class="couponContent">
       <div class="noCoupon">
         <img src="@/assets/images/coupon.png" class="couponImg" alt="" />
