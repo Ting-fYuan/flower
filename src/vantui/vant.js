@@ -26,6 +26,7 @@ import {
   Search,
   Divider,
   Empty,
+  Overlay,
 } from "vant";
 
 Vue.use(AddressList);
@@ -35,7 +36,6 @@ Vue.use(Swipe);
 Vue.use(SwipeItem);
 Vue.use(Lazyload);
 Vue.use(AddressList);
-Vue.use(Toast);
 Vue.use(CouponCell);
 Vue.use(CouponList);
 Vue.use(Popup);
@@ -56,3 +56,4 @@ Vue.use(Tab);
 Vue.use(Tabs);
 Vue.use(Divider);
 Vue.use(Empty);
+Vue.use(Overlay);
