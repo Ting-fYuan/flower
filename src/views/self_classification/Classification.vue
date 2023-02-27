@@ -1,7 +1,9 @@
 <!-- 子分类 -->
 <template>
   <div class="SearchPages">
-    <com-head :title="this.$route.query.name"></com-head>
+    <com-head :title="this.$route.query.name">
+      <template slot="header-right"> 123 </template>
+    </com-head>
     <div :class="topShow" @click="SetTop">
       <i class="iconfont icon-zhiding"></i>
     </div>
@@ -148,7 +150,7 @@ export default {
   name: "ClassificationView",
   data() {
     return {
-      active: "筛选",
+      active: "综合",
       show: false,
       actions: [{ name: "选项一" }, { name: "选项二" }, { name: "选项三" }],
       ClassifyGoodsList: [],
@@ -252,6 +254,10 @@ export default {
 
         default:
           console.log("筛选");
+          this.saleNumberSort = true; // @初始化图标样式
+          this.salePriceSort = true;
+          this.ClearStyle();
+          // todo:获取到样式的类型
           this.getAllClassify();
           break;
       }
@@ -428,22 +434,27 @@ export default {
       }
     }
     ul {
-      width: 100%;
+      display: flex;
+      flex-direction: column;
+
       li {
         h4 {
+          margin: 6px;
           font-size: 20px;
+          color: #894e22;
         }
         > .labelName {
           width: 100%;
-          height: 60px;
           display: flex;
           align-items: center;
           flex-wrap: wrap;
           span {
-            color: #894e22;
-            padding: 2px 2px;
+            margin: 6px;
+            padding: 8px 6px;
+            display: inline-block;
+            color: #000;
             font-size: 16px;
-            background-color: #d2d2d2;
+            background-color: white;
           }
         }
       }
