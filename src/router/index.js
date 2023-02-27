@@ -33,6 +33,7 @@ const routes = [
       {
         path: "/category/UseView",
         name: "UseView",
+        // props: ["id"],
         component: () => import("@/views/children_route/use.vue"),
       },
       {
@@ -77,10 +78,18 @@ const routes = [
   {
     path: "/order",
     name: "order",
+    redirect: "/order/myorder/1",
     component: () => import("@/views/individual_center/Order.vue"),
     meta: {
       isAuth: true,
     },
+    children: [
+      {
+        path: "/order/myorder/:id",
+        name: "myorder",
+        component: () => import("@/views/order/myOrder.vue"),
+      },
+    ],
   },
 
   {
@@ -95,9 +104,9 @@ const routes = [
     path: "/payfinished",
     name: "payfinished",
     component: () => import("@/views/individual_center/PayFinished.vue"),
-    // meta: {
-    //   isAuth: true,
-    // },
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/sending",
@@ -129,9 +138,9 @@ const routes = [
     component: () => import("@/views/user_information/Login.vue"),
   },
   {
-    path: "/register",
-    name: "register",
-    component: () => import("@/views/user_information/Register.vue"),
+    path: "/personalInfo",
+    name: "personalInfo",
+    component: () => import("@/views/user_information/personalInfo.vue"),
     meta: {
       isAuth: true,
     },
@@ -176,7 +185,52 @@ const routes = [
     name: "fillOrder",
     component: () => import("@/views/order/FillOrder.vue"),
   },
+  // 订购人页面
+  {
+    path: "/subscriber",
+    name: "subscriber",
+    component: () => import("@/views/order/SubscriberView.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 发票页面
+  {
+    path: "/receipt",
+    name: "receipt",
+    component: () => import("@/views/order/ReceiptEdit.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 结算订单
+  {
+    path: "/paysuccess",
+    name: "paysuccess",
+    component: () => import("@/views/order/PaySuccess.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 订单详情
+  {
+    path: "/orderdetails",
+    name: "orderdetails",
+    component: () => import("@/views/order/OrderDetails.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
 ];
+
+// BUG catch
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location, onResolve, onReject) {
+  if (onResolve || onReject) {
+    return originalPush.call(this, location, onResolve, onReject);
+  }
+  return originalPush.call(this, location).catch((err) => err);
+};
 
 const router = new VueRouter({
   mode: "hash",
@@ -192,14 +246,15 @@ router.beforeEach((to, from, next) => {
       // 已登录放行
       next();
     } else {
-      Toast({
-        message: "请先登录",
-        position: "bottom",
-      });
+      console.log("没有token");
       next({
         path: "/login",
         // 完整路径
         query: { redirect: to.fullPath },
+      });
+      Toast({
+        message: "请先登录",
+        position: "bottom",
       });
     }
   } else {

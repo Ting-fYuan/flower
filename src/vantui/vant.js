@@ -26,9 +26,23 @@ import {
   Search,
   Divider,
   Empty,
+<<<<<<< HEAD
   GoodsAction,
   GoodsActionIcon,
   GoodsActionButton,
+=======
+  SwipeCell,
+  Card,
+  Cascader,
+  Image as VanImage,
+  ActionSheet,
+  Dialog,
+  Uploader,
+  Calendar,
+  Picker,
+  PasswordInput,
+  NumberKeyboard,
+>>>>>>> c7d5b1b553e77748e2760977574a251d537f391d
 } from "vant";
 
 Vue.use(AddressList);
@@ -59,6 +73,20 @@ Vue.use(Tab);
 Vue.use(Tabs);
 Vue.use(Divider);
 Vue.use(Empty);
+<<<<<<< HEAD
 Vue.use(GoodsAction);
 Vue.use(GoodsActionButton);
 Vue.use(GoodsActionIcon);
+=======
+Vue.use(SwipeCell);
+Vue.use(Card);
+Vue.use(Cascader);
+Vue.use(VanImage);
+Vue.use(ActionSheet);
+Vue.use(Dialog);
+Vue.use(Uploader);
+Vue.use(Calendar);
+Vue.use(Picker);
+Vue.use(PasswordInput);
+Vue.use(NumberKeyboard);
+>>>>>>> c7d5b1b553e77748e2760977574a251d537f391d

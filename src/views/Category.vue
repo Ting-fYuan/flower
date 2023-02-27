@@ -2,7 +2,10 @@
 <template>
   <div class="box">
     <div class="top">
-      <div class="search"></div>
+      <div class="search" @click="toSearch">
+        <i class="iconfont icon-icon_sousuo"></i>
+        搜索鲜花、蛋糕、礼品
+      </div>
       <!-- <van-search
         v-model="value"
         shape="round"
@@ -13,10 +16,14 @@
 
     <div class="main">
       <nav>
+        <!-- <router-link to="/category/UseView?id=0">用途</router-link>
+        <router-link to="/category/UseView?id=1">花材</router-link>
+        <router-link to="/category/UseView?id=2">类别</router-link>
+        <router-link to="/category/UseView?id=3">枝数</router-link> -->
         <router-link to="/category/UseView">用途</router-link>
         <router-link to="/category/MaterialView">花材</router-link>
         <router-link to="/category/ClassView">类别</router-link>
-        <router-link to="/category/NumberView">枝数</router-link>
+        <router-link to="/category/NumberView?">枝数</router-link>
       </nav>
       <keep-alive>
         <router-view />
@@ -37,6 +44,12 @@ Vue.use(Search);
 export default {
   name: "CategoryView",
   components: { TabBar },
+  methods: {
+    //去搜索页
+    toSearch() {
+      this.$router.push("/search");
+    },
+  },
 };
 </script>
 
@@ -59,6 +72,14 @@ export default {
       height: 70%;
       background-color: rgba(243, 245, 247, 1);
       border-radius: 20px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #71797f;
+      i {
+        font-size: 25px;
+        margin: 0 10px;
+      }
     }
   }
   .main {

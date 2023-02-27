@@ -22,10 +22,16 @@
 账号 13286468316
 密码 20000212ywb
 
-##### 公共头部设置
+#### 项目计划表
+"https://docs.qq.com/sheet/DTVNYU291WVlNTmpu?tab=BB08J2"
 
+##### 公共头部设置
 可配置项
 
-1. showBack 默认值 false
+1. showBack 默认值 false //是否展示返回键
+2. showMid  默认值 null  //是否展示标题
+3. title 默认值 标题
+4. 插槽
+ "header-center" 中间 
+ "header-right" 右边
 
-2. title 默认值 标题
