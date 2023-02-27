@@ -2,7 +2,11 @@
 <template>
   <div class="address">
     <div class="addressHead">
-      <com-head title="收货地址"></com-head>
+      <com-head title="收货地址">
+        <template slot="header-right">
+          <p class="manage">管理</p>
+        </template>
+      </com-head>
     </div>
     <div class="addressList">
       <van-address-list
@@ -13,6 +17,7 @@
         @edit="onEdit"
         add-button-text="+新建地址"
         @select="changeAddressHandle"
+        :switchable="switchFlag"
       >
         <template v-slot:item-bottom>
           <div>下方盒子</div>
@@ -29,6 +34,8 @@ export default {
     return {
       chosenAddressId: "",
       list: [],
+      // 开启选中
+      switchFlag: true,
     };
   },
   watch: {},
@@ -39,6 +46,13 @@ export default {
     },
   },
   async created() {
+    if (this.$route.query.home) {
+      // 开启地址选择
+      this.switchFlag = false;
+    } else {
+      // 关闭地址选择
+      this.switchFlag = true;
+    }
     // 请求地址
     await this.$store.dispatch("addressStore/getUserAddress");
     // 默认选中

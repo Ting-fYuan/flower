@@ -85,6 +85,10 @@ export default {
       LoginState: false,
     };
   },
+  async created() {
+    // 请求地址
+    await this.$store.dispatch("addressStore/getAllcity").catch((err) => err);
+  },
   methods: {
     // @ 切换登录态
     async changeLoginState() {
@@ -113,7 +117,12 @@ export default {
       this.$router.push("/coupon");
     },
     goAddress() {
-      this.$router.push("/address");
+      this.$router.push({
+        path: "/address",
+        query: {
+          home: true,
+        },
+      });
     },
     goSetting() {
       this.$router.push("/setting");
