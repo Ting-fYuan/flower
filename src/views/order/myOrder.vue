@@ -1,15 +1,19 @@
 <template>
   <div class="myorder">
     <!-- 待付款 -->
-    <div class="noobligation" v-if="routeId == 1 && orderList == ''">
+    <div class="noobligation" v-if="routeId == 1 && notPayment.length == 0">
       <div class="noobligationContent">
-        <img src="@/assets/images/coupon.png" class="obligationImg" alt="" />
+        <img
+          src="@/assets/images/coupon.png"
+          class="obligationImg"
+          alt="优惠券不见了~"
+        />
         <span class="obligationText">暂无内容</span>
       </div>
     </div>
-    <div class="obligation" v-if="routeId == 1 && orderList != ''">
+    <div class="obligation" v-if="routeId == 1 && notPayment != ''">
       <div class="obligationContent">
-        <div class="obligationGoods" v-for="item in orderList" :key="item.id">
+        <div class="obligationGoods" v-for="item in notPayment" :key="item.id">
           <van-swipe-cell v-if="item.status == 0">
             <van-card
               :num="JSON.parse(item.goods_info)[0]?.num"
@@ -41,9 +45,13 @@
     </div>
 
     <!-- 派送中 -->
-    <div class="nodelivery" v-if="routeId == 2 && orderList == ''">
+    <div class="nodelivery" v-if="routeId == 2 && orderList.length == 0">
       <div class="nodeliveryContent">
-        <img src="@/assets/images/coupon.png" class="deliveryImg" alt="" />
+        <img
+          src="@/assets/images/coupon.png"
+          class="deliveryImg"
+          alt="优惠券不见了~"
+        />
         <span class="deliveryText">暂无内容</span>
       </div>
     </div>
@@ -67,7 +75,7 @@
             <div class="deliveryBtn">
               <span>待收货</span>
               <button class="check" @click="checkDeli()">查看物流</button>
-              <button class="confirm" @click="confirmDeli(item.status)">
+              <button class="confirm" @click="confirmDeli(item.id)">
                 确认收货
               </button>
             </div>
@@ -79,7 +87,11 @@
     <!-- 待评价 -->
     <div class="noevaluate" v-if="routeId == 3">
       <div class="noevaluateContent">
-        <img src="@/assets/images/coupon.png" class="evaluateImg" alt="" />
+        <img
+          src="@/assets/images/coupon.png"
+          class="evaluateImg"
+          alt="优惠券不见了~"
+        />
         <span class="evaluateText">暂无内容</span>
       </div>
     </div>
@@ -114,9 +126,13 @@
     </div> -->
 
     <!-- 已完成 -->
-    <div class="nofinished" v-if="routeId == 4 && orderList == ''">
+    <div class="nofinished" v-if="routeId == 4 && orderList.length == 0">
       <div class="nofinishedContent">
-        <img src="@/assets/images/coupon.png" class="finishedImg" alt="" />
+        <img
+          src="@/assets/images/coupon.png"
+          class="finishedImg"
+          alt="优惠券不见了~"
+        />
         <span class="finishedText">暂无内容</span>
       </div>
     </div>
@@ -158,15 +174,15 @@
 </template>
 
 <script>
-import { getOrder } from "@/api/order/index";
+import { getOrder, deleteOrder, updateOrder } from "@/api/order/index";
 import { Toast } from "vant";
 export default {
   name: "MyOrder",
   data() {
     return {
       routeId: "",
-      checked: true,
       orderList: [],
+      notPayment: [],
     };
   },
   watch: {
@@ -186,20 +202,57 @@ export default {
     next(); // 一定要调用 next 函数，否则路由会一直处于等待状态
   },
   async created() {
-    let orderres = await getOrder();
-    console.log(orderres.result.rows);
-    this.orderList = orderres.result.rows;
+    try {
+      // 获取订单列表
+      let orderres = await getOrder();
+      console.log(orderres.result.rows);
+      this.orderList = orderres.result.rows;
+
+      // 管理待付款的数组
+      orderres.result.rows.forEach((e) => {
+        if (e.status == 0) {
+          this.notPayment = orderres.result.rows;
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   },
   methods: {
     // 右滑时点击的删除按钮
     delCard(e) {
-      console.log(e);
+      setTimeout(() => {
+        Toast({
+          message: "已删除该订单",
+          icon: "success",
+        });
+      }, 1500);
+      const index = this.orderList.findIndex((item) => item.id === e);
+      deleteOrder(e).then((res) => {
+        if (res.msg == "删除成功") {
+          if (index > -1) {
+            this.orderList.splice(index, 1);
+          }
+        }
+      });
     },
     // 待付款区域两个按钮
     goCancle(e) {
-      Toast("订单已取消~~");
+      setTimeout(() => {
+        Toast({
+          message: "订单已取消",
+          icon: "success",
+        });
+      }, 1500);
       // 删除订单（根据id）
-      console.log(e);
+      const index = this.orderList.findIndex((item) => item.id === e);
+      deleteOrder(e).then((res) => {
+        if (res.msg == "删除成功") {
+          if (index > -1) {
+            this.orderList.splice(index, 1);
+          }
+        }
+      });
     },
     gopay() {
       Toast("正在跳转支付~~");
@@ -210,11 +263,10 @@ export default {
       Toast("暂无物流信息~~");
     },
     confirmDeli(e) {
-      setTimeout(() => {
-        Toast("订单已完成~~");
-      }, 1500);
-      console.log(e);
       // 需要将订单中的status改为6
+      updateOrder(e).then((res) => {
+        console.log(res);
+      });
     },
     // 待评价区域的按钮
     goComment() {
@@ -222,9 +274,20 @@ export default {
     },
     // 已完成区域两个按钮
     delOrder(e) {
-      Toast("订单已删除~~");
-      // 删除订单（根据id）
-      console.log(e);
+      setTimeout(() => {
+        Toast({
+          message: "已删除该订单",
+          icon: "success",
+        });
+      }, 1500);
+      const index = this.orderList.findIndex((item) => item.id === e);
+      deleteOrder(e).then((res) => {
+        if (res.msg == "删除成功") {
+          if (index > -1) {
+            this.orderList.splice(index, 1);
+          }
+        }
+      });
     },
     buyAgain(e) {
       Toast("正在购买~~");
@@ -288,14 +351,14 @@ export default {
           padding: 10px;
           button {
             margin-right: 9px;
-            border: 1px solid red;
+            border: 1px solid #884e22;
             width: 75px;
             height: 25px;
             font-size: 14px;
             background: #fff;
             border-radius: 50px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
-            color: red;
+            color: #884e22;
           }
           .cancle,
           .delOrder {
@@ -323,11 +386,11 @@ export default {
           span {
             flex: 1;
             font-size: 14px;
-            color: red;
+            color: #884e22;
           }
           button {
-            color: red;
-            border: 1px solid red;
+            color: #884e22;
+            border: 1px solid #884e22;
             width: 75px;
             height: 25px;
             font-size: 14px;
@@ -354,14 +417,14 @@ export default {
           padding: 10px;
           button {
             margin-right: 0;
-            border: 1px solid red;
+            border: 1px solid #884e22;
             width: 75px;
             height: 25px;
             font-size: 14px;
             background: #fff;
             border-radius: 50px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
-            color: red;
+            color: #884e22;
           }
         }
       }
@@ -374,7 +437,8 @@ export default {
 }
 
 ::v-deep .van-swipe-cell {
-  height: 150px;
+  height: 165px;
+  border-bottom: 1px solid #884e22;
 }
 ::v-deep .van-card {
   margin-top: 8px;

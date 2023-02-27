@@ -40,14 +40,12 @@ export const getOrder = (params) => {
 };
 
 // 更新订单信息
-export const updateOrder = (data) => {
+export const updateOrder = (id) => {
   return http({
-    url: "/order/:id",
-    method: "UPDATE",
-    data,
+    url: `/order/${id}`,
+    method: "PUT",
     headers: {
       isToken: true,
-      isId: true,
     },
   });
 };
@@ -58,6 +56,18 @@ export const createLogistics = (data) => {
     url: "/createLogistics",
     method: "POST",
     data,
+    headers: {
+      isToken: true,
+      isId: true,
+    },
+  });
+};
+
+//删除订单
+export const deleteOrder = (id) => {
+  return http({
+    url: `/order/${id}`,
+    method: "DELETE",
     headers: {
       isToken: true,
       isId: true,
