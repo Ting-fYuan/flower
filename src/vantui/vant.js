@@ -40,6 +40,8 @@ import {
   Picker,
   PasswordInput,
   NumberKeyboard,
+  Step,
+  Steps,
 } from "vant";
 
 Vue.use(AddressList);
@@ -84,3 +86,5 @@ Vue.use(Calendar);
 Vue.use(Picker);
 Vue.use(PasswordInput);
 Vue.use(NumberKeyboard);
+Vue.use(Step);
+Vue.use(Steps);
