@@ -61,7 +61,19 @@
 </template>
 
 <script>
-export default {};
+import { getSingleOrder } from "@/api/order";
+export default {
+  data() {
+    return {};
+  },
+  async created() {
+    try {
+      await getSingleOrder({});
+    } catch (err) {
+      return err;
+    }
+  },
+};
 </script>
 
 <style lang="scss" scoped>

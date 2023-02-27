@@ -38,3 +38,15 @@ export const getOrder = (params) => {
     },
   });
 };
+
+// 获取单条订单信息
+export const getSingleOrder = ($id) => {
+  return http({
+    url: `/order/${$id}`,
+    method: "GET",
+    headers: {
+      isToken: true,
+      isId: true,
+    },
+  });
+};
