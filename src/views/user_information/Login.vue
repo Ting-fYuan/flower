@@ -1,6 +1,8 @@
 <!-- 登录 -->
 <template>
+  <!-- 整体 -->
   <div class="wrap">
+    <!-- 头部 -->
     <header>
       <div class="login_head">
         <div class="head_back" @click="back">
@@ -8,34 +10,41 @@
         </div>
         <div class="head_text">登录注册</div>
         <div class="head_option">
+          <!-- 弹出层 -->
           <van-popover
             v-model="showPopover"
             trigger="click"
             :actions="actions"
-            placement="bottom-end"
+            placement="left-start"
+            @select="onSelect"
+            theme="dark"
           >
+            <!-- 点击事件 -->
             <template #reference>
               <i class="iconfont icon-caidan" />
             </template>
           </van-popover>
         </div>
       </div>
+      <!-- logo图片 -->
       <div class="logo">
         <img :src="logo" alt="logo" />
       </div>
     </header>
+    <!-- 内容 -->
     <main>
-      <!-- tabs -->
+      <!-- tab栏切换 -->
       <van-tabs
         v-model="activeName"
         animated
-        :swipeable="true"
         title-active-color="#804E21"
         color="#804E21"
+        @click="tabsState"
       >
+        <!--登录 -->
         <van-tab title="登录" name="login">
           <!-- 登录模块 -->
-          <div class="loginModule module">
+          <div class="loginModule">
             <!-- 登录手机号码 -->
             <div class="form">
               <div class="label" ref="loginMobileL">手机号码</div>
@@ -46,6 +55,7 @@
                 @blur="loginBlur"
                 @focus="loginFocus"
               />
+              <!-- 错误提示 -->
               <div class="err_msg" ref="login_m_err">{{ err.login_m_err }}</div>
             </div>
             <!-- 登录密码 -->
@@ -57,8 +67,12 @@
                 id="loginPassword"
                 @blur="loginBlur"
                 @focus="loginFocus"
+                ref="loginRef"
               />
+              <!-- 错误提示 -->
               <div class="err_msg" ref="login_p_err">{{ err.login_p_err }}</div>
+              <!-- 眼睛 -->
+              <van-icon name="closed-eye" size="40" @click="loginEye" />
             </div>
             <!-- 点击登录 -->
             <div class="form">
@@ -66,9 +80,10 @@
             </div>
           </div>
         </van-tab>
+        <!-- 注册 -->
         <van-tab title="注册" name="register">
           <!-- 注册模块 -->
-          <div class="registerModule module">
+          <div class="registerModule">
             <!-- 注册手机号模块 -->
             <div class="form">
               <div class="label" ref="regMobileL">手机号码</div>
@@ -79,6 +94,7 @@
                 @blur="regBlur"
                 @focus="regFocus"
               />
+              <!-- 错误提示 -->
               <div class="err_msg" ref="reg_m_err">{{ err.reg_m_err }}</div>
             </div>
             <!-- 注册密码模块 -->
@@ -90,8 +106,17 @@
                 id="regPassword"
                 @blur="regBlur"
                 @focus="regFocus"
+                ref="regPassRef"
               />
+              <!-- 错误提示 -->
               <div class="err_msg" ref="reg_p_err">{{ err.reg_p_err }}</div>
+              <!-- 眼睛 -->
+              <van-icon
+                ref="regEyeRef"
+                name="closed-eye"
+                size="40"
+                @click="regPassEye"
+              />
             </div>
             <!-- 注册确认密码模块 -->
             <div class="form">
@@ -102,8 +127,17 @@
                 id="regSamePass"
                 @blur="regBlur"
                 @focus="regFocus"
+                ref="regSameRef"
               />
+              <!-- 错误提示 -->
               <div class="err_msg" ref="reg_cp_err">{{ err.reg_cp_err }}</div>
+              <!-- 眼睛 -->
+              <van-icon
+                ref="sameEyeRef"
+                name="closed-eye"
+                size="40"
+                @click="regSameEye"
+              />
             </div>
             <!-- 注册按钮模块 -->
             <div class="form">
@@ -113,6 +147,7 @@
         </van-tab>
       </van-tabs>
     </main>
+    <!-- 底部 -->
     <footer></footer>
   </div>
 </template>
@@ -150,12 +185,6 @@ export default {
         // 注册确密码错误提示
         reg_cp_err: "",
       },
-      // tabs栏切换
-      activeName: "login",
-      // logo
-      logo: "",
-      // 菜单是否显示
-      showPopover: false,
       // 通过 actions 属性来定义菜单选项
       actions: [
         { text: "首页", icon: "wap-home-o" },
@@ -163,6 +192,17 @@ export default {
         { text: "购物车", icon: "shopping-cart-o" },
         { text: "我的", icon: "contact" },
       ],
+      // tabs栏切换
+      activeName: "login",
+      // logo
+      logo: "",
+      // 菜单是否显示
+      showPopover: false,
+      // 控制眼睛是否显示
+      eyeShow: false,
+      // 手机正则
+      phoneRule:
+        /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/,
     };
   },
   async created() {
@@ -179,88 +219,148 @@ export default {
     window.removeEventListener("keydown", this.keyEnter, false);
   },
   methods: {
+    // 占位符和错误提示样式添加删除函数
+    classHandel($cute, $data) {
+      const allClass = {
+        labelAdd: (data) => {
+          this.$refs[`${data}`].classList.add("labelActive");
+        },
+        labelRemova: (data) => {
+          this.$refs[`${data}`].classList.remove("labelActive");
+        },
+        errAdd: (data) => {
+          this.$refs[`${data}`].classList.add("errChange");
+        },
+        errRemove: (data) => {
+          this.$refs[`${data}`].classList.remove("errChange");
+        },
+      };
+      const callBack = (cute, data) => {
+        allClass[cute](data);
+      };
+      callBack($cute, $data);
+    },
+    // 眼睛变化函数
+    eyeHandle($event, $data) {
+      if (!this.eyeShow) {
+        $event.target.className = "van-icon van-icon-eye-o";
+        this.$refs[$data].type = "text";
+        this.eyeShow = !this.eyeShow;
+      } else {
+        $event.target.className = "van-icon van-icon-closed-eye";
+        this.$refs[$data].type = "password";
+        this.eyeShow = !this.eyeShow;
+      }
+    },
+    // 切换tab栏去除另一边的错误提示
+    tabsState(e) {
+      if (e == "login") {
+        if (
+          this.form.regPhone == "" &&
+          this.form.regPassword == "" &&
+          this.form.regSamePass == ""
+        ) {
+          this.classHandel("errRemove", "reg_m_err");
+          this.classHandel("errRemove", "reg_p_err");
+          this.classHandel("errRemove", "reg_cp_err");
+        } else if (this.form.regPhone == "" && this.form.regPassword == "") {
+          this.classHandel("errRemove", "reg_m_err");
+          this.classHandel("errRemove", "reg_p_err");
+        } else if (this.form.regPhone == "" && this.form.regSamePass == "") {
+          this.classHandel("errRemove", "reg_m_err");
+          this.classHandel("errRemove", "reg_cp_err");
+        } else if (this.form.regPassword == "" && this.form.regSamePass == "") {
+          this.classHandel("errRemove", "reg_p_err");
+          this.classHandel("errRemove", "reg_cp_err");
+        } else if (this.form.regPhone === "") {
+          this.classHandel("errRemove", "reg_m_err");
+        } else if (this.form.regPassword === "") {
+          this.classHandel("errRemove", "reg_p_err");
+        } else if (this.form.regSamePass == "") {
+          this.classHandel("errRemove", "reg_cp_err");
+        }
+      } else {
+        if (this.form.loginPhone == "" && this.form.loginPassword == "") {
+          this.$refs.login_m_err.classList.remove("errChange");
+          this.$refs.login_p_err.classList.remove("errChange");
+        } else if (this.form.loginPassword == "") {
+          this.$refs.login_p_err.classList.remove("errChange");
+        } else if (this.form.loginPhone == "") {
+          this.$refs.login_m_err.classList.remove("errChange");
+        }
+      }
+    },
     // 登录失焦样式变化
     loginBlur(e) {
-      // 添加错误提示
-      // e.target.nextElementSibling.classList.add("errChange");
-      // 去除错误提示
-      // e.target.nextElementSibling.classList.remove("errChange");
-
       // 判断是哪个输入框
       if (e.target.id == "loginMobile") {
         // 判断是否为空
         if (this.form.loginPhone == "") {
-          this.$refs.loginMobileL.classList.remove("labelActive");
-          this.err.login_m_err = "手机不能为空";
-          e.target.nextElementSibling.classList.add("errChange");
+          this.classHandel("labelRemova", "loginMobileL");
+          this.err.login_m_err = "手机号不能为空";
+          this.classHandel("errAdd", "login_m_err");
         } else {
-          // 电话号码正则
-          let reg =
-            /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
           // 判断是否为电话号码
-          if (!reg.test(this.form.loginPhone)) {
-            this.err.login_m_err = "手机格式错误";
-            e.target.nextElementSibling.classList.add("errChange");
+          if (!this.phoneRule.test(this.form.loginPhone)) {
+            this.err.login_m_err = "手机号码格式错误";
+            this.classHandel("errAdd", "login_m_err");
           } else {
-            e.target.nextElementSibling.classList.remove("errChange");
+            this.classHandel("errRemove", "login_m_err");
           }
         }
       } else {
         if (this.form.loginPassword == "") {
+          this.classHandel("labelRemova", "loginPassL");
           this.err.login_p_err = "密码不能为空";
-          this.$refs.loginPassL.classList.remove("labelActive");
-          e.target.nextElementSibling.classList.add("errChange");
+          this.classHandel("errAdd", "login_p_err");
         } else {
-          e.target.nextElementSibling.classList.remove("errChange");
+          this.classHandel("errRemove", "login_p_err");
         }
       }
     },
     // 登录聚焦样式变化
     loginFocus(e) {
       if (e.target.id == "loginMobile") {
-        this.$refs.loginMobileL.classList.add("labelActive");
+        this.classHandel("labelAdd", "loginMobileL");
       } else {
-        this.$refs.loginPassL.classList.add("labelActive");
+        this.classHandel("labelAdd", "loginPassL");
       }
     },
     // 注册失焦样式变化
     regBlur(e) {
       if (e.target.id == "regMobile") {
         if (this.form.regPhone == "") {
-          this.$refs.regMobileL.classList.remove("labelActive");
-          this.err.reg_m_err = "手机不能为空";
-          e.target.nextElementSibling.classList.add("errChange");
+          this.classHandel("labelRemova", "regMobileL");
+          this.err.reg_m_err = "手机号不能为空";
+          this.classHandel("errAdd", "reg_m_err");
         } else {
-          // 电话号码正则
-          let reg =
-            /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
           // 判断是否为电话号码
-          if (!reg.test(this.form.regPhone)) {
-            this.err.reg_m_err = "手机格式错误";
-            e.target.nextElementSibling.classList.add("errChange");
+          if (!this.phoneRule.test(this.form.regPhone)) {
+            this.err.reg_m_err = "手机号码格式错误";
+            this.classHandel("errAdd", "reg_m_err");
           } else {
-            e.target.nextElementSibling.classList.remove("errChange");
+            this.classHandel("errRemove", "reg_m_err");
           }
         }
       } else if (e.target.id == "regPassword") {
         if (this.form.regPassword == "") {
-          this.$refs.regPassL.classList.remove("labelActive");
+          this.classHandel("labelRemova", "regPassL");
           this.err.reg_p_err = "密码不能为空";
-          e.target.nextElementSibling.classList.add("errChange");
+          this.classHandel("errAdd", "reg_p_err");
         } else {
-          e.target.nextElementSibling.classList.remove("errChange");
+          this.classHandel("errRemove", "reg_p_err");
         }
       } else {
         if (this.form.regSamePass == "") {
-          this.$refs.regSamePassL.classList.remove("labelActive");
+          this.classHandel("labelRemova", "regSamePassL");
           this.err.reg_cp_err = "确认密码不能为空";
-          e.target.nextElementSibling.classList.add("errChange");
+          this.classHandel("errAdd", "reg_cp_err");
         } else {
           if (this.form.regPassword != this.form.regSamePass) {
             this.err.reg_cp_err = "密码不匹配";
-            e.target.nextElementSibling.classList.add("errChange");
+            this.classHandel("errAdd", "reg_cp_err");
           } else {
-            e.target.nextElementSibling.classList.remove("errChange");
+            this.classHandel("errRemove", "reg_cp_err");
           }
         }
       }
@@ -268,35 +368,37 @@ export default {
     // 注册聚焦样式变化
     regFocus(e) {
       if (e.target.id == "regMobile") {
-        this.$refs.regMobileL.classList.add("labelActive");
+        this.classHandel("labelAdd", "regMobileL");
       } else if (e.target.id == "regPassword") {
-        this.$refs.regPassL.classList.add("labelActive");
+        this.classHandel("labelAdd", "regPassL");
       } else {
-        this.$refs.regSamePassL.classList.add("labelActive");
+        this.classHandel("labelAdd", "regSamePassL");
       }
     },
     // 发送数据去vuex执行登录请求
     loginSubmit() {
-      // console.log("submit", values);
-      if (this.form.loginPhone == "" && this.form.loginPassword == "") {
-        console.log(1);
-        this.err.login_m_err = "手机号不能为空";
-        this.err.login_p_err = "密码不能为空";
-        this.$refs.login_m_err.classList.add("errChange");
-        this.$refs.login_p_err.classList.add("errChange");
-      } else if (this.form.loginPassword == "") {
-        this.err.login_p_err = "密码不能为空";
-        this.$refs.login_p_err.classList.add("errChange");
-      } else if (this.form.loginPhone == "") {
-        this.err.login_m_err = "手机号不能为空";
-        this.$refs.login_m_err.classList.add("errChange");
-      }
       const values = {
         modile: this.form.loginPhone,
         password: this.form.loginPassword,
       };
-
-      this.$store.dispatch("loginStore/loginResquest", values);
+      if (this.form.loginPhone == "" && this.form.loginPassword == "") {
+        this.err.login_m_err = "手机号不能为空";
+        this.err.login_p_err = "密码不能为空";
+        this.classHandel("errAdd", "login_p_err");
+        this.classHandel("errAdd", "login_m_err");
+      } else if (this.form.loginPassword == "") {
+        this.err.login_p_err = "密码不能为空";
+        this.classHandel("errAdd", "login_p_err");
+      } else if (this.form.loginPhone == "") {
+        this.err.login_m_err = "手机号不能为空";
+        this.classHandel("errAdd", "login_m_err");
+      } else if (
+        this.phoneRule.test(this.form.loginPhone) &&
+        this.form.loginPassword != ""
+      ) {
+        // 执行
+        this.$store.dispatch("loginStore/loginResquest", values);
+      }
     },
     // 注册请求
     async regiaterSubmit() {
@@ -304,7 +406,51 @@ export default {
         modile: this.form.regPhone,
         password: this.form.regPassword,
       };
-      this.$store.dispatch("loginStore/registerResquest", regValues);
+      if (
+        this.form.regPhone == "" &&
+        this.form.regPassword == "" &&
+        this.form.regSamePass == ""
+      ) {
+        this.err.reg_m_err = "手机号不能为空";
+        this.err.reg_p_err = "密码不能为空";
+        this.err.reg_cp_err = "确认密码不能为空";
+        this.classHandel("errAdd", "reg_m_err");
+        this.classHandel("errAdd", "reg_p_err");
+        this.classHandel("errAdd", "reg_cp_err");
+      } else if (this.form.regPhone == "" && this.form.regPassword == "") {
+        this.err.reg_m_err = "手机号不能为空";
+        this.err.reg_p_err = "密码不能为空";
+        this.classHandel("errAdd", "reg_m_err");
+        this.classHandel("errAdd", "reg_p_err");
+      } else if (this.form.regPhone == "" && this.form.regSamePass == "") {
+        this.err.reg_m_err = "手机号不能为空";
+        this.err.reg_cp_err = "确认密码不能为空";
+        this.classHandel("errAdd", "reg_m_err");
+        this.classHandel("errAdd", "reg_cp_err");
+      } else if (this.form.regPassword == "" && this.form.regSamePass == "") {
+        this.err.reg_p_err = "密码不能为空";
+        this.err.reg_cp_err = "确认密码不能为空";
+        this.classHandel("errAdd", "reg_p_err");
+        this.classHandel("errAdd", "reg_cp_err");
+      } else if (this.form.regPhone === "") {
+        this.err.reg_m_err = "手机号不能为空";
+        this.classHandel("errAdd", "reg_m_err");
+      } else if (this.form.regPassword === "") {
+        this.err.reg_p_err = "密码不能为空";
+        this.classHandel("errAdd", "reg_p_err");
+      } else if (this.form.regSamePass == "") {
+        this.err.reg_cp_err = "密码不匹配";
+        this.classHandel("errAdd", "reg_cp_err");
+      } else if (this.form.regPassword != this.form.regSamePass) {
+        this.err.reg_cp_err = "密码不匹配";
+        this.classHandel("errAdd", "reg_cp_err");
+      } else if (
+        this.phoneRule.test(this.form.regPhone) &&
+        this.form.regPassword === this.form.regSamePass
+      ) {
+        // 执行
+        this.$store.dispatch("loginStore/registerResquest", regValues);
+      }
     },
     // 回车登录
     keyEnter() {
@@ -317,6 +463,35 @@ export default {
     // 返回
     back() {
       this.$router.back(1);
+    },
+    // 登录密码点击是否显示密码
+    loginEye(e) {
+      this.eyeHandle(e, "loginRef");
+    },
+    // 注册密码点击是否显示密码
+    regPassEye(e) {
+      this.eyeHandle(e, "regPassRef");
+    },
+    // 确认密码点击是否显示密码
+    regSameEye(e) {
+      this.eyeHandle(e, "regSameRef");
+    },
+    // 菜单栏
+    onSelect(action, index) {
+      switch (index) {
+        case 0:
+          this.$router.push("/");
+          break;
+        case 1:
+          this.$router.push("/category");
+          break;
+        case 2:
+          this.$router.push("/shop");
+          break;
+        case 3:
+          this.$router.push("/home");
+          break;
+      }
     },
   },
 };
@@ -333,6 +508,7 @@ export default {
       align-items: center;
       i {
         font-size: 18px;
+        font-weight: 700;
       }
       .head_back {
       }
@@ -417,6 +593,7 @@ export default {
         color: rgba(0, 0, 0, 0.4);
         font-size: 14px;
         transition: all 0.3s ease;
+        pointer-events: none;
       }
       .labelActive {
         font-size: 12px;
@@ -435,6 +612,13 @@ export default {
         border: none;
         border-radius: 20px;
         font-size: 16px;
+      }
+      // icon
+      .van-icon {
+        position: absolute;
+        right: 18%;
+        top: 50%;
+        transform: translateY(-50%);
       }
       // 按钮样式
       .btn {

@@ -55,9 +55,7 @@
                 <p class="goods-name">{{ item.name }}</p>
                 <div class="ctn-bottom-box">
                   <p class="price">￥ {{ item.price }}</p>
-                  <p class="sale">
-                    销量{{ item.sold_num && item.sold_num.slice(0, 6) }}笔
-                  </p>
+                  <p class="sale">销量{{ item.sold_num && item.sold_num }}笔</p>
                 </div>
               </div>
             </div>
@@ -65,7 +63,7 @@
         </div>
       </div>
     </main>
-    <div class="sumUpBox">
+    <div class="sumUpBox" v-if="isLogin">
       <div class="toggle">
         <van-checkbox v-model="toggleBtn" @click="toggleHandle"
           ><p>全选</p></van-checkbox
@@ -83,6 +81,7 @@
 <script>
 import { guessLikeApi } from "@/api/shopCar";
 import TabBar from "@/components/TabBar.vue";
+import { Toast } from "vant";
 export default {
   name: "ShopView",
   data() {
@@ -134,6 +133,10 @@ export default {
         this.showShopList = false;
       }
     },
+    // ! （暂时）进入页面刷新
+    $route() {
+      this.$router.go(0);
+    },
   },
   async created() {
     // 是否登录
@@ -146,9 +149,8 @@ export default {
       if (result.length) {
         // 展示购物车列表
         this.showShopList = true;
-        console.log("购物车列表", result);
+        // console.log("购物车列表", result);
       } else this.showShopList = false;
-
       // 是否有选中购物车
       const { chooseShopList } = this.$store.state.shopCarStore;
       if (chooseShopList) {
@@ -158,7 +160,7 @@ export default {
     // 猜你喜欢
     const { result } = await guessLikeApi();
     this.likeList = result;
-    console.log("猜你喜欢", result);
+    // console.log("猜你喜欢", result);
   },
   methods: {
     // 去逛逛
@@ -185,9 +187,16 @@ export default {
     },
     // 跳转结算页面
     toOrder() {
-      this.$router.push({
-        path: "/fillOrder",
-      });
+      if (this.chooseShopList.length) {
+        this.$router.push({
+          path: "/fillOrder",
+        });
+      } else {
+        Toast({
+          message: "请先选择商品",
+          position: "bottom",
+        });
+      }
     },
   },
   components: { TabBar },
@@ -199,7 +208,6 @@ export default {
   height: 100vh;
   background-color: #e8ecef;
   main {
-    padding: 42px 0 0;
     .shop-car-box {
       .shop {
         .shop-list-box {

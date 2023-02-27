@@ -26,6 +26,14 @@ import {
   Search,
   Divider,
   Empty,
+  SwipeCell,
+  Card,
+  Cascader,
+  Calendar,
+  Picker,
+  ActionSheet,
+  PasswordInput,
+  NumberKeyboard,
 } from "vant";
 
 Vue.use(AddressList);
@@ -56,3 +64,11 @@ Vue.use(Tab);
 Vue.use(Tabs);
 Vue.use(Divider);
 Vue.use(Empty);
+Vue.use(SwipeCell);
+Vue.use(Card);
+Vue.use(Cascader);
+Vue.use(Calendar);
+Vue.use(Picker);
+Vue.use(ActionSheet);
+Vue.use(PasswordInput);
+Vue.use(NumberKeyboard);

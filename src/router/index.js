@@ -78,10 +78,18 @@ const routes = [
   {
     path: "/order",
     name: "order",
+    redirect: "/order/myorder/1",
     component: () => import("@/views/individual_center/Order.vue"),
     meta: {
       isAuth: true,
     },
+    children: [
+      {
+        path: "/order/myorder/:id",
+        name: "myorder",
+        component: () => import("@/views/order/myOrder.vue"),
+      },
+    ],
   },
 
   {
@@ -96,9 +104,9 @@ const routes = [
     path: "/payfinished",
     name: "payfinished",
     component: () => import("@/views/individual_center/PayFinished.vue"),
-    // meta: {
-    //   isAuth: true,
-    // },
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/sending",
@@ -177,6 +185,42 @@ const routes = [
     name: "fillOrder",
     component: () => import("@/views/order/FillOrder.vue"),
   },
+  // 订购人页面
+  {
+    path: "/subscriber",
+    name: "subscriber",
+    component: () => import("@/views/order/SubscriberView.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 发票页面
+  {
+    path: "/receipt",
+    name: "receipt",
+    component: () => import("@/views/order/ReceiptEdit.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 结算订单
+  {
+    path: "/paysuccess",
+    name: "paysuccess",
+    component: () => import("@/views/order/PaySuccess.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 订单详情
+  {
+    path: "/orderdetails",
+    name: "orderdetails",
+    component: () => import("@/views/order/OrderDetails.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
 ];
 
 const router = new VueRouter({
@@ -193,14 +237,14 @@ router.beforeEach((to, from, next) => {
       // 已登录放行
       next();
     } else {
-      Toast({
-        message: "请先登录",
-        position: "bottom",
-      });
       next({
         path: "/login",
         // 完整路径
         query: { redirect: to.fullPath },
+      });
+      Toast({
+        message: "请先登录",
+        position: "bottom",
       });
     }
   } else {
