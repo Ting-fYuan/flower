@@ -96,7 +96,6 @@ http.interceptors.response.use(
   function (error) {
     // 关闭loadding
     Toast.clear();
-
     const { status, data } = error.response;
     // token过期
     if (status === 409 && data.msg === "没有该用户信息") {
