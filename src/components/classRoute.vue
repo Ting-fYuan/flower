@@ -4,9 +4,15 @@
       <img src="../assets/images/banner1_m.jpg.png" alt="" />
     </div>
     <main>
-      <div class="title">{{}}</div>
+      <div class="title">{{ arr.name }}</div>
       <ul>
-        <li>1</li>
+        <li
+          v-for="(item, index) in arr"
+          :key="index"
+          @click="toClassification(item)"
+        >
+          {{ item.name }}
+        </li>
       </ul>
     </main>
   </div>
@@ -15,6 +21,25 @@
 <script>
 export default {
   name: "ClassRoute",
+  data() {
+    return {
+      arr: [],
+    };
+  },
+  created() {
+    console.log("组件");
+    setTimeout((item) => {
+      console.log(item);
+      //   console.log(this.$store.state.classflyStore);
+      this.arr = this.$store.state.classflyStore;
+    }, 1000);
+  },
+  methods: {
+    toClassification(item) {
+      console.log(item.id);
+      this.$router.push({ path: "/classification", query: item.id });
+    },
+  },
 };
 </script>
 
