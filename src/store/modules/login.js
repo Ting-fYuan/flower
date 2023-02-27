@@ -47,7 +47,7 @@ export default {
       newVal.phone = phoneReplace;
       newVal.mAES = phoneEncryption;
       newVal.pAES = passwordEncryption;
-      console.log(newVal);
+      // console.log(newVal);
 
       state.token = newVal.token;
       state.userInfo = newVal;
