@@ -33,6 +33,7 @@ const routes = [
       {
         path: "/category/UseView",
         name: "UseView",
+        // props: ["id"],
         component: () => import("@/views/children_route/use.vue"),
       },
       {
@@ -77,10 +78,18 @@ const routes = [
   {
     path: "/order",
     name: "order",
+    redirect: "/order/myorder/1",
     component: () => import("@/views/individual_center/Order.vue"),
     meta: {
       isAuth: true,
     },
+    children: [
+      {
+        path: "/order/myorder/:id",
+        name: "myorder",
+        component: () => import("@/views/order/myOrder.vue"),
+      },
+    ],
   },
 
   {
@@ -95,9 +104,9 @@ const routes = [
     path: "/payfinished",
     name: "payfinished",
     component: () => import("@/views/individual_center/PayFinished.vue"),
-    // meta: {
-    //   isAuth: true,
-    // },
+    meta: {
+      isAuth: true,
+    },
   },
   {
     path: "/sending",
@@ -175,6 +184,42 @@ const routes = [
     path: "/fillOrder",
     name: "fillOrder",
     component: () => import("@/views/order/FillOrder.vue"),
+  },
+  // 订购人页面
+  {
+    path: "/subscriber",
+    name: "subscriber",
+    component: () => import("@/views/order/SubscriberView.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 发票页面
+  {
+    path: "/receipt",
+    name: "receipt",
+    component: () => import("@/views/order/ReceiptEdit.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 结算订单
+  {
+    path: "/paysuccess",
+    name: "paysuccess",
+    component: () => import("@/views/order/PaySuccess.vue"),
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 订单详情
+  {
+    path: "/orderdetails",
+    name: "orderdetails",
+    component: () => import("@/views/order/OrderDetails.vue"),
+    meta: {
+      isAuth: true,
+    },
   },
 ];
 
