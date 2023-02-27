@@ -7,8 +7,10 @@
           <i class="iconfont icon-dizhi"></i>
         </div>
         <div class="address-right">
-          <p>袁总<span>1331316353435</span></p>
-          <p>广州市啊嗲十九点拉升阶段了</p>
+          <p>
+            {{ order.s_address?.name }}<span>{{ order.s_address?.phone }}</span>
+          </p>
+          <p>{{ order.s_address?.area_name + "  " + order.s_address?.desc }}</p>
         </div>
       </div>
       <div class="pay-bg">
@@ -18,26 +20,26 @@
         </div>
       </div>
       <div class="goods-ctn">
-        <div class="goods-box">
+        <div class="goods-box" v-for="item in order.goods_info" :key="item.id">
           <div class="goods-left">
-            <img src="" alt="" />
+            <img :src="item.s_goods_photos[0].path" :alt="item.goods_name" />
             <p>商品名称</p>
           </div>
           <div class="goods-right">
-            <p>￥11231</p>
-            <p>x1</p>
+            <p>￥{{ item.sale_price * item.num }}</p>
+            <p>x{{ item.num }}</p>
           </div>
         </div>
         <div class="total">
           <p>商品总价</p>
-          <p>￥123213</p>
+          <p>￥{{ total }}</p>
         </div>
       </div>
       <div class="order-msg">
         <p>订单信息</p>
         <div class="order-msg-box">
           <p>订单编号</p>
-          <p>4455</p>
+          <p>{{ order.order_id }}</p>
         </div>
         <div class="order-msg-box">
           <p>支付宝交易号</p>
@@ -45,23 +47,69 @@
         </div>
         <div class="order-msg-box">
           <p>创建时间</p>
-          <p>2133123123</p>
+          <p>{{ createdAt }}</p>
         </div>
         <div class="order-msg-box">
           <p>成交时间</p>
-          <p>1232132131</p>
+          <p>{{ updateAt }}</p>
         </div>
       </div>
     </main>
     <header>
-      <button>再次购买</button>
+      <button @click="toIndex">再次购买</button>
       <p>已经到底了~</p>
     </header>
   </div>
 </template>
 
 <script>
-export default {};
+import { getSingleOrder } from "@/api/order";
+export default {
+  data() {
+    return {
+      order: {},
+    };
+  },
+  async created() {
+    const { id } = this.$route.query;
+    try {
+      const { result } = await getSingleOrder(id);
+      this.order = result;
+      if (!this.order) {
+        this.$router.replace({
+          path: "/",
+        });
+      }
+    } catch (err) {
+      return err;
+    }
+  },
+  computed: {
+    // 总价
+    total() {
+      let res = 0;
+      this.order.goods_info?.map((item) => {
+        res += item.sale_price * item.num;
+      });
+      return res;
+    },
+    // 创建时间
+    createdAt() {
+      const date = this.order.createdAt?.split("T");
+      return date[0] + " " + date[1]?.slice(0, 8);
+    },
+    // 成交时间
+    updateAt() {
+      const date = this.order.updatedAt?.split("T");
+      return date[0] + " " + date[1]?.slice(0, 8);
+    },
+  },
+  methods: {
+    toIndex() {
+      this.$router.replace("/index");
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -139,7 +187,6 @@ export default {};
     .goods-ctn {
       padding: 80px 20px 20px;
       background-color: #fff;
-      border-radius: 0 0 10px 10px;
       .goods-box {
         display: flex;
         justify-content: space-between;
@@ -181,7 +228,6 @@ export default {};
       padding-bottom: 80px;
       background-color: #fff;
       height: 100%;
-      border-radius: 10px;
       & > p {
         margin-bottom: 15px;
         font-size: 14px;
@@ -204,14 +250,15 @@ export default {};
       position: absolute;
       right: 20px;
       bottom: 20px;
-      width: 90px;
-      height: 40px;
+      width: 80px;
+      height: 30px;
       background-color: #884f22;
       color: #fff;
       border-radius: 20px;
       font-size: 13px;
     }
     p {
+      margin-bottom: 5px;
       color: #000000a9;
       text-align: center;
     }

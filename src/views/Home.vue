@@ -7,14 +7,14 @@
         <img src="../../src/assets/images/homeBackground.jpg" />
         <div class="content" v-if="LoginState">
           <p>Hi,欢迎来到订花乐!</p>
-          <button @click="changeLoginState">登录/注册</button>
+          <button class="loginBtn" @click="goLogin">登录/注册</button>
         </div>
         <div class="content" v-if="!LoginState">
           <div>
             <img src="@/assets/images/avatar.png" alt="默认头像" />
             <span>订花乐用户</span>
           </div>
-          <button @click="changeLoginState">注销</button>
+          <button @click="changeLoginState">退出登录</button>
         </div>
         <div class="OtherInformationBox">
           <div class="OrderBox">
@@ -76,6 +76,7 @@
 
 <script>
 import TabBar from "@/components/TabBar.vue";
+import { logout } from "@/api/user";
 export default {
   name: "HomeView",
   components: { TabBar },
@@ -86,8 +87,12 @@ export default {
   },
   methods: {
     // @ 切换登录态
-    changeLoginState() {
+    async changeLoginState() {
       this.LoginState = !this.LoginState;
+      let logoutRes = await logout({});
+      if (logoutRes) {
+        this.$store.commit("loginStore/clearUserInfo");
+      }
     },
     goSearch() {
       this.$router.push("/order");
@@ -113,6 +118,9 @@ export default {
     goSetting() {
       this.$router.push("/setting");
     },
+    goLogin() {
+      this.$router.push("/login");
+    },
   },
 };
 </script>
@@ -121,7 +129,6 @@ export default {
 .loginArea {
   box-sizing: border-box;
   width: 100vw;
-  height: 100vh;
   background-color: #e8ecef;
 }
 
@@ -154,6 +161,10 @@ export default {
       border-radius: 18px;
       background-color: white;
       font-size: 14px;
+    }
+    .loginBtn {
+      background-color: #fff;
+      color: #000;
     }
 
     > div {

@@ -58,9 +58,7 @@
             <p class="goods-name" :data-value="item.name">{{ item.name }}</p>
             <div class="ctn-bottom-box">
               <p class="price">￥ {{ item.price }}</p>
-              <p class="sale">
-                销量{{ item.sold_num && item.sold_num.slice(0, 6) }}笔
-              </p>
+              <p class="sale">销量{{ item.sold_num && item.sold_num }}笔</p>
             </div>
           </div>
         </div>
