@@ -376,7 +376,12 @@ export default {
   methods: {
     // 跳转填写地址
     toAddressHandle() {
-      this.$router.push("address");
+      this.$router.push({
+        path: "/address",
+        query: {
+          order: true,
+        },
+      });
     },
     // 日历
     formatDate(date) {

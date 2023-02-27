@@ -22,7 +22,7 @@
       <div class="goods-ctn">
         <div class="goods-box" v-for="item in order.goods_info" :key="item.id">
           <div class="goods-left">
-            <img :src="item.s_goods_photos[0].path" :alt="item.goods_name" />
+            <img :src="item?.s_goods_photos[0].path" :alt="item.goods_name" />
             <p>商品名称</p>
           </div>
           <div class="goods-right">

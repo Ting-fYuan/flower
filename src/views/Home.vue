@@ -117,12 +117,7 @@ export default {
       this.$router.push("/coupon");
     },
     goAddress() {
-      this.$router.push({
-        path: "/address",
-        query: {
-          home: true,
-        },
-      });
+      this.$router.push("/address");
     },
     goSetting() {
       this.$router.push("/setting");
