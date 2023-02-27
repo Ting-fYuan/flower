@@ -24,6 +24,7 @@ const errorHandle = (errMsg) => {
       redirect: router.history.current.fullPath,
     },
   });
+  Toast.clear();
   Toast({
     message: errMsg,
     position: "bottom",
@@ -95,7 +96,6 @@ http.interceptors.response.use(
   function (error) {
     // 关闭loadding
     Toast.clear();
-
     const { status, data } = error.response;
     // token过期
     if (status === 409 && data.msg === "没有该用户信息") {

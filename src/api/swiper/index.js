@@ -1,5 +1,6 @@
 import http from "@/utils/http.js";
 // 轮播图 api
+
 // 详情页轮播图
 export const detailSwipe = (params) => {
   return http({

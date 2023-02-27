@@ -38,3 +38,41 @@ export const getOrder = (params) => {
     },
   });
 };
+
+// 获取单条订单信息
+export const getSingleOrder = ($id) => {
+  return http({
+    url: `/order/${$id}`,
+    method: "GET",
+    headers: {
+      isToken: true,
+      isId: true,
+    },
+  });
+};
+
+// 更新订单信息
+export const updateOrder = (data) => {
+  return http({
+    url: "/order/:id",
+    method: "PUT",
+    data,
+    headers: {
+      isToken: true,
+      isId: true,
+    },
+  });
+};
+
+// 创建物流信息
+export const createLogistics = (data) => {
+  return http({
+    url: "/createLogistics",
+    method: "POST",
+    data,
+    headers: {
+      isToken: true,
+      isId: true,
+    },
+  });
+};
