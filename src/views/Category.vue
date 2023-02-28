@@ -96,6 +96,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        border-left: 1px solid rgba(233, 236, 240, 1);
         &.router-link-exact-active {
           color: rgba(136, 78, 34, 1);
           border-left: 1px solid rgba(136, 78, 34, 1);

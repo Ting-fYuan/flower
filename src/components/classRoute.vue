@@ -1,20 +1,24 @@
 <template>
   <div class="box">
-    <div class="img">
-      <img src="../assets/images/banner1_m.jpg.png" alt="" />
+    <van-skeleton title :row="3" :loading="loading" />
+    <div class="box2">
+      <div class="img">
+        <img src="../assets/images/banner1_m.jpg.png" alt="" />
+      </div>
+      <main>
+        <div class="title">{{ arr.name }}</div>
+
+        <ul>
+          <li
+            v-for="(item, index) in arr"
+            :key="index"
+            @click="toClassification(item)"
+          >
+            {{ item.name }}
+          </li>
+        </ul>
+      </main>
     </div>
-    <main>
-      <div class="title">{{ arr.name }}</div>
-      <ul>
-        <li
-          v-for="(item, index) in arr"
-          :key="index"
-          @click="toClassification(item)"
-        >
-          {{ item.name }}
-        </li>
-      </ul>
-    </main>
   </div>
 </template>
 
@@ -24,6 +28,7 @@ export default {
   data() {
     return {
       arr: [],
+      loading: true,
     };
   },
   created() {
@@ -32,7 +37,10 @@ export default {
       console.log(item);
       //   console.log(this.$store.state.classflyStore);
       this.arr = this.$store.state.classflyStore;
-    }, 1000);
+    }, 700);
+  },
+  mounted() {
+    this.loading = false;
   },
   methods: {
     toClassification(item) {
