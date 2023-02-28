@@ -43,7 +43,10 @@ export default {
       // console.log(item.id);
       this.$router.push({
         path: "/classification",
-        query: { info: JSON.stringify(item) },
+        query: {
+          id: item.id,
+          name: item.name,
+        },
       });
     },
   },
