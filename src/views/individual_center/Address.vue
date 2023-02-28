@@ -2,8 +2,13 @@
 <template>
   <div class="address">
     <div class="addressHead">
-      <com-head title="收货地址"></com-head>
+      <com-head title="收货地址">
+        <template slot="header-right">
+          <p id="manage">管理</p>
+        </template>
+      </com-head>
     </div>
+    <main></main>
     <div class="addressList">
       <van-address-list
         v-model="chosenAddressId"
@@ -13,10 +18,9 @@
         @edit="onEdit"
         add-button-text="+新建地址"
         @select="changeAddressHandle"
+        :switchable="!switchFlag"
       >
-        <template v-slot:item-bottom>
-          <div>下方盒子</div>
-        </template>
+        <template v-slot:item-bottom></template>
       </van-address-list>
     </div>
   </div>
@@ -29,6 +33,8 @@ export default {
     return {
       chosenAddressId: "",
       list: [],
+      // 默认关闭选中地址
+      switchFlag: false,
     };
   },
   watch: {},
@@ -39,9 +45,16 @@ export default {
     },
   },
   async created() {
+    if (!this.$route.query.order) {
+      // 开启地址选择
+      this.switchFlag = true;
+    } else {
+      // 关闭地址选择
+      this.switchFlag = false;
+    }
     // 请求地址
     await this.$store.dispatch("addressStore/getUserAddress");
-    // 默认选中
+    // 请求默认选中
     const res = await this.getAddressList.find((item) => item.isDefault);
     if (res) this.chosenAddressId = res.id;
   },
@@ -94,5 +107,10 @@ export default {
 // 默认图标样式
 .van-tag--danger {
   background-color: #884e22;
+}
+
+#manage {
+  font-size: 14px;
+  color: #884e22;
 }
 </style>
