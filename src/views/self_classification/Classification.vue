@@ -1,9 +1,7 @@
 <!-- 子分类 -->
 <template>
   <div class="SearchPages">
-    <com-head :title="this.$route.query.name">
-      <template slot="header-right"> 123 </template>
-    </com-head>
+    <com-head :title="this.$route.query.name" menu="true"> </com-head>
     <div :class="topShow" @click="SetTop">
       <i class="iconfont icon-zhiding"></i>
     </div>
