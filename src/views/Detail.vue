@@ -1,3 +1,4 @@
+<!-- eslint-disable prettier/prettier -->
 <!-- 商品详情 -->
 <template>
   <div class="detail">
@@ -327,261 +328,261 @@ export default {
       height: 15px;
       margin-right: 10px;
     }
-  .nav-img {
-    height: 31px;
-  }
-  // 轮播图
-  .my-swipe {
-    width: 375px;
-    height: 375px;
-    img {
-      width: 100%;
-      height: 100%;
+    .nav-img {
+      height: 31px;
     }
-  }
-  .moneyhead {
-    width: 375px;
-    height: 95px;
-    position: relative;
-    background-color: #fff;
-    .moneyheadr {
-      position: absolute;
-      width: 345px;
-      height: 64px;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      margin: auto;
-
-      .moneytop {
-        height: 21px;
-
-        h3 {
-          width: 60px;
-          height: 21px;
-          opacity: 1;
-          color: rgba(85, 85, 85, 1);
-          font-size: 15px;
-          font-weight: 400;
-          font-family: "PingFang SC";
-          text-align: left;
-        }
+    // 轮播图
+    .my-swipe {
+      width: 375px;
+      height: 375px;
+      img {
+        width: 100%;
+        height: 100%;
       }
-      .moneybottom {
+    }
+    .moneyhead {
+      width: 375px;
+      height: 95px;
+      position: relative;
+      background-color: #fff;
+      .moneyheadr {
+        position: absolute;
         width: 345px;
-        height: 43px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        .leftmoney {
-          width: 103px;
-          height: 28px;
-          display: flex;
-          justify-content: space-around;
-          p {
-            &:nth-of-type(1) {
-              opacity: 1;
-              color: rgba(255, 115, 76, 1);
-              font-weight: 700;
-              text-align: left;
-              font-size: 20px;
-              font-family: "Tahoma";
-            }
-            &:nth-of-type(2) {
-              opacity: 1;
-              color: rgba(180, 186, 191, 1);
-              font-weight: 400;
-              text-align: left;
-              font-size: 14px;
-              font-family: "PingFang SC";
-              padding-top: 5px;
-              text-decoration: line-through;
-            }
-          }
-        }
-        .rightmoney {
-          p {
-            width: 69px;
-            height: 17px;
+        height: 64px;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+
+        .moneytop {
+          height: 21px;
+
+          h3 {
+            width: 60px;
+            height: 21px;
             opacity: 1;
             color: rgba(85, 85, 85, 1);
-            font-size: 12px;
+            font-size: 15px;
             font-weight: 400;
             font-family: "PingFang SC";
             text-align: left;
           }
         }
-      }
-    }
-  }
-  .constop {
-    padding-bottom: 10px;
-    width: 375px;
-    height: 173px;
-    border-top: 0.5px solid #e9ecf0;
-    background-color: #fff;
-    p {
-      display: block;
-      margin: 0 auto;
-      padding: 15px;
-      font-size: 15px;
-      color: #555555;
-      line-height: 41px;
-      border-bottom: 0.5px solid red;
-    }
-  }
-  .cutbut {
-    margin: 10px 0;
-    width: 375px;
-    height: 62px;
-    opacity: 1;
-    position: relative;
-    background: #ffffff;
-    .cutauto {
-      position: absolute;
-      width: 345px;
-      height: 52px;
-      opacity: 1;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      margin: auto;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      p {
-        width: 28px;
-        height: 30px;
-        opacity: 1;
-        color: #555555;
-        font-size: 14px;
-        font-weight: 400;
-        font-family: "PingFang SC";
-        text-align: left;
-        line-height: 30px;
-      }
-      .van-stepper {
-        width: 269.8px;
-        height: 32px;
-      }
-    }
-  }
-  .appraisal {
-    width: 375px;
-    background-color: #fff;
-    .appraisalBox {
-      margin-bottom: 10px;
-      padding: 0px 15px 30px;
-      width: 345px;
-      .appraisalhead {
-        display: flex;
-        padding: 15px 0;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 1px solid #e9ecf0;
-        p {
-          &:nth-of-type(1) {
-            width: 64px;
-            height: 22px;
-            opacity: 1;
-            color: #555555;
-            font-size: 16px;
-            font-weight: 400;
-          }
-          &:nth-of-type(2) {
-            width: 111px;
-            height: 17px;
-            opacity: 1;
-            color: #333333;
-            font-size: 12px;
-            font-weight: 400;
-          }
-        }
-      }
-      .appraisalmain {
-        padding-top: 20px;
-        padding-bottom: 10px;
-        .appraisTop {
-          padding-top: 5px;
+        .moneybottom {
+          width: 345px;
+          height: 43px;
           display: flex;
-          position: relative;
           flex-direction: row;
+          justify-content: space-between;
           align-items: center;
-          img {
-            width: 20px;
-            height: 20px;
-            &:nth-of-type(2) {
-              position: absolute;
-              right: 0;
-              width: 14px;
-              height: 14px;
-              opacity: 1;
+          .leftmoney {
+            width: 103px;
+            height: 28px;
+            display: flex;
+            justify-content: space-around;
+            p {
+              &:nth-of-type(1) {
+                opacity: 1;
+                color: rgba(255, 115, 76, 1);
+                font-weight: 700;
+                text-align: left;
+                font-size: 20px;
+                font-family: "Tahoma";
+              }
+              &:nth-of-type(2) {
+                opacity: 1;
+                color: rgba(180, 186, 191, 1);
+                font-weight: 400;
+                text-align: left;
+                font-size: 14px;
+                font-family: "PingFang SC";
+                padding-top: 5px;
+                text-decoration: line-through;
+              }
             }
           }
-          p {
-            width: 85px;
-            height: 17px;
-            opacity: 1;
-            padding-left: 10px;
-            color: #555555;
-            font-size: 14px;
-            font-weight: 400;
-            font-family: "Tahoma";
-          }
-        }
-        .appraisBottom {
-          p {
-            padding-top: 10px;
-            font-size: 14px;
-          }
-          img {
-            padding-top: 20px;
-            width: 55.19px;
-            height: 73.58px;
+          .rightmoney {
+            p {
+              width: 69px;
+              height: 17px;
+              opacity: 1;
+              color: rgba(85, 85, 85, 1);
+              font-size: 12px;
+              font-weight: 400;
+              font-family: "PingFang SC";
+              text-align: left;
+            }
           }
         }
       }
-      .appraibtn {
-        width: 84px;
-        height: 29px;
-        border: 1px solid #232628;
+    }
+    .constop {
+      padding-bottom: 10px;
+      width: 375px;
+      height: 173px;
+      border-top: 0.5px solid #e9ecf0;
+      background-color: #fff;
+      p {
+        display: block;
         margin: 0 auto;
-        text-align: center;
-
-        button {
+        padding: 15px;
+        font-size: 15px;
+        color: #555555;
+        line-height: 41px;
+        border-bottom: 0.5px solid red;
+      }
+    }
+    .cutbut {
+      margin: 10px 0;
+      width: 375px;
+      height: 62px;
+      opacity: 1;
+      position: relative;
+      background: #ffffff;
+      .cutauto {
+        position: absolute;
+        width: 345px;
+        height: 52px;
+        opacity: 1;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        p {
+          width: 28px;
+          height: 30px;
+          opacity: 1;
+          color: #555555;
+          font-size: 14px;
+          font-weight: 400;
+          font-family: "PingFang SC";
+          text-align: left;
+          line-height: 30px;
+        }
+        .van-stepper {
+          width: 269.8px;
+          height: 32px;
+        }
+      }
+    }
+    .appraisal {
+      width: 375px;
+      background-color: #fff;
+      .appraisalBox {
+        margin-bottom: 10px;
+        padding: 0px 15px 30px;
+        width: 345px;
+        .appraisalhead {
+          display: flex;
+          padding: 15px 0;
+          align-items: center;
+          justify-content: space-between;
+          border-bottom: 1px solid #e9ecf0;
+          p {
+            &:nth-of-type(1) {
+              width: 64px;
+              height: 22px;
+              opacity: 1;
+              color: #555555;
+              font-size: 16px;
+              font-weight: 400;
+            }
+            &:nth-of-type(2) {
+              width: 111px;
+              height: 17px;
+              opacity: 1;
+              color: #333333;
+              font-size: 12px;
+              font-weight: 400;
+            }
+          }
+        }
+        .appraisalmain {
+          padding-top: 20px;
+          padding-bottom: 10px;
+          .appraisTop {
+            padding-top: 5px;
+            display: flex;
+            position: relative;
+            flex-direction: row;
+            align-items: center;
+            img {
+              width: 20px;
+              height: 20px;
+              &:nth-of-type(2) {
+                position: absolute;
+                right: 0;
+                width: 14px;
+                height: 14px;
+                opacity: 1;
+              }
+            }
+            p {
+              width: 85px;
+              height: 17px;
+              opacity: 1;
+              padding-left: 10px;
+              color: #555555;
+              font-size: 14px;
+              font-weight: 400;
+              font-family: "Tahoma";
+            }
+          }
+          .appraisBottom {
+            p {
+              padding-top: 10px;
+              font-size: 14px;
+            }
+            img {
+              padding-top: 20px;
+              width: 55.19px;
+              height: 73.58px;
+            }
+          }
+        }
+        .appraibtn {
           width: 84px;
           height: 29px;
-          opacity: 1;
-          color: #232628;
-          font-size: 12px;
-          font-weight: 400;
-          background-color: #fff;
+          border: 1px solid #232628;
+          margin: 0 auto;
+          text-align: center;
+
+          button {
+            width: 84px;
+            height: 29px;
+            opacity: 1;
+            color: #232628;
+            font-size: 12px;
+            font-weight: 400;
+            background-color: #fff;
+          }
         }
       }
     }
-  }
-  .consbottom {
-    margin-bottom: 30px;
-    padding: 20px 10px 70px;
-    height: 100%;
-    background-color: #fff;
-    span {
-      width: 66px;
-      height: 23px;
-      opacity: 1;
-      color: #555555;
-      font-size: 16.5px;
-      font-weight: 400;
-      font-family: "PingFang SC";
-      display: block;
-      width: 100%;
+    .consbottom {
+      margin-bottom: 30px;
+      padding: 20px 10px 70px;
+      height: 100%;
+      background-color: #fff;
+      span {
+        width: 66px;
+        height: 23px;
+        opacity: 1;
+        color: #555555;
+        font-size: 16.5px;
+        font-weight: 400;
+        font-family: "PingFang SC";
+        display: block;
+        width: 100%;
+      }
     }
   }
-
 }
 
 ::v-deep img {
