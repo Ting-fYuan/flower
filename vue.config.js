@@ -1,5 +1,15 @@
 const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
+  // 更改ico
+  pwa: {
+    iconPaths: {
+      favicon32: "favicon.ico",
+      favicon16: "favicon.ico",
+      appleTouchIcon: "favicon.ico",
+      maskIcon: "favicon.ico",
+      msTileImage: "favicon.ico",
+    },
+  },
   transpileDependencies: true,
   // 配置打包更改根目录
   publicPath: "./",

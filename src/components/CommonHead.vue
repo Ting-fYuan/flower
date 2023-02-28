@@ -96,7 +96,7 @@ export default {
 
 <style lang="scss" scoped>
 .icon-caidan {
-  font-size: 16px;
+  font-size: 23px;
 }
 
 nav {

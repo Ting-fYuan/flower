@@ -6,11 +6,11 @@
         <img src="../assets/images/banner1_m.jpg.png" alt="" />
       </div>
       <main>
-        <div class="title">{{ arr.name }}</div>
+        <div class="title">{{ classList.name }}</div>
 
         <ul>
           <li
-            v-for="(item, index) in arr"
+            v-for="(item, index) in classList"
             :key="index"
             @click="toClassification(item)"
           >
@@ -27,24 +27,20 @@ export default {
   name: "ClassRoute",
   data() {
     return {
-      arr: [],
       loading: true,
     };
   },
-  created() {
-    // console.log("组件");
-    setTimeout((item) => {
-      console.log(item);
-      //   console.log(this.$store.state.classflyStore);
-      this.arr = this.$store.state.classflyStore;
-    }, 700);
+  computed: {
+    classList() {
+      return this.$store.state.classflyStore;
+    },
   },
   mounted() {
     this.loading = false;
   },
   methods: {
     toClassification(item) {
-      console.log(item.id);
+      // console.log(item.id);
       this.$router.push({
         path: "/classification",
         query: {

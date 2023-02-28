@@ -2,11 +2,7 @@
 <template>
   <div class="address">
     <div class="addressHead">
-      <com-head title="收货地址">
-        <template slot="header-right">
-          <p id="manage">管理</p>
-        </template>
-      </com-head>
+      <com-head title="收货地址"></com-head>
     </div>
     <main></main>
     <div class="addressList">
