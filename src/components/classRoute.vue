@@ -5,19 +5,20 @@
       <div class="img">
         <img src="../assets/images/banner1_m.jpg.png" alt="" />
       </div>
-      <main>
-        <div class="title">{{ arr.name }}</div>
-
-        <ul>
-          <li
-            v-for="(item, index) in arr"
-            :key="index"
-            @click="toClassification(item)"
-          >
-            {{ item.name }}
-          </li>
-        </ul>
-      </main>
+      <keep-alive>
+        <main>
+          <div class="title">{{ arr.name }}</div>
+          <ul>
+            <li
+              v-for="(item, index) in arr"
+              :key="index"
+              @click="toClassification(item)"
+            >
+              {{ item.name }}
+            </li>
+          </ul>
+        </main>
+      </keep-alive>
     </div>
   </div>
 </template>
@@ -76,6 +77,7 @@ export default {
       height: 35px;
       line-height: 35px;
       color: rgba(85, 85, 85, 1);
+      margin-left: 10px;
       font-size: 16px;
       font-weight: 600;
       text-align: left;
