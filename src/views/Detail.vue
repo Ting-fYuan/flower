@@ -38,6 +38,7 @@
         </div>
       </div>
     </div>
+    <!-- 富文本上部分数据 -->
     <div class="conston">
       <div class="constop">
         <p v-html="consonptop"></p>
@@ -54,30 +55,20 @@
         <div class="appraisalBox">
           <div class="appraisalhead">
             <p>订单评价</p>
-            <p>最近已有1330评论</p>
+            <p>最近已有{{ commentNum }}评论</p>
           </div>
-          <div class="appraisalmain">
+          <div
+            class="appraisalmain"
+            v-for="(item, index) in commentArr.slice(0, 2)"
+            :key="index"
+          >
             <div class="appraisTop">
               <img src="../assets/images/morenTou.png.webp" alt="图片" />
               <p>147****2479</p>
               <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
             </div>
             <div class="appraisBottom">
-              <p>一大束玫瑰花，老婆非常喜欢。花也很新鲜，推荐大家买</p>
-              <img
-                src="../assets/images/202012251046531552.jpeg.webp"
-                alt="图片"
-              />
-            </div>
-          </div>
-          <div class="appraisalmain">
-            <div class="appraisTop">
-              <img src="../assets/images/morenTou.png.webp" alt="图片" />
-              <p>147****2479</p>
-              <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
-            </div>
-            <div class="appraisBottom">
-              <p>一大束玫瑰花，老婆非常喜欢。花也很新鲜，推荐大家买</p>
+              <p>{{ item }}</p>
               <img
                 src="../assets/images/202012251046531552.jpeg.webp"
                 alt="图片"
@@ -85,7 +76,7 @@
             </div>
           </div>
           <div class="appraibtn">
-            <button>查看更多评价</button>
+            <button @click="goComments()">查看更多评价</button>
           </div>
         </div>
       </div>
@@ -115,13 +106,13 @@
 <script>
 // import { detailSwipe } from "@/api/swiper";
 import { consondend } from "@/api/detail";
+import { generateComment } from "@/utils/comment";
 export default {
   name: "DetailView",
   data() {
     return {
       // 详情轮播图数据
       swipeArrs: [],
-      // 产品详情
       // 商品名称
       resname: "",
       // 商品原价
@@ -129,17 +120,31 @@ export default {
       // 商品优惠价格
       consale_price: "",
       conspush: "",
+      // 后台副文本上半部分数据
       consonptop: "",
+      // 后台副文本下半部分数据
       consonbottom: "",
+      // 数量
       value: 1,
       shopsId: "",
+      // 评论数量
+      commentNum: "",
+      // 评论数组
+      commentArr: [],
     };
   },
   created() {
-    this.consonfn();
     // 获取商品id
     this.shopsId = this.$route.query.id;
-    console.log(this.shopsId);
+    this.consonfn();
+    // 生成随机评论数
+    this.commentNum = Math.floor(Math.random() * 100 + 3);
+    localStorage.setItem("commentNum", this.commentNum);
+    // 评论生成
+    for (let i = 0; i < this.commentNum; i++) {
+      // console.log(generateComment());
+      this.commentArr.push(generateComment());
+    }
   },
   methods: {
     // 后退按钮
@@ -148,6 +153,7 @@ export default {
     },
     async consonfn() {
       let res = await consondend(this.shopsId);
+      // 轮播图取消第一个数据
       this.swipeArrs = res.result.s_goods_photos.splice(0, 1);
       // 轮播图数据
       this.swipeArrs = res.result.s_goods_photos;
@@ -158,6 +164,7 @@ export default {
       // 商品优惠价格
       this.consale_price = res.result.sale_price;
       this.conspush = res.result.rich_text;
+      // 分隔后台数据
       if (this.conspush) {
         this.consonptop = this.conspush.split(
           "<blockquote><br></blockquote>"
@@ -169,6 +176,10 @@ export default {
     },
     warningfn() {
       // this.$router()
+    },
+    // 打开评论页面
+    goComments() {
+      this.$router.push("/comments");
     },
   },
 };

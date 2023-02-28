@@ -226,9 +226,15 @@ const routes = [
     path: "/logistics",
     name: "logistics",
     component: () => import("@/views/individual_center/Logistics.vue"),
-    // meta: {
-    //   isAuth: true,
-    // },
+    meta: {
+      isAuth: true,
+    },
+  },
+  // 评论页
+  {
+    path: "/comments",
+    name: "comments",
+    component: () => import("@/views/individual_center/Comments.vue"),
   },
 ];
 

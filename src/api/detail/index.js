@@ -7,3 +7,4 @@ export const consondend = (id) => {
     method: "GET",
   });
 };
+

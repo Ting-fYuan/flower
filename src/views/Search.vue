@@ -149,7 +149,6 @@ export default {
     },
     // 点击x号移除历史记录
     dleItem(e) {
-      console.log(e);
       const index = this.history.indexOf(e);
       if (index > -1) {
         this.history.splice(index, 1);

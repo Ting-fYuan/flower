@@ -265,9 +265,7 @@ export default {
       // project_id: 295,
     })
       .then((res) => {
-        // console.log(res.result);
         res.result.forEach((item) => {
-          // console.log(item.s_photos[0].path);
           this.images.push(item.s_photos[0].path);
         });
       })
@@ -324,9 +322,7 @@ export default {
     //去详情页
     toShop(item) {
       console.log(item.id);
-      console.log(
-        this.$router.push({ path: "/detail", query: { id: item.id } })
-      );
+      this.$router.push({ path: "/detail", query: { id: item.id } });
     },
     //去搜索页
     toSearch() {

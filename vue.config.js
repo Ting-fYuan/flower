@@ -1,4 +1,5 @@
 const { defineConfig } = require("@vue/cli-service");
+// const proxy = require("http-proxy-middleware");
 module.exports = defineConfig({
   transpileDependencies: true,
   // 配置打包更改根目录
