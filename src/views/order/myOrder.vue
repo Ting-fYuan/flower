@@ -432,9 +432,9 @@ export default {
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-::v-deep .van-tabs__line {
-  background-color: #884e22 !important;
-}
+// ::v-deep .van-tabs__line {
+//   background-color: #884e22;
+// }
 
 ::v-deep .van-swipe-cell {
   height: 165px;
@@ -459,5 +459,9 @@ export default {
 
 ::v-deep .van-card__bottom {
   margin-top: 10px;
+}
+
+::v-deep .van-tabs__line {
+  background-color: #884e22;
 }
 </style>
