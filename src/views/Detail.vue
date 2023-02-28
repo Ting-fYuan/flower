@@ -177,6 +177,7 @@ export default {
     },
     async consonfn() {
       let res = await consondend(this.shopsId);
+
       // 轮播图取消第一个数据
       this.swipeArrs = res.result.s_goods_photos.splice(0, 1);
       // 轮播图数据
@@ -301,6 +302,7 @@ export default {
     height: 95px;
     position: relative;
     background-color: #fff;
+    border-bottom: 0.5px solid #c7c5c5;
     .moneyheadr {
       position: absolute;
       width: 345px;
@@ -315,7 +317,6 @@ export default {
         height: 21px;
 
         h3 {
-          width: 60px;
           height: 21px;
           opacity: 1;
           color: rgba(85, 85, 85, 1);
@@ -332,6 +333,7 @@ export default {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+
         .leftmoney {
           width: 103px;
           height: 28px;
