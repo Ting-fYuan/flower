@@ -278,7 +278,7 @@ export default {
       try {
         const res = await goodsDataApi(this.$route.query.id);
         this.goodsList = res.result;
-        console.log(res.result);
+        // console.log(res.result);
       } catch (err) {
         return err;
       }
