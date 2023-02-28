@@ -243,24 +243,6 @@ export default {
         const address = await defaultAddressApi();
         // 是否有默认地址
         if (address.result) {
-          // const res = await addOrder({
-          //   goods_info: [
-          //     {
-          //       id: this.shopsId,
-          //       num: this.value,
-          //     },
-          //   ],
-          //   addr_id: address.result.id,
-          // });
-          // console.log(res);
-          // if (res.msg == "库存不足") {
-          //   Toast.fail("库存不足");
-          //   return;
-          // }
-          // if (res.msg == "添加成功") {
-          //   // 跳转到订单页面
-          //   this.$router.push();
-          // }
           this.$router.push({
             path: "fillOrder",
             query: {
