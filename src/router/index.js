@@ -113,6 +113,9 @@ const routes = [
         path: "/order/myorder/:id",
         name: "myorder",
         component: () => import("@/views/order/myOrder.vue"),
+        meta: {
+          title: "个人中心",
+        },
       },
     ],
   },
