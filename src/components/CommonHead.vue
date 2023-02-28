@@ -6,9 +6,24 @@
       </div>
       <div class="head-box-center">
         <p v-if="!showMid">{{ title }}</p>
-        <slot name="header-center"></slot>
+        <slot class="center-box" name="header-center"></slot>
       </div>
       <div class="head-box-right">
+        <!-- 弹出层 -->
+        <van-popover
+          v-if="menu"
+          v-model="showPopover"
+          trigger="click"
+          :actions="actions"
+          placement="left-start"
+          @select="onSelect"
+          theme="dark"
+        >
+          <!-- 点击事件 -->
+          <template #reference>
+            <i class="iconfont icon-caidan" />
+          </template>
+        </van-popover>
         <slot name="header-right"></slot>
       </div>
     </div>
@@ -35,19 +50,55 @@ export default {
       type: String || Boolean,
       default: null,
     },
+    // 是否展示菜单
+    menu: {
+      type: String || Boolean,
+      default: null,
+    },
   },
   data() {
-    return {};
+    return {
+      // 菜单是否显示
+      showPopover: false,
+      // 通过 actions 属性来定义菜单选项
+      actions: [
+        { text: "首页", icon: "wap-home-o" },
+        { text: "分类", icon: "apps-o" },
+        { text: "购物车", icon: "shopping-cart-o" },
+        { text: "我的", icon: "contact" },
+      ],
+    };
   },
   methods: {
     backHandle() {
       this.$router.back();
+    },
+    // 菜单栏
+    onSelect(action, index) {
+      switch (index) {
+        case 0:
+          this.$router.push("/");
+          break;
+        case 1:
+          this.$router.push("/category");
+          break;
+        case 2:
+          this.$router.push("/shop");
+          break;
+        case 3:
+          this.$router.push("/home");
+          break;
+      }
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.icon-caidan {
+  font-size: 16px;
+}
+
 nav {
   width: 100%;
 }
