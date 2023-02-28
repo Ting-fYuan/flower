@@ -77,3 +77,14 @@ export const deleteAddressApi = ($id) => {
     },
   });
 };
+
+// 获取自己的地址列表
+export const addressList = () => {
+  return http({
+    url: "/address",
+    method: "GET",
+    headers: {
+      isToken: true,
+    },
+  });
+};

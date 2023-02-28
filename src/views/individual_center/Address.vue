@@ -8,6 +8,7 @@
         </template>
       </com-head>
     </div>
+    <main></main>
     <div class="addressList">
       <van-address-list
         v-model="chosenAddressId"
