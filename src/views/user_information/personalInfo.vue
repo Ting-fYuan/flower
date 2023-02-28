@@ -2,7 +2,7 @@
 <template>
   <div class="wrap">
     <header>
-      <van-icon name="arrow-left" size="60" @click="toggle" />
+      <i class="iconfont icon-zuojiantou" @click="toggle"></i>
       <p>个人信息</p>
     </header>
     <main>
@@ -20,7 +20,7 @@
         </div>
         <div class="Modify">
           <van-uploader image-fit="cover" :after-read="onSelectHead" />
-          <van-icon name="arrow" size="40" />
+          <i class="iconfont icon-youjiantou"></i>
         </div>
       </div>
       <van-divider />
@@ -31,14 +31,14 @@
             <span class="userName">昵称</span>
             <div class="nameShow">
               <span>{{ userInfo.name }}</span>
-              <van-icon name="arrow" size="40" />
+              <i class="iconfont icon-youjiantou"></i>
             </div>
           </li>
           <li class="sex" @click="showSet.sexPanel = true">
             <span class="userName">性别</span>
             <div class="nameShow">
               <span>{{ modelSet.sex }}</span>
-              <van-icon name="arrow" size="40" />
+              <i class="iconfont icon-youjiantou"></i>
             </div>
           </li>
           <li class="modile">
@@ -49,11 +49,12 @@
           </li>
         </ul>
       </div>
+      <!-- @confirm="putName" -->
       <van-dialog
         v-model="showSet.namePanel"
         title="修改昵称"
         show-cancel-button
-        @confirm="putName"
+        :before-close="onBeforeClose"
       >
         <input
           type="text"
@@ -71,7 +72,7 @@
       />
     </main>
     <footer>
-      <button class="btn" @click="logout">退出</button>
+      <button class="btn" @click="logout">退出登录</button>
     </footer>
   </div>
 </template>
@@ -83,6 +84,7 @@ import { uqdateUserInfo, logout } from "@/api/user";
 import { SingleFile } from "@/api/upload";
 // 引入加密模块文件
 import { Decrypt } from "@/utils/encryption";
+// 引入vant组件提示
 import { Toast } from "vant";
 export default {
   name: "personalView",
@@ -139,7 +141,7 @@ export default {
       );
     },
     // 封装用户信息函数
-    async uqdateUserInfo($data) {
+    async uqdateUserInfo($data, $done) {
       // 加密的电话
       const phoneDecryption = this.userInfo.mAES;
       // 加密的密码
@@ -187,8 +189,10 @@ export default {
           });
           Toast.success("修改成功");
           this.$store.commit("loginStore/updateUserInfo", uqdateRes.result);
+          $done();
         } catch (error) {
           Toast.fail("名字过短");
+          $done(false);
         }
       }
     },
@@ -206,10 +210,19 @@ export default {
       this.uqdateUserInfo(fileRes.result.path);
       this.userInfo.header_img = fileRes.result.path;
     },
+    // // 昵称修改
+    // putName() {
+    //   this.uqdateUserInfo(this.modelSet.nikeName);
+    //   this.userInfo.name = this.modelSet.nikeName;
+    // },
     // 昵称修改
-    putName() {
-      this.userInfo.name = this.modelSet.nikeName;
-      this.uqdateUserInfo(this.modelSet.nikeName);
+    onBeforeClose(action, done) {
+      if (action === "confirm") {
+        this.uqdateUserInfo(this.modelSet.nikeName, done);
+        this.userInfo.name = this.modelSet.nikeName;
+      } else {
+        done();
+      }
     },
     // 退出登录
     async logout() {
@@ -232,6 +245,9 @@ export default {
   width: 100%;
   box-sizing: border-box;
   padding: 15px;
+  i {
+    font-size: 12px;
+  }
   header {
     position: relative;
     display: flex;
@@ -239,13 +255,14 @@ export default {
     align-items: center;
     width: 100%;
     margin-bottom: 5vh;
-    ::v-deep .van-icon {
+    ::v-deep i {
       position: absolute;
       top: 0;
-      left: 0;
+      left: 10px;
+      font-size: 18px;
     }
     p {
-      font-size: 19px;
+      font-size: 16px;
       color: rgba(0, 0, 0, 0.8);
     }
   }
@@ -335,13 +352,20 @@ export default {
       .van-dialog__content {
         box-sizing: border-box;
         padding: 20px;
+        // 输入框
         input {
           box-sizing: border-box;
           width: 100%;
-          height: 40px;
-          border-radius: 15px;
-          border: 1px solid rgba(0, 0, 0, 0.5);
-          padding: 20px;
+          height: 50px;
+          padding-left: 20px;
+          background-color: rgba(240, 240, 240, 1);
+          border: none;
+          border-radius: 20px;
+          font-size: 16px;
+        }
+        input::-ms-clear,
+        input::-ms-reveal {
+          display: none;
         }
       }
     }

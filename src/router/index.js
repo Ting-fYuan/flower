@@ -15,18 +15,27 @@ const routes = [
   {
     path: "/index",
     name: "index",
+    meta: {
+      title: "订花乐 - 鲜花店_订花_送花_鲜花配送",
+    },
     component: () => import("@/views/Index.vue"),
   },
   // @商品详情页面
   {
     path: "/detail",
     name: "detail",
+    meta: {
+      title: "商品详情",
+    },
     component: () => import("@/views/Detail.vue"),
   },
   // 分类
   {
     path: "/category",
     name: "category",
+    meta: {
+      title: "分类",
+    },
     component: () => import("@/views/Category.vue"),
     //子路由
     children: [
@@ -34,6 +43,9 @@ const routes = [
         path: "/category/UseView",
         name: "UseView",
         // props: ["id"],
+        meta: {
+          title: "分类",
+        },
         component: () => import("@/views/children_route/use.vue"),
       },
       {
@@ -82,6 +94,7 @@ const routes = [
     component: () => import("@/views/individual_center/Order.vue"),
     meta: {
       isAuth: true,
+      title: "个人中心",
     },
     children: [
       {
@@ -270,6 +283,12 @@ router.beforeEach((to, from, next) => {
     // 不需要授权
     next();
   }
+});
+
+// 后置守卫
+router.afterEach((to) => {
+  // 配置标题
+  document.title = to.meta.title;
 });
 
 export default router;

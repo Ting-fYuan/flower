@@ -37,3 +37,16 @@ export const delShopCarApi = ($id) => {
     },
   });
 };
+
+// 添加商品到购物车
+export const addShopCar = (data) => {
+  return http({
+    url: "/shoppingCart",
+    method: "POST",
+    data,
+    headers: {
+      isToken: true,
+      isId: true,
+    },
+  });
+};
