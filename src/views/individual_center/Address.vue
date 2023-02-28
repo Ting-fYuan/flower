@@ -4,6 +4,7 @@
     <div class="addressHead">
       <com-head title="收货地址"></com-head>
     </div>
+    <main></main>
     <div class="addressList">
       <van-address-list
         v-model="chosenAddressId"

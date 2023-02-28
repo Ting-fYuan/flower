@@ -23,7 +23,7 @@
             </div>
           </div>
           <div class="icon">
-            <van-icon name="arrow" size="40" />
+            <i class="iconfont icon-youjiantou"></i>
           </div>
         </div>
       </div>
@@ -31,8 +31,8 @@
         <div class="pass">
           <p class="passInfo">修改密码</p>
           <div class="icon">
-            <van-icon name="lock" color="#9F92FF" size="50" />
-            <van-icon name="arrow" size="40" />
+            <i class="iconfont icon-suoding"></i>
+            <i class="iconfont icon-youjiantou"></i>
           </div>
         </div>
       </div>
@@ -103,14 +103,14 @@
       </div>
     </van-dialog>
     <footer>
-      <button class="btn">退出登录</button>
+      <button class="btn" @click="logout">退出登录</button>
     </footer>
   </div>
 </template>
 
 <script>
 // 引入更新用户信息api
-import { uqdateUserInfo } from "@/api/user";
+import { uqdateUserInfo, logout } from "@/api/user";
 // 引入加密模块文件
 import { Decrypt } from "@/utils/encryption";
 // 引入vant组件提示
@@ -245,11 +245,11 @@ export default {
     // 眼睛变化函数
     eyeHandle($event, $data) {
       if (!this.eyeShow) {
-        $event.target.className = "van-icon van-icon-eye-o";
+        $event.target.className = "iconfont icon-yanjing";
         this.$refs[$data].type = "text";
         this.eyeShow = !this.eyeShow;
       } else {
-        $event.target.className = "van-icon van-icon-closed-eye";
+        $event.target.className = "iconfont icon-yanjing-biyan";
         this.$refs[$data].type = "password";
         this.eyeShow = !this.eyeShow;
       }
@@ -326,6 +326,7 @@ export default {
       this.classHandel("labelRemova", "newPassRef");
       this.classHandel("labelRemova", "samePassRef");
     },
+    // 弹出框关闭前回调
     onBeforeClose(action, done) {
       if (action === "confirm") {
         this.putPassword(done);
@@ -333,12 +334,19 @@ export default {
         done();
       }
     },
+    // 退出登录
+    async logout() {
+      let logoutRes = await logout({});
+      console.log(logoutRes);
+      if (logoutRes) {
+        this.$store.commit("loginStore/clearUserInfo");
+        this.$router.push("/login");
+      }
+    },
+    // 跳转修改页
     modal() {
       this.$router.push({
         name: "personalInfo",
-        params: {
-          routerType: "ccc",
-        },
       });
     },
   },
@@ -413,6 +421,11 @@ export default {
             }
           }
         }
+        .icon {
+          .iconfont {
+            font-size: 14px;
+          }
+        }
       }
     }
     .ModifyPassword {
@@ -429,6 +442,13 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        i {
+          font-size: 14px;
+          &:nth-child(1) {
+            color: skyblue;
+            font-size: 18px;
+          }
+        }
       }
       .pass {
         box-sizing: border-box;

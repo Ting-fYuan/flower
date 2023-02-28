@@ -44,12 +44,12 @@
         <!--登录 -->
         <van-tab title="登录" name="login">
           <!-- 登录模块 -->
-          <form>
+          <form action="javascript:;">
             <!-- 登录手机号码 -->
             <div class="form">
               <div class="label" ref="loginMobileL">手机号码</div>
               <input
-                v-model="form.loginPhone"
+                v-model.trim="form.loginPhone"
                 type="text"
                 id="loginMobile"
                 @blur="loginBlur"
@@ -76,11 +76,13 @@
                 {{ err.login_p_err }}
               </div>
               <!-- 眼睛 -->
-              <van-icon name="closed-eye" size="40" @click="loginEye" />
+              <i class="iconfont icon-yanjing-biyan" @click="loginEye"></i>
             </div>
             <!-- 点击登录 -->
             <div class="form">
-              <button class="btn" @click="loginSubmit">登录</button>
+              <button class="btn" @click="loginSubmit" type="button">
+                登录
+              </button>
             </div>
           </form>
         </van-tab>
@@ -92,7 +94,7 @@
             <div class="form">
               <div class="label" ref="regMobileL">手机号码</div>
               <input
-                v-model="form.regPhone"
+                v-model.trim="form.regPhone"
                 type="text"
                 id="regMobile"
                 @blur="regBlur"
@@ -115,12 +117,7 @@
               <!-- 错误提示 -->
               <div class="err_msg" ref="reg_p_err">{{ err.reg_p_err }}</div>
               <!-- 眼睛 -->
-              <van-icon
-                ref="regEyeRef"
-                name="closed-eye"
-                size="40"
-                @click="regPassEye"
-              />
+              <i class="iconfont icon-yanjing-biyan" @click="regPassEye"></i>
             </div>
             <!-- 注册确认密码模块 -->
             <div class="form">
@@ -136,12 +133,7 @@
               <!-- 错误提示 -->
               <div class="err_msg" ref="reg_cp_err">{{ err.reg_cp_err }}</div>
               <!-- 眼睛 -->
-              <van-icon
-                ref="sameEyeRef"
-                name="closed-eye"
-                size="40"
-                @click="regSameEye"
-              />
+              <i class="iconfont icon-yanjing-biyan" @click="regSameEye"></i>
             </div>
             <!-- 注册按钮模块 -->
             <div class="form">
@@ -247,11 +239,11 @@ export default {
     // 眼睛变化函数
     eyeHandle($event, $data) {
       if (!this.eyeShow) {
-        $event.target.className = "van-icon van-icon-eye-o";
+        $event.target.className = "iconfont icon-yanjing";
         this.$refs[$data].type = "text";
         this.eyeShow = !this.eyeShow;
       } else {
-        $event.target.className = "van-icon van-icon-closed-eye";
+        $event.target.className = "iconfont icon-yanjing-biyan";
         this.$refs[$data].type = "password";
         this.eyeShow = !this.eyeShow;
       }
@@ -402,6 +394,7 @@ export default {
       ) {
         // 执行
         this.$store.dispatch("loginStore/loginResquest", values);
+        return false;
       }
     },
     // 注册请求
@@ -623,11 +616,12 @@ export default {
         display: none;
       }
       // icon
-      .van-icon {
+      i {
         position: absolute;
         right: 18%;
         top: 50%;
         transform: translateY(-50%);
+        font-size: 16px;
       }
       // 按钮样式
       .btn {
