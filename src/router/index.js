@@ -221,6 +221,15 @@ const routes = [
       isAuth: true,
     },
   },
+  // 物流页
+  {
+    path: "/logistics",
+    name: "logistics",
+    component: () => import("@/views/individual_center/Logistics.vue"),
+    // meta: {
+    //   isAuth: true,
+    // },
+  },
 ];
 
 // BUG catch

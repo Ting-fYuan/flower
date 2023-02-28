@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import http from "@/utils/http.js";
-export const consondend = (params) => {
-  return http({
-    url: "/goods/5118",
+console.log(http);
+export const consondend=(id)=>{
+    return http({
+    url: `goods/${id}`,
     method: "GET",
-    params,
-  });
-};
+   })
+}

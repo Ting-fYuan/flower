@@ -27,6 +27,9 @@ import {
   Divider,
   Empty,
   Overlay,
+  GoodsAction,
+  GoodsActionIcon,
+  GoodsActionButton,
   SwipeCell,
   Card,
   Cascader,
@@ -38,6 +41,8 @@ import {
   Picker,
   PasswordInput,
   NumberKeyboard,
+  Step,
+  Steps,
 } from "vant";
 
 Vue.use(AddressList);
@@ -68,6 +73,9 @@ Vue.use(Tabs);
 Vue.use(Divider);
 Vue.use(Empty);
 Vue.use(Overlay);
+Vue.use(GoodsAction);
+Vue.use(GoodsActionButton);
+Vue.use(GoodsActionIcon);
 Vue.use(SwipeCell);
 Vue.use(Card);
 Vue.use(Cascader);
@@ -79,3 +87,5 @@ Vue.use(Calendar);
 Vue.use(Picker);
 Vue.use(PasswordInput);
 Vue.use(NumberKeyboard);
+Vue.use(Step);
+Vue.use(Steps);

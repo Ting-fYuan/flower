@@ -62,14 +62,6 @@ export default {
       this.active = parseInt(activeTab);
     }
   },
-  async created() {
-    // let shopRes = await getShopCarApi();
-    // console.log(shopRes.result);
-    // let order = await orderPay();
-    // console.log(order);
-    // let getorder = await getOrder({ status: "0" });
-    // console.log(getorder.result);
-  },
   methods: {
     goBack() {
       this.$router.push("/");
@@ -92,14 +84,14 @@ export default {
     justify-content: flex-start; /* 左对齐 */
     .arrowLeft {
       line-height: 42px;
-      font-size: 26px;
+      font-size: 23px;
     }
     span {
       width: 80px;
       height: 42px;
       opacity: 1;
       color: rgba(85, 85, 85, 1);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 500;
       line-height: 42px;
       margin-left: auto; /* 居中对齐的样式 */
