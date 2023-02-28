@@ -5,20 +5,19 @@
       <div class="img">
         <img src="../assets/images/banner1_m.jpg.png" alt="" />
       </div>
-      <keep-alive>
-        <main>
-          <div class="title">{{ arr.name }}</div>
-          <ul>
-            <li
-              v-for="(item, index) in arr"
-              :key="index"
-              @click="toClassification(item)"
-            >
-              {{ item.name }}
-            </li>
-          </ul>
-        </main>
-      </keep-alive>
+      <main>
+        <div class="title">{{ name }}</div>
+
+        <ul>
+          <li
+            v-for="(item, index) in arr"
+            :key="index"
+            @click="toClassification(item)"
+          >
+            {{ item.name }}
+          </li>
+        </ul>
+      </main>
     </div>
   </div>
 </template>
@@ -28,27 +27,38 @@ export default {
   name: "ClassRoute",
   data() {
     return {
-      arr: [],
       loading: true,
+      name: "",
+      arr: [],
     };
   },
+  // computed: {
+  //   classList() {
+  //     return this.$store.state.classflyStore;
+  //   },
+  // },
   created() {
-    // console.log("组件");
     setTimeout((item) => {
       console.log(item);
-      //   console.log(this.$store.state.classflyStore);
       this.arr = this.$store.state.classflyStore;
+      this.name = this.$store.state.classflyStore.name;
     }, 700);
+    //
+    // console.log(this.$store.state.classflyStore.name);
+    //
   },
   mounted() {
     this.loading = false;
   },
   methods: {
     toClassification(item) {
-      console.log(item.id);
+      // console.log(item.id);
       this.$router.push({
         path: "/classification",
-        query: { info: JSON.stringify(item) },
+        query: {
+          id: item.id,
+          name: item.name,
+        },
       });
     },
   },

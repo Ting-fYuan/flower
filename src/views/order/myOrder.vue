@@ -162,7 +162,10 @@
               <button class="delOrder" @click="delOrder(item.id)">
                 删除订单
               </button>
-              <button class="buyAgain" @click="buyAgain(item.id)">
+              <button
+                class="buyAgain"
+                @click="buyAgain(JSON.parse(item.goods_info)[0]?.id)"
+              >
                 再次购买
               </button>
             </div>
@@ -283,10 +286,8 @@ export default {
         }
       });
     },
-    buyAgain(e) {
-      Toast("正在购买~~");
-      // 再次订单（根据id）
-      console.log(e);
+    buyAgain(id) {
+      this.$router.push({ path: "/detail", query: { id: id } });
     },
   },
 };

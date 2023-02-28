@@ -9,6 +9,7 @@ export default {
   name: "ClassView",
   components: { ClassRoute },
   created() {
+    console.log("类别组件触发");
     indexImg({})
       .then((res) => {
         // console.log(res.result[2]);

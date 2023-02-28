@@ -44,6 +44,20 @@ export default {
       this.$router.push("/search");
     },
   },
+  // watch: {
+  //   $route: {
+  //     immediate: true,
+  //     handler() {
+  //       if (this.$route.path) {
+  //         console.log(1);
+  //       }
+  //     },
+  //   },
+  // },
+  // beforeRouteUpdate(to, from, next) {
+  //   console.log(to.name);
+  //   next(); // 一定要调用 next 函数，否则路由会一直处于等待状态
+  // },
 };
 </script>
 

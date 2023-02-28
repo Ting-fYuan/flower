@@ -16,9 +16,10 @@ export default {
   //   },
   // },
   created() {
+    console.log("用途触发");
     indexImg({})
       .then((res) => {
-        // console.log(res.result[0]);
+        console.log(res.result[0]);
         this.$store.state.classflyStore = res.result[0].children;
         // console.log(this.$store.state.classflyStore.arr);
         this.$store.state.classflyStore.name = res.result[0].name;

@@ -11,6 +11,7 @@ export default {
   name: "MaterialView",
   components: { ClassRoute },
   created() {
+    console.log("花材组件触发");
     indexImg({})
       .then((res) => {
         // console.log(res.result[2]);

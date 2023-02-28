@@ -11,6 +11,7 @@ export default {
   name: "NumberView",
   components: { ClassRoute },
   created() {
+    console.log("指数触发");
     indexImg({})
       .then((res) => {
         // console.log(res.result[2]);

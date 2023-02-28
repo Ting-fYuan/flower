@@ -93,6 +93,7 @@
         </div>
       </div>
     </div>
+
     <main>
       <div class="main_title">{{ love.name }}</div>
       <div class="xian"></div>
