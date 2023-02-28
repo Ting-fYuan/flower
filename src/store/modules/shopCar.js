@@ -63,6 +63,7 @@ export default {
   actions: {
     // 获取购物车列表
     async getShopCarList(ctx) {
+      console.log(1);
       try {
         const res = await getShopCarApi();
         ctx.commit("upDataShopCar", res.result);
@@ -74,10 +75,10 @@ export default {
     // 删除购物车
     async deleteShopCar(ctx, payload) {
       try {
-        const { id, idx } = payload;
+        const { id } = payload;
         // 删除请求
         const res = await delShopCarApi(id);
-        ctx.commit("delShop", idx);
+        ctx.dispatch("getShopCarList");
         return res;
       } catch (error) {
         return error;

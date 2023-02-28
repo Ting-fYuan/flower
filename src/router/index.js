@@ -15,18 +15,27 @@ const routes = [
   {
     path: "/index",
     name: "index",
+    meta: {
+      title: "订花乐 - 鲜花店_订花_送花_鲜花配送",
+    },
     component: () => import("@/views/Index.vue"),
   },
   // @商品详情页面
   {
     path: "/detail",
     name: "detail",
+    meta: {
+      title: "商品详情",
+    },
     component: () => import("@/views/Detail.vue"),
   },
   // 分类
   {
     path: "/category",
     name: "category",
+    meta: {
+      title: "分类",
+    },
     component: () => import("@/views/Category.vue"),
     //子路由
     children: [
@@ -34,6 +43,9 @@ const routes = [
         path: "/category/UseView",
         name: "UseView",
         // props: ["id"],
+        meta: {
+          title: "分类",
+        },
         component: () => import("@/views/children_route/use.vue"),
       },
       {
@@ -57,21 +69,33 @@ const routes = [
   {
     path: "/classification",
     name: "classification",
+    meta: {
+      title: "商品分类",
+    },
     component: () => import("@/views/self_classification/Classification.vue"),
   },
   {
     path: "/shop",
     name: "shop",
+    meta: {
+      title: "购物车",
+    },
     component: () => import("@/views/Shop.vue"),
   },
   {
     path: "/home",
     name: "home",
+    meta: {
+      title: "我的",
+    },
     component: () => import("@/views/Home.vue"),
   },
   {
     path: "/search",
     name: "search",
+    meta: {
+      title: "搜索",
+    },
     component: () => import("@/views/Search.vue"),
   },
   // @ 个人中心
@@ -82,6 +106,7 @@ const routes = [
     component: () => import("@/views/individual_center/Order.vue"),
     meta: {
       isAuth: true,
+      title: "个人中心",
     },
     children: [
       {
@@ -90,47 +115,6 @@ const routes = [
         component: () => import("@/views/order/myOrder.vue"),
       },
     ],
-  },
-
-  {
-    path: "/payment",
-    name: "payment",
-    component: () => import("@/views/individual_center/Payment.vue"),
-    meta: {
-      isAuth: true,
-    },
-  },
-  {
-    path: "/payfinished",
-    name: "payfinished",
-    component: () => import("@/views/individual_center/PayFinished.vue"),
-    meta: {
-      isAuth: true,
-    },
-  },
-  {
-    path: "/sending",
-    name: "sending",
-    component: () => import("@/views/individual_center/Sending.vue"),
-    meta: {
-      isAuth: true,
-    },
-  },
-  {
-    path: "/comment",
-    name: "comment",
-    component: () => import("@/views/individual_center/Comment.vue"),
-    meta: {
-      isAuth: true,
-    },
-  },
-  {
-    path: "/complete",
-    name: "complete",
-    component: () => import("@/views/individual_center/Comment.vue"),
-    meta: {
-      isAuth: true,
-    },
   },
   {
     path: "/login",
@@ -145,12 +129,12 @@ const routes = [
       isAuth: true,
     },
   },
-
   {
     path: "/coupon",
     name: "coupon",
     component: () => import("@/views/individual_center/Coupon.vue"),
     meta: {
+      title: "优惠券",
       isAuth: true,
     },
   },
@@ -159,6 +143,7 @@ const routes = [
     name: "address",
     component: () => import("@/views/individual_center/Address.vue"),
     meta: {
+      title: "地址列表",
       isAuth: true,
     },
   },
@@ -168,6 +153,7 @@ const routes = [
     name: "addressEdit",
     component: () => import("@/views/individual_center/AddressEdit.vue"),
     meta: {
+      title: "地址编辑",
       isAuth: true,
     },
   },
@@ -176,6 +162,7 @@ const routes = [
     name: "setting",
     component: () => import("@/views/individual_center/Setting.vue"),
     meta: {
+      title: "设置",
       isAuth: true,
     },
   },
@@ -183,6 +170,9 @@ const routes = [
   {
     path: "/fillOrder",
     name: "fillOrder",
+    meta: {
+      title: "填写订单",
+    },
     component: () => import("@/views/order/FillOrder.vue"),
   },
   // 订购人页面
@@ -191,6 +181,7 @@ const routes = [
     name: "subscriber",
     component: () => import("@/views/order/SubscriberView.vue"),
     meta: {
+      title: "填写订购人",
       isAuth: true,
     },
   },
@@ -200,6 +191,7 @@ const routes = [
     name: "receipt",
     component: () => import("@/views/order/ReceiptEdit.vue"),
     meta: {
+      title: "发票",
       isAuth: true,
     },
   },
@@ -209,6 +201,7 @@ const routes = [
     name: "paysuccess",
     component: () => import("@/views/order/PaySuccess.vue"),
     meta: {
+      title: "结算页面",
       isAuth: true,
     },
   },
@@ -218,6 +211,7 @@ const routes = [
     name: "orderdetails",
     component: () => import("@/views/order/OrderDetails.vue"),
     meta: {
+      title: "订单详情",
       isAuth: true,
     },
   },
@@ -235,6 +229,18 @@ const routes = [
     path: "/comments",
     name: "comments",
     component: () => import("@/views/individual_center/Comments.vue"),
+    meta: {
+      title: "用户评价",
+    },
+  },
+  // 搜索结果页
+  {
+    path: "/searchresult",
+    name: "searchresult",
+    component: () => import("@/views/self_classification/SearchResult.vue"),
+    meta: {
+      title: "搜索结果",
+    },
   },
 ];
 
@@ -261,7 +267,6 @@ router.beforeEach((to, from, next) => {
       // 已登录放行
       next();
     } else {
-      console.log("没有token");
       next({
         path: "/login",
         // 完整路径
@@ -276,6 +281,12 @@ router.beforeEach((to, from, next) => {
     // 不需要授权
     next();
   }
+});
+
+// 后置守卫
+router.afterEach((to) => {
+  // 配置标题
+  document.title = to.meta.title;
 });
 
 export default router;
