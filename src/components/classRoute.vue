@@ -32,7 +32,7 @@ export default {
     };
   },
   created() {
-    console.log("组件");
+    // console.log("组件");
     setTimeout((item) => {
       console.log(item);
       //   console.log(this.$store.state.classflyStore);

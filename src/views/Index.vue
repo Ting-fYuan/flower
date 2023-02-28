@@ -276,7 +276,7 @@ export default {
     //获取首页一秒选花数据
     indexImg({})
       .then((res) => {
-        console.log(res.result[0].children[0]);
+        // console.log(res.result[0].children[0]);
         //获取一秒选花上三宗
         let arr = res.result[4].children[0].s_goods;
         this.yimiaoxuanhua = arr;
@@ -321,7 +321,7 @@ export default {
   methods: {
     //去详情页
     toShop(item) {
-      console.log(item.id);
+      // console.log(item.id);
       this.$router.push({ path: "/detail", query: { id: item.id } });
     },
     //去搜索页
