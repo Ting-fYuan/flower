@@ -124,7 +124,9 @@ export default {
           Toast("没有该商品信息，请尝试更换关键词");
           this.value = "";
         } else if (res.result.count != 0) {
-          this.$router.push("/category");
+          console.log(res.result.rows);
+          this.$store.commit("searchStore/updateResult", res.result.rows);
+          this.$router.push("/searchresult");
         }
       } catch (error) {
         console.log(error);
@@ -159,7 +161,6 @@ export default {
     },
     // 点击x号移除历史记录
     dleItem(e) {
-      console.log(e);
       const index = this.history.indexOf(e);
       if (index > -1) {
         this.history.splice(index, 1);

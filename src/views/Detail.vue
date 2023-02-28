@@ -50,30 +50,20 @@
         <div class="appraisalBox">
           <div class="appraisalhead">
             <p>订单评价</p>
-            <p>最近已有1330评论</p>
+            <p>最近已有{{ commentNum }}评论</p>
           </div>
-          <div class="appraisalmain">
+          <div
+            class="appraisalmain"
+            v-for="(item, index) in commentArr.slice(0, 2)"
+            :key="index"
+          >
             <div class="appraisTop">
               <img src="../assets/images/morenTou.png.webp" alt="图片" />
               <p>147****2479</p>
               <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
             </div>
             <div class="appraisBottom">
-              <p>一大束玫瑰花，老婆非常喜欢。花也很新鲜，推荐大家买</p>
-              <img
-                src="../assets/images/202012251046531552.jpeg.webp"
-                alt="图片"
-              />
-            </div>
-          </div>
-          <div class="appraisalmain">
-            <div class="appraisTop">
-              <img src="../assets/images/morenTou.png.webp" alt="图片" />
-              <p>147****2479</p>
-              <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
-            </div>
-            <div class="appraisBottom">
-              <p>一大束玫瑰花，老婆非常喜欢。花也很新鲜，推荐大家买</p>
+              <p>{{ item }}</p>
               <img
                 src="../assets/images/202012251046531552.jpeg.webp"
                 alt="图片"
@@ -81,7 +71,7 @@
             </div>
           </div>
           <div class="appraibtn">
-            <button>查看更多评价</button>
+            <button @click="goComments()">查看更多评价</button>
           </div>
         </div>
       </div>
@@ -126,6 +116,7 @@
 <script>
 // import { detailSwipe } from "@/api/swiper";
 import { consondend } from "@/api/detail";
+import { generateComment } from "@/utils/comment";
 import { addShopCar } from "@/api/shopCar";
 import { Toast } from "vant";
 // import { addOrder } from "@/api/order";
@@ -150,13 +141,24 @@ export default {
       // 数量
       value: 1,
       shopsId: "",
+      // 评论数量
+      commentNum: "",
+      // 评论数组
+      commentArr: [],
     };
   },
   created() {
     // 获取商品id
     this.shopsId = this.$route.query.id;
-    // console.log("商品id", this.shopsId);
     this.consonfn();
+    // 生成随机评论数
+    this.commentNum = Math.floor(Math.random() * 100 + 6);
+    localStorage.setItem("commentNum", this.commentNum);
+    // 评论生成
+    for (let i = 0; i < this.commentNum; i++) {
+      // console.log(generateComment());
+      this.commentArr.push(generateComment());
+    }
   },
   computed: {
     // 购物车数量
@@ -267,6 +269,10 @@ export default {
       } catch (err) {
         return err;
       }
+    },
+    // 打开评论页面
+    goComments() {
+      this.$router.push("/comments");
     },
   },
 };

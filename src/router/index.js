@@ -221,8 +221,25 @@ const routes = [
     name: "logistics",
     component: () => import("@/views/individual_center/Logistics.vue"),
     meta: {
-      title: "查看物流",
       isAuth: true,
+    },
+  },
+  // 评论页
+  {
+    path: "/comments",
+    name: "comments",
+    component: () => import("@/views/individual_center/Comments.vue"),
+    meta: {
+      title: "用户评价",
+    },
+  },
+  // 搜索结果页
+  {
+    path: "/searchresult",
+    name: "searchresult",
+    component: () => import("@/views/self_classification/SearchResult.vue"),
+    meta: {
+      title: "搜索结果",
     },
   },
 ];

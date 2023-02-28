@@ -1,4 +1,5 @@
 const { defineConfig } = require("@vue/cli-service");
+// const proxy = require("http-proxy-middleware");
 module.exports = defineConfig({
   // 更改ico
   pwa: {
