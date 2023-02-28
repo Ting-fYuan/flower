@@ -19,7 +19,7 @@
     <!-- 详情页轮播图 -->
     <van-swipe class="my-swipe" :autoplay="3000" touchable>
       <van-swipe-item v-for="(item, index) in swipeArrs" :key="index"
-        ><img v-lazy="item.path"
+        ><img v-lazy="item.path" alt="图片"
       /></van-swipe-item>
     </van-swipe>
     <div class="moneyhead">
@@ -141,7 +141,6 @@ export default {
   created() {
     // 获取商品id
     this.shopsId = this.$route.query.id;
-    console.log(this.shopsId);
     this.consonfn();
   },
   methods: {
@@ -185,6 +184,10 @@ export default {
   height: 100%;
   // 头部导航栏
   nav {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #fff;
     width: 375px;
     height: 55px;
     display: flex;
