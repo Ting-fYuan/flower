@@ -215,7 +215,7 @@ export default {
         return false;
       } else return true;
     },
-    // 添加购物粗
+    // 添加购物车
     async shopCarHandle() {
       // 鉴权
       if (!this.authHandle()) return;
