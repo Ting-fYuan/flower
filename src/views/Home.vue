@@ -115,16 +115,16 @@ export default {
       this.$router.push("/order");
     },
     goPayment() {
-      this.$router.push("/payment");
+      this.$router.push("/order/myorder/1");
     },
     goSending() {
-      this.$router.push("/sending");
+      this.$router.push("/order/myorder/2");
     },
     goComment() {
-      this.$router.push("/comment");
+      this.$router.push("/order/myorder/3");
     },
     goComplete() {
-      this.$router.push("/complete");
+      this.$router.push("/order/myorder/4");
     },
     goCoupon() {
       this.$router.push("/coupon");
