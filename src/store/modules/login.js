@@ -62,8 +62,8 @@ export default {
     async loginResquest(ctx, payload) {
       try {
         let loginRes = await login({
-          phone: payload["modile"],
-          password: payload["password"],
+          phone: payload["modile"].trim(),
+          password: payload["password"].trim(),
         });
         Toast.success("登陆成功");
         // 存储到vuex
@@ -75,8 +75,8 @@ export default {
           router.replace("/");
         }
       } catch (error) {
-        console.log(error);
-        Toast.fail("账号或密码缺失");
+        // console.log(error.response.data.msg);
+        Toast.fail(error.response.data.msg);
       }
     },
     // 注册请求
