@@ -49,7 +49,12 @@
             <p>猜你喜欢</p>
           </div>
           <div class="like-more-main">
-            <div class="commodity" v-for="item in likeList" :key="item.id">
+            <div
+              class="commodity"
+              v-for="item in likeList"
+              :key="item.id"
+              @click="toDetail(item.id)"
+            >
               <img :src="item.s_goods_photos[0].path" :alt="item.name" />
               <div class="ctn-bottom">
                 <p class="goods-name">{{ item.name }}</p>
@@ -197,6 +202,15 @@ export default {
           position: "bottom",
         });
       }
+    },
+    // 跳转详情
+    toDetail($id) {
+      this.$router.push({
+        path: "/detail",
+        query: {
+          id: $id,
+        },
+      });
     },
   },
   components: { TabBar },
