@@ -273,7 +273,7 @@ export default {
     // 没有商品跳转首页
     if (!this.$store.state.shopCarStore.chooseShopList.length) {
       return this.$router.push("/");
-    } else if (this.$route.query) {
+    } else if (this.$route.query.id) {
       // 是否直接购买
       try {
         const res = await goodsDataApi(this.$route.query.id);
