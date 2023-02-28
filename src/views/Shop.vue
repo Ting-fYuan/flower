@@ -204,6 +204,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .van-checkbox__icon--checked .van-icon {
+  background-color: #884e22;
+  border-color: #884e22;
+}
 .shop-view-box {
   height: 100vh;
   background-color: #e8ecef;
@@ -240,7 +244,7 @@ export default {
               justify-content: center;
 
               p {
-                font-size: 14px;
+                font-size: 13px;
                 color: #555555;
 
                 &:first-of-type {
@@ -325,6 +329,7 @@ export default {
             width: 165px;
             height: 235px;
             box-shadow: 0 5px 10px 0 #dee2e5;
+            border-radius: 0 0 5px 5px;
 
             img {
               width: 100%;
