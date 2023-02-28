@@ -6,15 +6,9 @@
         <i class="iconfont icon-icon_sousuo"></i>
         搜索鲜花、蛋糕、礼品
       </div>
-      <!-- <van-search
-        v-model="value"
-        shape="round"
-        placeholder="请输入搜索关键词"
-      /> -->
-      <!-- <van-search v-model="value" disabled placeholder="请输入搜索关键词" /> -->
     </div>
 
-    <div class="main">
+    <main>
       <nav>
         <!-- <router-link to="/category/UseView?id=0">用途</router-link>
         <router-link to="/category/UseView?id=1">花材</router-link>
@@ -28,9 +22,9 @@
       <keep-alive>
         <router-view />
       </keep-alive>
-      <div>
-        <TabBar />
-      </div>
+    </main>
+    <div>
+      <TabBar />
     </div>
   </div>
 </template>
@@ -56,6 +50,7 @@ export default {
 <style lang="scss" scoped>
 .box {
   width: 100%;
+  height: 100vh;
   .top {
     width: 100%;
     height: 50px;
@@ -82,12 +77,12 @@ export default {
       }
     }
   }
-  .main {
+  main {
     width: 100%;
     display: flex;
+    height: 88vh;
     nav {
       width: 80px;
-      height: 100vh;
       background-color: white;
       border: 1px solid rgba(233, 236, 240, 1);
       box-sizing: border-box;
@@ -101,6 +96,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        border-left: 1px solid rgba(233, 236, 240, 1);
         &.router-link-exact-active {
           color: rgba(136, 78, 34, 1);
           border-left: 1px solid rgba(136, 78, 34, 1);
