@@ -56,7 +56,7 @@
       </div>
     </main>
     <header>
-      <button @click="toIndex">再次购买</button>
+      <button @click="toIndex">回到首页</button>
       <p>已经到底了~</p>
     </header>
   </div>
@@ -96,12 +96,12 @@ export default {
     // 创建时间
     createdAt() {
       const date = this.order.createdAt?.split("T");
-      return date[0] + " " + date[1]?.slice(0, 8);
+      return date && date[0] + " " + date[1]?.slice(0, 8);
     },
     // 成交时间
     updateAt() {
       const date = this.order.updatedAt?.split("T");
-      return date[0] + " " + date[1]?.slice(0, 8);
+      return date && date[0] + " " + date[1]?.slice(0, 8);
     },
   },
   methods: {
@@ -252,10 +252,11 @@ export default {
       bottom: 20px;
       width: 80px;
       height: 30px;
-      background-color: #884f22;
-      color: #fff;
+      background-color: #fff;
+      color: #884f22;
       border-radius: 20px;
       font-size: 13px;
+      border: 0.5px solid #884f22;
     }
     p {
       margin-bottom: 5px;

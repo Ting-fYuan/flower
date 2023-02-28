@@ -225,6 +225,7 @@
 import { Toast } from "vant";
 import { mapState } from "vuex";
 import { addOrder, orderPay } from "@/api/order";
+import { goodsDataApi } from "@/api/goods";
 export default {
   name: "FillOrder",
   data() {
@@ -263,13 +264,24 @@ export default {
       keyWrodValue: "",
       // 密码聚焦
       showKeyboard: true,
+      // 直接购买的数据
+      goodsList: null,
     };
   },
   beforeDestroy() {},
-  created() {
+  async created() {
     // 没有商品跳转首页
     if (!this.$store.state.shopCarStore.chooseShopList.length) {
       return this.$router.push("/");
+    } else if (this.$route.query) {
+      // 是否直接购买
+      try {
+        const res = await goodsDataApi(this.$route.query.id);
+        this.goodsList = res.result;
+        console.log(res.result);
+      } catch (err) {
+        return err;
+      }
     }
     // 获取默认地址
     this.$store.dispatch("fillOrderStore/getDeaultAddress");
@@ -303,14 +315,28 @@ export default {
         // 购物车id
         const CarList = this.selectShopMsg?.map((item) => item.id);
         try {
-          const res = await addOrder({
-            goods_info: GoodsList,
-            addr_id: id,
-            shoppingCartIds: CarList,
-          });
+          let res = null;
+          if (this.goodsList) {
+            res = await addOrder({
+              goods_info: [
+                {
+                  id: this.$route.query.id,
+                  num: this.$route.query.num,
+                },
+              ],
+              addr_id: id,
+            });
+          } else {
+            res = await addOrder({
+              goods_info: GoodsList,
+              addr_id: id,
+              shoppingCartIds: CarList,
+            });
+          }
           this.showPsw = false;
           this.showSumbit = false;
           this.keyWrodValue = "";
+          console.log(res);
           // ! bug 库存不足
           if (res.code == 1) {
             Toast({
