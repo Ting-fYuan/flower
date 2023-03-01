@@ -29,11 +29,15 @@
         </template>
         <div class="ContentBox">
           <div v-for="goodsInfo of ClassifyGoodsList" :key="goodsInfo.id">
-            <!-- <van-image :src="goodsInfo['s_goods_photos'][0].path" /> -->
-            <img
+            <!-- <img
               :src="goodsInfo['s_goods_photos'][0].path"
               v-lazy="goodsInfo['s_goods_photos'][0].path"
-            />
+            /> -->
+            <van-image :src="goodsInfo['s_goods_photos'][0].path" lazy-load>
+              <template v-slot:loading>
+                <van-loading type="spinner" size="20" />
+              </template>
+            </van-image>
             <div class="GoodsInfo">
               <p>{{ goodsInfo.name }}</p>
               <p>
@@ -66,7 +70,7 @@
           </div>
         </template>
         <div class="ContentBox">
-          <div v-for="goodsInfo of ClassifyGoodsList" :key="goodsInfo.id">
+          <div v-for="goodsInfo of SaleClassifyGoodsList" :key="goodsInfo.id">
             <!-- <van-image :src="goodsInfo['s_goods_photos'][0].path" /> -->
             <img
               :src="goodsInfo['s_goods_photos'][0].path"
@@ -104,7 +108,7 @@
           </div>
         </template>
         <div class="ContentBox">
-          <div v-for="goodsInfo of ClassifyGoodsList" :key="goodsInfo.id">
+          <div v-for="goodsInfo of PriceClassifyGoodsList" :key="goodsInfo.id">
             <van-image :src="goodsInfo['s_goods_photos'][0].path" />
             <div class="GoodsInfo">
               <p>{{ goodsInfo.name }}</p>
@@ -163,17 +167,19 @@ export default {
       show: false,
       actions: [{ name: "选项一" }, { name: "选项二" }, { name: "选项三" }],
       ClassifyGoodsList: [],
+      SaleClassifyGoodsList: [],
+      PriceClassifyGoodsList: [],
       ClassifyNamesList: [],
       topShow: "backTop backTopHidden", // 控制显示与隐藏置顶按钮
       // @ 控制升序和降序
       saleNumberSort: true, //销量
       salePriceSort: true, //价格
       // @控制升序和降序的样式
-      saleNumberArrowUp: "", //销量上箭头
-      saleNumberArrowDown: "", //销量下箭头
+      saleNumberArrowUp: "unactiveStyle", //销量上箭头
+      saleNumberArrowDown: "unactiveStyle", //销量下箭头
 
-      salePriceArrowUp: "", //价格上箭头
-      salePriceArrowDown: "", //价格下箭头
+      salePriceArrowUp: "unactiveStyle", //价格上箭头
+      salePriceArrowDown: "unactiveStyle", //价格下箭头
     };
   },
   mounted() {
@@ -187,8 +193,16 @@ export default {
     getClassifyGoods: debounce(async function () {
       try {
         let SearchRes = await SearchDetails(this.$route.query.id);
-        this.ClassifyGoodsList = SearchRes.result;
-        console.log("初始化数据", this.ClassifyGoodsList);
+        this.ClassifyGoodsList = JSON.parse(JSON.stringify(SearchRes.result));
+        this.SaleClassifyGoodsList = JSON.parse(
+          JSON.stringify(SearchRes.result)
+        );
+        this.PriceClassifyGoodsList = JSON.parse(
+          JSON.stringify(SearchRes.result)
+        );
+        // this.SaleClassifyGoodsList = SearchRes.result;
+        // this.PriceClassifyGoodsList = SearchRes.result;
+        // console.log("初始化数据", this.ClassifyGoodsList);
       } catch (error) {
         console.log(error);
       }
@@ -199,7 +213,7 @@ export default {
       try {
         let AllClassify = await indexImg();
         this.ClassifyNamesList = AllClassify.result.slice(0, -1);
-        console.log(AllClassify);
+        // console.log("获取所有的数据", AllClassify);
       } catch (error) {
         console.log(error);
       }
@@ -207,62 +221,71 @@ export default {
 
     // todo:获取销量数据
     getSortData(title) {
+      console.log(this.ClassifyGoodsList, this.SaleClassifyGoodsList);
+
       switch (title) {
         case "综合":
           this.saleNumberSort = true; // @初始化图标样式
           this.salePriceSort = true;
           this.ClearStyle();
-          this.getClassifyGoods(); //@更新数据
-          console.log("综合");
+          // this.getClassifyGoods(); //@更新数据
+          // console.log("综合");
           break;
         case "销量":
           this.salePriceSort = true;
           if (this.saleNumberSort) {
-            this.ClassifyGoodsList = this.ClassifyGoodsList.sort((a, b) => {
-              return b.sold_num - a.sold_num;
-            });
+            this.SaleClassifyGoodsList = this.SaleClassifyGoodsList.sort(
+              (a, b) => {
+                return b.sold_num - a.sold_num;
+              }
+            );
             this.ClearStyle();
             this.saleNumberArrowUp = "activeStyle";
             this.saleNumberArrowDown = "unactiveStyle";
             this.saleNumberSort = !this.saleNumberSort;
-            console.log("销量升序", this.ClassifyGoodsList);
+            // console.log("销量升序", this.ClassifyGoodsList);
           } else {
-            this.ClassifyGoodsList = this.ClassifyGoodsList.sort((a, b) => {
-              return a.sold_num - b.sold_num;
-            });
+            this.SaleClassifyGoodsList = this.SaleClassifyGoodsList.sort(
+              (a, b) => {
+                return a.sold_num - b.sold_num;
+              }
+            );
             this.ClearStyle();
             this.saleNumberArrowUp = "unactiveStyle";
             this.saleNumberArrowDown = "activeStyle";
             this.saleNumberSort = !this.saleNumberSort;
-            console.log("销量降序", this.ClassifyGoodsList);
+            // console.log("销量降序", this.ClassifyGoodsList);
           }
           break;
 
         case "价格":
           this.saleNumberSort = true;
           if (this.salePriceSort) {
-            this.ClassifyGoodsList = this.ClassifyGoodsList.sort((a, b) => {
-              return a.sale_price - b.sale_price;
-            });
+            this.PriceClassifyGoodsList = this.PriceClassifyGoodsList.sort(
+              (a, b) => {
+                return a.sale_price - b.sale_price;
+              }
+            );
             this.ClearStyle();
             this.salePriceArrowUp = "activeStyle";
             this.salePriceArrowDown = "unactiveStyle";
             this.salePriceSort = !this.salePriceSort;
-            console.log("升序价格", this.ClassifyGoodsList);
+            // console.log("升序价格", this.ClassifyGoodsList);
           } else {
-            this.ClassifyGoodsList = this.ClassifyGoodsList.sort((a, b) => {
-              return b.sale_price - a.sale_price;
-            });
+            this.PriceClassifyGoodsList = this.PriceClassifyGoodsList.sort(
+              (a, b) => {
+                return b.sale_price - a.sale_price;
+              }
+            );
             this.ClearStyle();
             this.salePriceArrowUp = "unactiveStyle";
             this.salePriceArrowDown = "activeStyle";
             this.salePriceSort = !this.salePriceSort;
-            console.log("降序价格", this.ClassifyGoodsList);
+            // console.log("降序价格", this.ClassifyGoodsList);
           }
           break;
 
         default:
-          console.log("筛选");
           this.saleNumberSort = true; // @初始化图标样式
           this.salePriceSort = true;
           this.ClearStyle();
@@ -372,10 +395,10 @@ export default {
         }
         // 激活下箭头的样式
         &.activeStyle {
-          color: #894e22;
+          color: rgb(66, 31, 5);
         }
         &.unactiveStyle {
-          color: #888;
+          color: rgba(136, 136, 136, 0.5);
         }
       }
     }
