@@ -123,6 +123,9 @@ const routes = [
     path: "/login",
     name: "login",
     component: () => import("@/views/user_information/Login.vue"),
+    meta: {
+      title: "登录注册",
+    },
   },
   {
     path: "/personalInfo",
@@ -130,6 +133,7 @@ const routes = [
     component: () => import("@/views/user_information/personalInfo.vue"),
     meta: {
       isAuth: true,
+      title: "个人信息",
     },
   },
   {
