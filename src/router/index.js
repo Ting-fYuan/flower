@@ -44,23 +44,32 @@ const routes = [
         name: "UseView",
         // props: ["id"],
         meta: {
-          title: "分类",
+          title: "用途",
         },
         component: () => import("@/views/children_route/use.vue"),
       },
       {
         path: "/category/MaterialView",
         name: "MaterialView",
+        meta: {
+          title: "花材",
+        },
         component: () => import("@/views/children_route/material.vue"),
       },
       {
         path: "/category/ClassView",
         name: "ClassView",
+        meta: {
+          title: "类别",
+        },
         component: () => import("@/views/children_route/class.vue"),
       },
       {
         path: "/category/NumberView",
         name: "NumberView",
+        meta: {
+          title: "枝树",
+        },
         component: () => import("@/views/children_route/number.vue"),
       },
     ],
@@ -261,6 +270,17 @@ const router = new VueRouter({
   mode: "hash",
   base: process.env.BASE_URL,
   routes,
+  // 操作页面滚动
+  scrollBehavior(to, from) {
+    // 页面详情页面需要top 0
+    // @ 订单页面不需要top 0
+    if (to.name === "detail" && from.name !== "fillOrder") {
+      return { y: 0 };
+    }
+    if (to.name === "fillOrder") {
+      return { y: 0 };
+    }
+  },
 });
 
 router.beforeEach((to, from, next) => {

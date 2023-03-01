@@ -42,7 +42,7 @@ const http = axios.create({
     isId: false, // 是否需要project_id
   },
   // 响应时间
-  timeout: 5000,
+  timeout: 15000,
 });
 
 // 请求拦截器 (每次请求都会触发)
