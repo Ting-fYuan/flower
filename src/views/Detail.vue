@@ -152,7 +152,7 @@ export default {
     this.shopsId = this.$route.query.id;
     this.consonfn();
     // 生成随机评论数
-    this.commentNum = Math.floor(Math.random() * 100 + 6);
+    this.commentNum = Math.floor(Math.random() * 10 + 6);
     localStorage.setItem("commentNum", this.commentNum);
     // 评论生成
     for (let i = 0; i < this.commentNum; i++) {
