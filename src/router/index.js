@@ -44,23 +44,32 @@ const routes = [
         name: "UseView",
         // props: ["id"],
         meta: {
-          title: "分类",
+          title: "用途",
         },
         component: () => import("@/views/children_route/use.vue"),
       },
       {
         path: "/category/MaterialView",
         name: "MaterialView",
+        meta: {
+          title: "花材",
+        },
         component: () => import("@/views/children_route/material.vue"),
       },
       {
         path: "/category/ClassView",
         name: "ClassView",
+        meta: {
+          title: "类别",
+        },
         component: () => import("@/views/children_route/class.vue"),
       },
       {
         path: "/category/NumberView",
         name: "NumberView",
+        meta: {
+          title: "枝树",
+        },
         component: () => import("@/views/children_route/number.vue"),
       },
     ],
@@ -123,6 +132,9 @@ const routes = [
     path: "/login",
     name: "login",
     component: () => import("@/views/user_information/Login.vue"),
+    meta: {
+      title: "登录注册",
+    },
   },
   {
     path: "/personalInfo",
@@ -130,6 +142,7 @@ const routes = [
     component: () => import("@/views/user_information/personalInfo.vue"),
     meta: {
       isAuth: true,
+      title: "个人信息",
     },
   },
   {
@@ -175,6 +188,7 @@ const routes = [
     name: "fillOrder",
     meta: {
       title: "填写订单",
+      isAuth: true,
     },
     component: () => import("@/views/order/FillOrder.vue"),
   },
@@ -256,10 +270,29 @@ VueRouter.prototype.push = function push(location, onResolve, onReject) {
   return originalPush.call(this, location).catch((err) => err);
 };
 
+const originalReplace = VueRouter.prototype.replace;
+VueRouter.prototype.replace = function replace(location, onResolve, onReject) {
+  if (onResolve || onReject) {
+    return originalReplace.call(this, location, onResolve, onReject);
+  }
+  return originalReplace.call(this, location).catch((err) => err);
+};
+
 const router = new VueRouter({
   mode: "hash",
   base: process.env.BASE_URL,
   routes,
+  // 操作页面滚动
+  scrollBehavior(to, from) {
+    // 页面详情页面需要top 0
+    // @ 订单页面不需要top 0
+    if (to.name === "detail" && from.name !== "fillOrder") {
+      return { y: 0 };
+    }
+    if (to.name === "fillOrder") {
+      return { y: 0 };
+    }
+  },
 });
 
 router.beforeEach((to, from, next) => {

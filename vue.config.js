@@ -1,5 +1,4 @@
 const { defineConfig } = require("@vue/cli-service");
-// const proxy = require("http-proxy-middleware");
 module.exports = defineConfig({
   // 更改ico
   pwa: {
@@ -17,7 +16,7 @@ module.exports = defineConfig({
   // 配置代理服务器
   devServer: {
     open: false,
-    host: "localhost",
+    host: "0.0.0.0",
     port: 8080,
   },
 });

@@ -27,13 +27,18 @@
             <i>综合</i>
           </div>
         </template>
-        <div class="ContentBox">
-          <div v-for="goodsInfo of ClassifyGoodsList" :key="goodsInfo.id">
-            <!-- <van-image :src="goodsInfo['s_goods_photos'][0].path" /> -->
-            <img
-              :src="goodsInfo['s_goods_photos'][0].path"
-              v-lazy="goodsInfo['s_goods_photos'][0].path"
-            />
+        <div class="ContentBox" v-show="emptyState">
+          <div
+            v-for="goodsInfo of ClassifyGoodsList"
+            :key="goodsInfo.id"
+            @click="goDetailPage(goodsInfo.id)"
+          >
+            <van-image :src="goodsInfo['s_goods_photos'][0].path" lazy-load>
+              <template v-slot:err>
+                <van-loading type="spinner" size="20" />
+              </template>
+            </van-image>
+
             <div class="GoodsInfo">
               <p>{{ goodsInfo.name }}</p>
               <p>
@@ -46,6 +51,12 @@
             </div>
           </div>
         </div>
+        <van-empty
+          v-show="!emptyState"
+          class="custom-image"
+          image="https://img01.yzcdn.cn/vant/custom-empty-image.png"
+          description="没有相关商品"
+        />
       </van-tab>
 
       <!-- 销量区间 -->
@@ -65,13 +76,18 @@
             </p>
           </div>
         </template>
-        <div class="ContentBox">
-          <div v-for="goodsInfo of ClassifyGoodsList" :key="goodsInfo.id">
-            <!-- <van-image :src="goodsInfo['s_goods_photos'][0].path" /> -->
-            <img
-              :src="goodsInfo['s_goods_photos'][0].path"
-              v-lazy="goodsInfo['s_goods_photos'][0].path"
-            />
+        <div class="ContentBox" v-show="emptyState">
+          <div
+            v-for="goodsInfo of SaleClassifyGoodsList"
+            :key="goodsInfo.id"
+            @click="goDetailPage(goodsInfo.id)"
+          >
+            <van-image :src="goodsInfo['s_goods_photos'][0].path" lazy-load>
+              <template v-slot:err>
+                <van-loading type="spinner" size="20" />
+              </template>
+            </van-image>
+
             <div class="GoodsInfo">
               <p>{{ goodsInfo.name }}</p>
               <p>
@@ -84,6 +100,12 @@
             </div>
           </div>
         </div>
+        <van-empty
+          v-show="!emptyState"
+          class="custom-image"
+          image="https://img01.yzcdn.cn/vant/custom-empty-image.png"
+          description="没有相关商品"
+        />
       </van-tab>
 
       <!-- 价格区间 -->
@@ -103,9 +125,17 @@
             </p>
           </div>
         </template>
-        <div class="ContentBox">
-          <div v-for="goodsInfo of ClassifyGoodsList" :key="goodsInfo.id">
-            <van-image :src="goodsInfo['s_goods_photos'][0].path" />
+        <div class="ContentBox" v-show="emptyState">
+          <div
+            v-for="goodsInfo of PriceClassifyGoodsList"
+            :key="goodsInfo.id"
+            @click="goDetailPage(goodsInfo.id)"
+          >
+            <van-image :src="goodsInfo['s_goods_photos'][0].path" lazy-load>
+              <template v-slot:err>
+                <van-loading type="spinner" size="20" />
+              </template>
+            </van-image>
             <div class="GoodsInfo">
               <p>{{ goodsInfo.name }}</p>
               <p>
@@ -118,6 +148,12 @@
             </div>
           </div>
         </div>
+        <van-empty
+          v-show="!emptyState"
+          class="custom-image"
+          image="https://img01.yzcdn.cn/vant/custom-empty-image.png"
+          description="没有相关商品"
+        />
       </van-tab>
 
       <!-- 筛选区间 -->
@@ -161,19 +197,24 @@ export default {
     return {
       active: "综合",
       show: false,
+      loading: "default", // 控制骨架屏的显示
       actions: [{ name: "选项一" }, { name: "选项二" }, { name: "选项三" }],
       ClassifyGoodsList: [],
+      SaleClassifyGoodsList: [],
+      PriceClassifyGoodsList: [],
       ClassifyNamesList: [],
       topShow: "backTop backTopHidden", // 控制显示与隐藏置顶按钮
       // @ 控制升序和降序
       saleNumberSort: true, //销量
       salePriceSort: true, //价格
       // @控制升序和降序的样式
-      saleNumberArrowUp: "", //销量上箭头
-      saleNumberArrowDown: "", //销量下箭头
+      saleNumberArrowUp: "unactiveStyle", //销量上箭头
+      saleNumberArrowDown: "unactiveStyle", //销量下箭头
 
-      salePriceArrowUp: "", //价格上箭头
-      salePriceArrowDown: "", //价格下箭头
+      salePriceArrowUp: "unactiveStyle", //价格上箭头
+      salePriceArrowDown: "unactiveStyle", //价格下箭头
+
+      emptyState: true, //空状态的时候展示空内容提示
     };
   },
   mounted() {
@@ -187,19 +228,33 @@ export default {
     getClassifyGoods: debounce(async function () {
       try {
         let SearchRes = await SearchDetails(this.$route.query.id);
-        this.ClassifyGoodsList = SearchRes.result;
-        console.log("初始化数据", this.ClassifyGoodsList);
+        // todo:判断类别下面是否拥"有数据"，有存数据，没有展示空
+        if (SearchRes.result.length != 0) {
+          this.ClassifyGoodsList = JSON.parse(JSON.stringify(SearchRes.result));
+          this.SaleClassifyGoodsList = JSON.parse(
+            JSON.stringify(SearchRes.result)
+          );
+          this.PriceClassifyGoodsList = JSON.parse(
+            JSON.stringify(SearchRes.result)
+          );
+          this.emptyState = true;
+          this.loading = false;
+          // console.log("有数据", SearchRes.result);
+        } else {
+          this.emptyState = false;
+          console.log("无数据", SearchRes.result);
+        }
       } catch (error) {
         console.log(error);
       }
-    }, 1000),
+    }, 500),
 
     // todo:获取到所有的商品分类
     async getAllClassify() {
       try {
         let AllClassify = await indexImg();
         this.ClassifyNamesList = AllClassify.result.slice(0, -1);
-        console.log(AllClassify);
+        // console.log("获取所有的数据", AllClassify);
       } catch (error) {
         console.log(error);
       }
@@ -213,56 +268,63 @@ export default {
           this.salePriceSort = true;
           this.ClearStyle();
           this.getClassifyGoods(); //@更新数据
-          console.log("综合");
+          // console.log("综合");
           break;
         case "销量":
           this.salePriceSort = true;
           if (this.saleNumberSort) {
-            this.ClassifyGoodsList = this.ClassifyGoodsList.sort((a, b) => {
-              return b.sold_num - a.sold_num;
-            });
+            this.SaleClassifyGoodsList = this.SaleClassifyGoodsList.sort(
+              (a, b) => {
+                return b.sold_num - a.sold_num;
+              }
+            );
             this.ClearStyle();
             this.saleNumberArrowUp = "activeStyle";
             this.saleNumberArrowDown = "unactiveStyle";
             this.saleNumberSort = !this.saleNumberSort;
-            console.log("销量升序", this.ClassifyGoodsList);
+            // console.log("销量升序", this.ClassifyGoodsList);
           } else {
-            this.ClassifyGoodsList = this.ClassifyGoodsList.sort((a, b) => {
-              return a.sold_num - b.sold_num;
-            });
+            this.SaleClassifyGoodsList = this.SaleClassifyGoodsList.sort(
+              (a, b) => {
+                return a.sold_num - b.sold_num;
+              }
+            );
             this.ClearStyle();
             this.saleNumberArrowUp = "unactiveStyle";
             this.saleNumberArrowDown = "activeStyle";
             this.saleNumberSort = !this.saleNumberSort;
-            console.log("销量降序", this.ClassifyGoodsList);
+            // console.log("销量降序", this.ClassifyGoodsList);
           }
           break;
 
         case "价格":
           this.saleNumberSort = true;
           if (this.salePriceSort) {
-            this.ClassifyGoodsList = this.ClassifyGoodsList.sort((a, b) => {
-              return a.sale_price - b.sale_price;
-            });
+            this.PriceClassifyGoodsList = this.PriceClassifyGoodsList.sort(
+              (a, b) => {
+                return a.sale_price - b.sale_price;
+              }
+            );
             this.ClearStyle();
             this.salePriceArrowUp = "activeStyle";
             this.salePriceArrowDown = "unactiveStyle";
             this.salePriceSort = !this.salePriceSort;
-            console.log("升序价格", this.ClassifyGoodsList);
+            // console.log("升序价格", this.ClassifyGoodsList);
           } else {
-            this.ClassifyGoodsList = this.ClassifyGoodsList.sort((a, b) => {
-              return b.sale_price - a.sale_price;
-            });
+            this.PriceClassifyGoodsList = this.PriceClassifyGoodsList.sort(
+              (a, b) => {
+                return b.sale_price - a.sale_price;
+              }
+            );
             this.ClearStyle();
             this.salePriceArrowUp = "unactiveStyle";
             this.salePriceArrowDown = "activeStyle";
             this.salePriceSort = !this.salePriceSort;
-            console.log("降序价格", this.ClassifyGoodsList);
+            // console.log("降序价格", this.ClassifyGoodsList);
           }
           break;
 
         default:
-          console.log("筛选");
           this.saleNumberSort = true; // @初始化图标样式
           this.salePriceSort = true;
           this.ClearStyle();
@@ -274,7 +336,7 @@ export default {
 
     // todo:点击子类跳转到分类页面
     goClassifyPage(data) {
-      // console.log(data.name, data.id);
+      console.log(data.name, data.id);
       this.$router.replace({
         path: "/classification",
         query: { id: data.id, name: data.name },
@@ -302,6 +364,12 @@ export default {
       } else {
         this.topShow = "backTop backTopHidden";
       }
+    },
+
+    // 跳转每个商品的详情页面
+    goDetailPage(data) {
+      console.log(data);
+      this.$router.push({ path: "/Detail", query: { id: data } });
     },
   },
 };
@@ -372,10 +440,10 @@ export default {
         }
         // 激活下箭头的样式
         &.activeStyle {
-          color: #894e22;
+          color: rgb(66, 31, 5);
         }
         &.unactiveStyle {
-          color: #888;
+          color: rgba(136, 136, 136, 0.5);
         }
       }
     }
@@ -487,6 +555,11 @@ export default {
         }
       }
     }
+  }
+  ::v-deep .custom-image .van-empty__image {
+    margin-top: 50%;
+    width: 100px;
+    height: 100px;
   }
 }
 </style>

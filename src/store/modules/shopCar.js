@@ -39,7 +39,6 @@ export default {
     },
     // 更新选中商品id数组
     upDataChooseShop(state, payload) {
-      console.log(payload);
       state.chooseShopList = payload;
       sessionStorage.setItem("chooseShopList", JSON.stringify(payload));
       state.selectShopMsg = state.shopCarList.filter((item) =>
