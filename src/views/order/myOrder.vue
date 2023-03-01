@@ -295,6 +295,7 @@ export default {
 
 <style lang="scss" scoped>
 .myorder {
+  padding: 40px 0;
   width: 100%;
   // 没有订单时显示
   .noobligation,
@@ -438,7 +439,7 @@ export default {
 
 ::v-deep .van-swipe-cell {
   height: 165px;
-  border-bottom: 1px solid #884e22;
+  // border-bottom: 1px solid #884e22;
 }
 ::v-deep .van-card {
   margin-top: 8px;
