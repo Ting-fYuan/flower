@@ -83,14 +83,12 @@ export default {
     classIdx() {
       return this.$store.state.classflyStore.classId;
     },
-  },
-  methods: {},
-  computed: {
     // 获取购物车数量
     shopCarNum() {
       return this.$store.state.shopCarStore.shopCarList.length;
     },
   },
+  methods: {},
 };
 </script>
 
