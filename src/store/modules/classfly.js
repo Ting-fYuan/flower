@@ -1,3 +1,5 @@
+import { indexImg } from "@/api/indexImg";
+
 export default {
   //开启命名空间
   namespaced: true,
@@ -5,12 +7,33 @@ export default {
     //存放细分类组件的请求的数据
     arr: [],
     //请求的类别的名字
-    name: "",
+    // name: "",
+    classId: sessionStorage.getItem("classId") || 0,
   },
   mutations: {
-    //获取请求数据
-    getClassDate() {
-      console.log("组件vuex");
+    // 更新请求数据
+    updateClassDate(state, payload) {
+      // console.log(payload);
+      state.arr = payload;
+    },
+    updateClassIdx(state, id) {
+      state.classId = id;
+      sessionStorage.setItem("classId", id);
+    },
+    // updateClassName(state, newvalue) {
+    //   this.state.classflyStore.name = newvalue;
+    // },
+  },
+  actions: {
+    getClassData(ctx) {
+      if (!ctx.state.arr.length) {
+        indexImg()
+          .then((res) => {
+            // console.log(res.result);
+            ctx.commit("updateClassDate", res.result);
+          })
+          .catch();
+      }
     },
   },
 };
