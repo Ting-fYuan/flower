@@ -34,6 +34,7 @@
         :address-info="AddressInfo"
         @delete="delAddress"
         @save="onSave"
+        detail-maxlength="30"
       />
     </div>
   </div>
@@ -195,10 +196,12 @@ export default {
           }
         }
       } catch (err) {
-        Toast({
-          message: err.message,
-          position: "bottom",
-        });
+        if (err.message == "参数phone格式不对或者缺失") {
+          Toast({
+            message: "请输入正确的手机号",
+            position: "bottom",
+          });
+        }
       }
     },
     // 删除地址
