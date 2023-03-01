@@ -53,10 +53,10 @@
           <p>成交时间</p>
           <p>{{ updateAt }}</p>
         </div>
+        <button @click="toIndex">回到首页</button>
       </div>
     </main>
     <header>
-      <button @click="toIndex">回到首页</button>
       <p>已经到底了~</p>
     </header>
   </div>
@@ -239,6 +239,19 @@ export default {
         font-size: 12px;
         color: gray;
       }
+
+      button {
+        position: absolute;
+        right: 15px;
+        bottom: 10px;
+        width: 70px;
+        height: 25px;
+        background-color: #fff;
+        color: #884f22;
+        border-radius: 20px;
+        font-size: 13px;
+        border: 0.5px solid #884f22;
+      }
     }
   }
   header {
@@ -246,18 +259,6 @@ export default {
     width: 100%;
     bottom: 0;
     right: 0;
-    button {
-      position: absolute;
-      right: 20px;
-      bottom: 20px;
-      width: 80px;
-      height: 30px;
-      background-color: #fff;
-      color: #884f22;
-      border-radius: 20px;
-      font-size: 13px;
-      border: 0.5px solid #884f22;
-    }
     p {
       margin-bottom: 5px;
       color: #000000a9;
