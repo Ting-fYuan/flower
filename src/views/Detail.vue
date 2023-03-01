@@ -26,90 +26,126 @@
           <div class="leftmoney">
             <p>&yen;{{ consale_price }}</p>
             <p>&yen;{{ conprice }}</p>
-          </div>
-          <div class="rightmoney">
-            <p>已售17229</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- 富文本上部分数据 -->
-    <div class="conston">
-      <div class="constop">
-        <p v-html="consonptop"></p>
-      </div>
-      <!-- 数量 -->
-      <div class="cutbut">
-        <div class="cutauto">
-          <p>数量</p>
-          <van-stepper v-model="value" max="10" />
-        </div>
-      </div>
-      <!-- 订单评价 -->
-      <div class="appraisal">
-        <div class="appraisalBox">
-          <div class="appraisalhead">
-            <p>订单评价</p>
-            <p>最近已有{{ commentNum }}评论</p>
-          </div>
-          <div
-            class="appraisalmain"
-            v-for="(item, index) in commentArr.slice(0, 2)"
-            :key="index"
-          >
-            <div class="appraisTop">
-              <img src="../assets/images/morenTou.png.webp" alt="图片" />
-              <p>147****2479</p>
-              <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
+            <div class="rightmoney">
+              <p>已售17229</p>
             </div>
-            <div class="appraisBottom">
-              <p>{{ item }}</p>
-              <img
-                src="../assets/images/202012251046531552.jpeg.webp"
-                alt="图片"
+          </div>
+        </div>
+      </div>
+      <!-- 富文本上部分数据 -->
+      <div class="conston">
+        <div class="constop">
+          <p v-html="consonptop"></p>
+        </div>
+        <!-- 数量 -->
+        <div class="cutbut">
+          <div class="cutauto">
+            <p>数量</p>
+            <van-stepper v-model="value" max="10" />
+          </div>
+        </div>
+        <!-- 订单评价 -->
+        <div class="appraisal">
+          <div class="appraisalBox">
+            <div class="appraisalhead">
+              <p>订单评价</p>
+              <p>最近已有{{ commentNum }}评论</p>
+            </div>
+            <div
+              class="appraisalmain"
+              v-for="(item, index) in commentArr.slice(0, 2)"
+              :key="index"
+            >
+              <div class="appraisTop">
+                <img src="../assets/images/morenTou.png.webp" alt="图片" />
+                <p>147****2479</p>
+                <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
+              </div>
+              <div class="rightmoney">
+                <p>已售17229</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 富文本上部分数据 -->
+        <div class="conston">
+          <div class="constop">
+            <p v-html="consonptop"></p>
+          </div>
+          <!-- 数量 -->
+          <div class="cutbut">
+            <div class="cutauto">
+              <p>数量</p>
+              <van-stepper v-model="value" />
+            </div>
+          </div>
+          <!-- 订单评价 -->
+          <div class="appraisal">
+            <div class="appraisalBox">
+              <div class="appraisalhead">
+                <p>订单评价</p>
+                <p>最近已有{{ commentNum }}评论</p>
+              </div>
+              <div
+                class="appraisalmain"
+                v-for="(item, index) in commentArr.slice(0, 2)"
+                :key="index"
+              >
+                <div class="appraisTop">
+                  <img src="../assets/images/morenTou.png.webp" alt="图片" />
+                  <p>147****2479</p>
+                  <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
+                </div>
+                <div class="appraisBottom">
+                  <p>{{ item }}</p>
+                  <img
+                    src="../assets/images/202012251046531552.jpeg.webp"
+                    alt="图片"
+                  />
+                </div>
+              </div>
+              <div class="appraibtn">
+                <button @click="goComments()">查看更多评价</button>
+              </div>
+            </div>
+          </div>
+          <div class="consbottom">
+            <span>产品详情</span>
+            <p v-html="consonbottom"></p>
+          </div>
+        </div>
+        <!-- 购买按钮 -->
+        <footer>
+          <div class="footer">
+            <van-goods-action>
+              <van-goods-action-icon
+                icon="wap-home-o"
+                text="首页"
+                @click="toIndex"
               />
-            </div>
+              <van-goods-action-icon
+                icon="cart-o"
+                text="购物车"
+                @click="toShopCar"
+                :badge="carListNum.length ? carListNum.length : ''"
+              />
+              <van-goods-action-button
+                type="warning"
+                text="加入购物车"
+                @click="shopCarHandle"
+                color="#3d4d42"
+              />
+              <van-goods-action-button
+                type="danger"
+                text="立即购买"
+                color="#ff734c"
+                @click="orderHandle"
+              />
+            </van-goods-action>
           </div>
-          <div class="appraibtn">
-            <button @click="goComments()">查看更多评价</button>
-          </div>
-        </div>
-      </div>
-      <div class="consbottom">
-        <span>产品详情</span>
-        <p v-html="consonbottom"></p>
+        </footer>
       </div>
     </div>
-    <!-- 购买按钮 -->
-    <footer>
-      <div class="footer">
-        <van-goods-action>
-          <van-goods-action-icon
-            icon="wap-home-o"
-            text="首页"
-            @click="toIndex"
-          />
-          <van-goods-action-icon
-            icon="cart-o"
-            text="购物车"
-            @click="toShopCar"
-            :badge="carListNum.length ? carListNum.length : ''"
-          />
-          <van-goods-action-button
-            type="warning"
-            text="加入购物车"
-            @click="shopCarHandle"
-            color="#3d4d42"
-          />
-          <van-goods-action-button
-            type="danger"
-            text="立即购买"
-            color="#ff734c"
-            @click="orderHandle"
-          />
-        </van-goods-action>
-      </div>
-    </footer>
   </div>
 </template>
 
@@ -175,6 +211,7 @@ export default {
     lefticonfn() {
       this.$router.back(1);
     },
+    // 轮播图后台数据渲染
     async consonfn() {
       let res = await consondend(this.shopsId);
 
@@ -281,8 +318,6 @@ export default {
 
 <style lang="scss" scoped>
 .detail {
-  width: 100%;
-  height: 100%;
   background-color: #e9ecf0;
   // 头部导航栏
   .nav-img {
@@ -338,7 +373,7 @@ export default {
           width: 103px;
           height: 28px;
           display: flex;
-          justify-content: space-around;
+          justify-content: space-between;
           p {
             &:nth-of-type(1) {
               opacity: 1;
@@ -471,8 +506,8 @@ export default {
           flex-direction: row;
           align-items: center;
           img {
-            width: 20px;
-            height: 20px;
+            width: 25px;
+            height: 25px;
             &:nth-of-type(2) {
               position: absolute;
               right: 0;
@@ -494,11 +529,12 @@ export default {
         }
         .appraisBottom {
           p {
-            padding-top: 10px;
+            line-height: 24px;
+            padding-top: 15px;
             font-size: 14px;
           }
           img {
-            padding-top: 20px;
+            padding-top: 25px;
             width: 55.19px;
             height: 73.58px;
           }
@@ -512,13 +548,14 @@ export default {
         text-align: center;
 
         button {
-          width: 84px;
           height: 29px;
+          line-height: 29px;
           opacity: 1;
           color: #232628;
           font-size: 12px;
           font-weight: 400;
           background-color: #fff;
+          border: none;
         }
       }
     }
