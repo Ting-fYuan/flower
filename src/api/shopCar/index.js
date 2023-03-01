@@ -1,6 +1,19 @@
 import http from "@/utils/http.js";
 // 购物车 api
 
+// 添加商品到购物车
+export const addShopCar = (data) => {
+  return http({
+    url: "/shoppingCart",
+    method: "POST",
+    data,
+    headers: {
+      isToken: true,
+      isId: true,
+    },
+  });
+};
+
 // 获取用户购物车
 export const getShopCarApi = (params) => {
   return http({
@@ -31,19 +44,6 @@ export const delShopCarApi = ($id) => {
   return http({
     url: `/shoppingCart/${$id}`,
     method: "DELETE",
-    headers: {
-      isToken: true,
-      isId: true,
-    },
-  });
-};
-
-// 添加商品到购物车
-export const addShopCar = (data) => {
-  return http({
-    url: "/shoppingCart",
-    method: "POST",
-    data,
     headers: {
       isToken: true,
       isId: true,

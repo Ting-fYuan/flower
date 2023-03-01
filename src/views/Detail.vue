@@ -50,30 +50,20 @@
         <div class="appraisalBox">
           <div class="appraisalhead">
             <p>订单评价</p>
-            <p>最近已有1330评论</p>
+            <p>最近已有{{ commentNum }}评论</p>
           </div>
-          <div class="appraisalmain">
+          <div
+            class="appraisalmain"
+            v-for="(item, index) in commentArr.slice(0, 2)"
+            :key="index"
+          >
             <div class="appraisTop">
               <img src="../assets/images/morenTou.png.webp" alt="图片" />
               <p>147****2479</p>
               <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
             </div>
             <div class="appraisBottom">
-              <p>一大束玫瑰花，老婆非常喜欢。花也很新鲜，推荐大家买</p>
-              <img
-                src="../assets/images/202012251046531552.jpeg.webp"
-                alt="图片"
-              />
-            </div>
-          </div>
-          <div class="appraisalmain">
-            <div class="appraisTop">
-              <img src="../assets/images/morenTou.png.webp" alt="图片" />
-              <p>147****2479</p>
-              <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
-            </div>
-            <div class="appraisBottom">
-              <p>一大束玫瑰花，老婆非常喜欢。花也很新鲜，推荐大家买</p>
+              <p>{{ item }}</p>
               <img
                 src="../assets/images/202012251046531552.jpeg.webp"
                 alt="图片"
@@ -81,7 +71,7 @@
             </div>
           </div>
           <div class="appraibtn">
-            <button>查看更多评价</button>
+            <button @click="goComments()">查看更多评价</button>
           </div>
         </div>
       </div>
@@ -126,6 +116,7 @@
 <script>
 // import { detailSwipe } from "@/api/swiper";
 import { consondend } from "@/api/detail";
+import { generateComment } from "@/utils/comment";
 import { addShopCar } from "@/api/shopCar";
 import { Toast } from "vant";
 // import { addOrder } from "@/api/order";
@@ -150,13 +141,24 @@ export default {
       // 数量
       value: 1,
       shopsId: "",
+      // 评论数量
+      commentNum: "",
+      // 评论数组
+      commentArr: [],
     };
   },
   created() {
     // 获取商品id
     this.shopsId = this.$route.query.id;
-    // console.log("商品id", this.shopsId);
     this.consonfn();
+    // 生成随机评论数
+    this.commentNum = Math.floor(Math.random() * 100 + 6);
+    localStorage.setItem("commentNum", this.commentNum);
+    // 评论生成
+    for (let i = 0; i < this.commentNum; i++) {
+      // console.log(generateComment());
+      this.commentArr.push(generateComment());
+    }
   },
   computed: {
     // 购物车数量
@@ -175,6 +177,7 @@ export default {
     },
     async consonfn() {
       let res = await consondend(this.shopsId);
+
       // 轮播图取消第一个数据
       this.swipeArrs = res.result.s_goods_photos.splice(0, 1);
       // 轮播图数据
@@ -214,7 +217,7 @@ export default {
         return false;
       } else return true;
     },
-    // 添加购物粗
+    // 添加购物车
     async shopCarHandle() {
       // 鉴权
       if (!this.authHandle()) return;
@@ -243,24 +246,6 @@ export default {
         const address = await defaultAddressApi();
         // 是否有默认地址
         if (address.result) {
-          // const res = await addOrder({
-          //   goods_info: [
-          //     {
-          //       id: this.shopsId,
-          //       num: this.value,
-          //     },
-          //   ],
-          //   addr_id: address.result.id,
-          // });
-          // console.log(res);
-          // if (res.msg == "库存不足") {
-          //   Toast.fail("库存不足");
-          //   return;
-          // }
-          // if (res.msg == "添加成功") {
-          //   // 跳转到订单页面
-          //   this.$router.push();
-          // }
           this.$router.push({
             path: "fillOrder",
             query: {
@@ -285,6 +270,10 @@ export default {
       } catch (err) {
         return err;
       }
+    },
+    // 打开评论页面
+    goComments() {
+      this.$router.push("/comments");
     },
   },
 };
@@ -313,6 +302,7 @@ export default {
     height: 95px;
     position: relative;
     background-color: #fff;
+    border-bottom: 0.5px solid #c7c5c5;
     .moneyheadr {
       position: absolute;
       width: 345px;
@@ -327,7 +317,6 @@ export default {
         height: 21px;
 
         h3 {
-          width: 60px;
           height: 21px;
           opacity: 1;
           color: rgba(85, 85, 85, 1);
@@ -344,6 +333,7 @@ export default {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+
         .leftmoney {
           width: 103px;
           height: 28px;

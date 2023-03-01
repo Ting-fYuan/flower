@@ -5,14 +5,14 @@
     <div class="loginArea">
       <div class="UserArea">
         <img src="../../src/assets/images/homeBackground.jpg" />
-        <div class="content" v-if="LoginState">
+        <div class="content" v-if="!token">
           <p>Hi,欢迎来到订花乐!</p>
           <button class="loginBtn" @click="goLogin">登录/注册</button>
         </div>
-        <div class="content" v-if="!LoginState">
+        <div class="content" v-if="token">
           <div>
-            <img src="@/assets/images/avatar.png" alt="默认头像" />
-            <span>订花乐用户</span>
+            <img :src="userInfo.header_img || defaultAvatar" alt="默认头像" />
+            <span>{{ userInfo.name || "订花乐用户" }}</span>
           </div>
           <button @click="changeLoginState">退出登录</button>
         </div>
@@ -75,43 +75,56 @@
 </template>
 
 <script>
+import defaultAvatar from "@/assets/images/avatar.png";
 import TabBar from "@/components/TabBar.vue";
 import { logout } from "@/api/user";
+import { Toast } from "vant";
 export default {
   name: "HomeView",
   components: { TabBar },
   data() {
     return {
-      LoginState: false,
+      defaultAvatar,
     };
   },
   async created() {
     // 请求地址
     await this.$store.dispatch("addressStore/getAllcity").catch((err) => err);
   },
+  computed: {
+    token() {
+      return this.$store.state.loginStore.token;
+    },
+    userInfo() {
+      return this.$store.state.loginStore.userInfo;
+    },
+  },
   methods: {
-    // @ 切换登录态
+    // @ 注销
     async changeLoginState() {
-      this.LoginState = !this.LoginState;
-      let logoutRes = await logout({});
-      if (logoutRes) {
-        this.$store.commit("loginStore/clearUserInfo");
+      if (this.token) {
+        // 注销登录
+        let logoutRes = await logout();
+        if (logoutRes) {
+          this.$store.commit("loginStore/clearUserInfo");
+          Toast.success("注销成功");
+        }
       }
     },
     goSearch() {
       this.$router.push("/order");
     },
     goPayment() {
-      this.$router.push("/payment");
+      this.$router.push("/order/myorder/1");
     },
     goSending() {
-      this.$router.push("/sending");
+      this.$router.push("/order/myorder/2");
     },
     goComment() {
-      this.$router.push("/comment");
+      this.$router.push("/order/myorder/3");
     },
     goComplete() {
-      this.$router.push("/complete");
+      this.$router.push("/order/myorder/4");
     },
     goCoupon() {
       this.$router.push("/coupon");
@@ -123,7 +136,12 @@ export default {
       this.$router.push("/setting");
     },
     goLogin() {
-      this.$router.push("/login");
+      this.$router.push({
+        path: "/login",
+        query: {
+          redirect: this.$route.fullPath,
+        },
+      });
     },
   },
 };
