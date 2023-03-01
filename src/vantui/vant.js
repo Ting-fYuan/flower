@@ -43,6 +43,7 @@ import {
   NumberKeyboard,
   Step,
   Steps,
+  Loading,
 } from "vant";
 
 Vue.use(AddressList);
@@ -89,3 +90,4 @@ Vue.use(PasswordInput);
 Vue.use(NumberKeyboard);
 Vue.use(Step);
 Vue.use(Steps);
+Vue.use(Loading);
