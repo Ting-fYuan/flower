@@ -10,14 +10,14 @@
 
     <main>
       <nav>
-        <!-- <router-link to="/category/UseView?id=0">用途</router-link>
+        <router-link to="/category/UseView?id=0">用途</router-link>
         <router-link to="/category/UseView?id=1">花材</router-link>
         <router-link to="/category/UseView?id=2">类别</router-link>
-        <router-link to="/category/UseView?id=3">枝数</router-link> -->
-        <router-link to="/category/UseView">用途</router-link>
+        <router-link to="/category/UseView?id=3">枝数</router-link>
+        <!-- <router-link to="/category/UseView?id=0">用途</router-link>
         <router-link to="/category/MaterialView">花材</router-link>
         <router-link to="/category/ClassView">类别</router-link>
-        <router-link to="/category/NumberView?">枝数</router-link>
+        <router-link to="/category/NumberView?">枝数</router-link> -->
       </nav>
       <keep-alive>
         <router-view />
@@ -44,6 +44,18 @@ export default {
       this.$router.push("/search");
     },
   },
+  // watch: {
+  //   $route: {
+  //     immediate: true,
+  //     handler(q) {
+  //       console.log(q);
+  //     },
+  //   },
+  // },
+  // beforeRouteUpdate(to, from, next) {
+  //   console.log(to.name);
+  //   next(); // 一定要调用 next 函数，否则路由会一直处于等待状态
+  // },
 };
 </script>
 

@@ -33,11 +33,14 @@
                 @click="delCard(item.id)"
               />
             </template>
-            <div class="obligationBtn">
+            <div class="obligationBtn" v-show="item.status == 1">
               <button class="cancle" @click="goCancle(item.id)">
                 取消订单
               </button>
               <button class="gopay" @click="gopay()">去支付</button>
+            </div>
+            <div class="obligationBtn" v-show="item.status == 0">
+              <span>订单已过期</span>
             </div>
           </van-swipe-cell>
         </div>
@@ -125,7 +128,7 @@
     </div> -->
 
     <!-- 已完成 -->
-    <div class="nofinished" v-if="routeId == 4 && orderList.length == 0">
+    <div class="nofinished" v-if="routeId == 4 && finishedList.length == 0">
       <div class="nofinishedContent">
         <img
           src="@/assets/images/coupon.png"
@@ -135,7 +138,7 @@
         <span class="finishedText">暂无内容</span>
       </div>
     </div>
-    <div class="finished" v-if="routeId == 4 && orderList != ''">
+    <div class="finished" v-if="routeId == 4 && finishedList != ''">
       <div class="finishedContent">
         <div class="finishedGoods" v-for="item in orderList" :key="item.id">
           <van-swipe-cell v-if="item.status == 6">
@@ -158,7 +161,7 @@
               />
             </template>
             <div class="finished">
-              <span>已完成</span>
+              <span>订单已完成</span>
               <button class="delOrder" @click="delOrder(item.id)">
                 删除订单
               </button>
@@ -186,6 +189,7 @@ export default {
       routeId: "",
       orderList: [],
       notPayment: [],
+      finishedList: [],
     };
   },
   watch: {
@@ -215,6 +219,8 @@ export default {
       orderres.result.rows.forEach((e) => {
         if (e.status == 0 || e.status == 1) {
           this.notPayment = orderres.result.rows;
+        } else if (e.status == 6) {
+          this.finishedList = orderres.result.rows;
         }
       });
     } catch (error) {
@@ -295,6 +301,7 @@ export default {
 
 <style lang="scss" scoped>
 .myorder {
+  padding: 40px 0;
   width: 100%;
   // 没有订单时显示
   .noobligation,
@@ -305,10 +312,7 @@ export default {
     .nodeliveryContent,
     .noevaluateContent,
     .nofinishedContent {
-      width: 100%;
-      height: 300px;
-      background: rgba(255, 255, 255, 1);
-      margin-top: 20px;
+      margin: 20px auto 0;
       display: flex;
       flex-direction: column;
       justify-content: center; /*水平居中*/
@@ -318,15 +322,16 @@ export default {
       .evaluateImg,
       .finishedImg {
         margin-bottom: 10px;
+        width: 50%;
       }
       .obligationText,
       .deliveryText,
       .evaluateText,
       .finishedText {
-        color: #ff734c;
-        font-size: 14px;
-        font-weight: 400;
         margin-bottom: 5px;
+        color: #555555;
+        font-size: 14px;
+        font-weight: 600;
       }
     }
   }
@@ -432,13 +437,9 @@ export default {
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-::v-deep .van-tabs__line {
-  background-color: #884e22 !important;
-}
-
 ::v-deep .van-swipe-cell {
   height: 165px;
-  border-bottom: 1px solid #884e22;
+  // border-bottom: 1px solid #884e22;
 }
 ::v-deep .van-card {
   margin-top: 8px;
@@ -459,5 +460,9 @@ export default {
 
 ::v-deep .van-card__bottom {
   margin-top: 10px;
+}
+
+::v-deep .van-tabs__line {
+  background-color: #884e22;
 }
 </style>

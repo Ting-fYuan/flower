@@ -1,33 +1,31 @@
 <!-- 商品详情 -->
 <template>
-  <div>
-    <div class="detail">
-      <!-- 详情页导航栏 -->
-      <com-head showMid="true" menu="true">
-        <template slot="header-center">
-          <img
-            class="nav-img"
-            src="http://www.dinghuale.com/public/images/logo.png"
-            alt="logo"
-          />
-        </template>
-      </com-head>
-      <!-- 详情页轮播图 -->
-      <van-swipe class="my-swipe" :autoplay="3000" touchable>
-        <van-swipe-item v-for="(item, index) in swipeArrs" :key="index"
-          ><img v-lazy="item.path"
-        /></van-swipe-item>
-      </van-swipe>
-      <div class="moneyhead">
-        <div class="moneyheadr">
-          <div class="moneytop">
-            <h3>{{ resname }}</h3>
-          </div>
-          <div class="moneybottom">
-            <div class="leftmoney">
-              <p>&yen;{{ consale_price }}</p>
-              <p>&yen;{{ conprice }}</p>
-            </div>
+  <div class="detail">
+    <!-- 详情页导航栏 -->
+    <com-head showMid="true" menu="true">
+      <template slot="header-center">
+        <img
+          class="nav-img"
+          src="http://www.dinghuale.com/public/images/logo.png"
+          alt="logo"
+        />
+      </template>
+    </com-head>
+    <!-- 详情页轮播图 -->
+    <van-swipe class="my-swipe" :autoplay="3000" touchable>
+      <van-swipe-item v-for="(item, index) in swipeArrs" :key="index"
+        ><img v-lazy="item.path"
+      /></van-swipe-item>
+    </van-swipe>
+    <div class="moneyhead">
+      <div class="moneyheadr">
+        <div class="moneytop">
+          <h3>{{ resname }}</h3>
+        </div>
+        <div class="moneybottom">
+          <div class="leftmoney">
+            <p>&yen;{{ consale_price }}</p>
+            <p>&yen;{{ conprice }}</p>
             <div class="rightmoney">
               <p>已售17229</p>
             </div>
@@ -43,7 +41,7 @@
         <div class="cutbut">
           <div class="cutauto">
             <p>数量</p>
-            <van-stepper v-model="value" />
+            <van-stepper v-model="value" max="10" />
           </div>
         </div>
         <!-- 订单评价 -->
@@ -63,54 +61,90 @@
                 <p>147****2479</p>
                 <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
               </div>
-              <div class="appraisBottom">
-                <p>{{ item }}</p>
-                <img
-                  src="../assets/images/202012251046531552.jpeg.webp"
-                  alt="图片"
-                />
+              <div class="rightmoney">
+                <p>已售17229</p>
               </div>
-            </div>
-            <div class="appraibtn">
-              <button @click="goComments()">查看更多评价</button>
             </div>
           </div>
         </div>
-        <div class="consbottom">
-          <span>产品详情</span>
-          <p v-html="consonbottom"></p>
+        <!-- 富文本上部分数据 -->
+        <div class="conston">
+          <div class="constop">
+            <p v-html="consonptop"></p>
+          </div>
+          <!-- 数量 -->
+          <div class="cutbut">
+            <div class="cutauto">
+              <p>数量</p>
+              <van-stepper v-model="value" />
+            </div>
+          </div>
+          <!-- 订单评价 -->
+          <div class="appraisal">
+            <div class="appraisalBox">
+              <div class="appraisalhead">
+                <p>订单评价</p>
+                <p>最近已有{{ commentNum }}评论</p>
+              </div>
+              <div
+                class="appraisalmain"
+                v-for="(item, index) in commentArr.slice(0, 2)"
+                :key="index"
+              >
+                <div class="appraisTop">
+                  <img src="../assets/images/morenTou.png.webp" alt="图片" />
+                  <p>147****2479</p>
+                  <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
+                </div>
+                <div class="appraisBottom">
+                  <p>{{ item }}</p>
+                  <img
+                    src="../assets/images/202012251046531552.jpeg.webp"
+                    alt="图片"
+                  />
+                </div>
+              </div>
+              <div class="appraibtn">
+                <button @click="goComments()">查看更多评价</button>
+              </div>
+            </div>
+          </div>
+          <div class="consbottom">
+            <span>产品详情</span>
+            <p v-html="consonbottom"></p>
+          </div>
         </div>
+        <!-- 购买按钮 -->
+        <footer>
+          <div class="footer">
+            <van-goods-action>
+              <van-goods-action-icon
+                icon="wap-home-o"
+                text="首页"
+                @click="toIndex"
+              />
+              <van-goods-action-icon
+                icon="cart-o"
+                text="购物车"
+                @click="toShopCar"
+                :badge="carListNum.length ? carListNum.length : ''"
+              />
+              <van-goods-action-button
+                type="warning"
+                text="加入购物车"
+                @click="shopCarHandle"
+                color="#3d4d42"
+              />
+              <van-goods-action-button
+                type="danger"
+                text="立即购买"
+                color="#ff734c"
+                @click="orderHandle"
+              />
+            </van-goods-action>
+          </div>
+        </footer>
       </div>
-      <!-- 购买按钮 -->
-      <footer>
-        <div class="footer">
-          <van-goods-action>
-            <van-goods-action-icon
-              icon="wap-home-o"
-              text="首页"
-              @click="toIndex"
-            />
-            <van-goods-action-icon
-              icon="cart-o"
-              text="购物车"
-              @click="toShopCar"
-              :badge="carListNum.length ? carListNum.length : ''"
-            />
-            <van-goods-action-button
-              type="warning"
-              text="加入购物车"
-              @click="shopCarHandle"
-              color="#3d4d42"
-            />
-            <van-goods-action-button
-              type="danger"
-              text="立即购买"
-              color="#ff734c"
-              @click="orderHandle"
-            />
-          </van-goods-action>
-        </div>
-      </footer>
     </div>
   </div>
 </template>
@@ -154,7 +188,7 @@ export default {
     this.shopsId = this.$route.query.id;
     this.consonfn();
     // 生成随机评论数
-    this.commentNum = Math.floor(Math.random() * 100 + 6);
+    this.commentNum = Math.floor(Math.random() * 10 + 6);
     localStorage.setItem("commentNum", this.commentNum);
     // 评论生成
     for (let i = 0; i < this.commentNum; i++) {

@@ -47,11 +47,12 @@
           v-for="(item, index) in history"
           :data-value="item"
           :key="index"
-          >{{ item }} <van-icon name="cross" @click="dleItem(item)"
-        /></span>
+          >{{ item }}
+        </span>
       </div>
     </div>
     <van-divider
+      :dashed="true"
       :style="{ color: '#1989fa', borderColor: 'rgb(136, 78, 34)' }"
     />
     <!-- 热搜 -->
@@ -78,8 +79,8 @@
 </template>
 
 <script>
-import { goodsSearch, hotSearch } from "@/api/search/index";
-import { Toast } from "vant";
+import { hotSearch } from "@/api/search/index";
+// import { Toast } from "vant";
 export default {
   name: "SearchView",
   data() {
@@ -107,7 +108,6 @@ export default {
     async Search() {
       try {
         if (this.value === "") return false;
-        let res = await goodsSearch({ name: this.value });
         // 添加到历史记录
         this.history.unshift(this.value);
         let historySet = new Set(this.history);
@@ -120,14 +120,12 @@ export default {
           );
         }
         localStorage.setItem("searchHistory", JSON.stringify(this.history));
-        if (res.result.count === 0) {
-          Toast("没有该商品信息，请尝试更换关键词");
-          this.value = "";
-        } else if (res.result.count != 0) {
-          console.log(res.result.rows);
-          this.$store.commit("searchStore/updateResult", res.result.rows);
-          this.$router.push("/searchresult");
-        }
+        this.$router.push({
+          path: "/searchresult",
+          query: {
+            keyword: this.value,
+          },
+        });
       } catch (error) {
         console.log(error);
       }
@@ -159,25 +157,22 @@ export default {
       localStorage.removeItem("searchHistory");
       this.history = [];
     },
-    // 点击x号移除历史记录
-    dleItem(e) {
-      const index = this.history.indexOf(e);
-      if (index > -1) {
-        this.history.splice(index, 1);
-        localStorage.setItem("searchHistory", JSON.stringify(this.history));
-      }
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .search {
+  padding: 50px 0;
   width: 100%;
   height: 100vh;
-  background: #f7f8fa;
+  background: #fff;
 
   .searchHead {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    border-bottom: 0.5px solid gray;
     .backIcon {
       margin-left: -4px;
       margin-right: 8px;
@@ -209,7 +204,7 @@ export default {
       display: flex;
       justify-content: space-between;
       > .historyTitle {
-        font-size: 16px;
+        font-size: 15px;
         color: rgb(136, 78, 34);
         font-weight: 600;
       }
@@ -226,10 +221,11 @@ export default {
     }
     .historyText {
       display: flex;
+      padding: 0 15px;
       flex-wrap: wrap;
       .historySpan {
-        margin: 3px 4px;
-        padding: 2px 8px;
+        margin: 3px 8px;
+        padding: 5px 10px;
         height: 21px;
         font-size: 14px;
         border-radius: 2px;
@@ -237,6 +233,7 @@ export default {
         line-height: 21px;
         background: rgba(142, 142, 142, 0.1);
         // flex-basis: calc(50% - 20px);
+        border-radius: 5px;
       }
     }
   }
@@ -260,6 +257,7 @@ export default {
         margin-bottom: 10px;
         width: 165px;
         box-shadow: 0 5px 10px 0 #dee2e5;
+        border-radius: 0 0 5px 5px;
 
         img {
           width: 100%;
@@ -301,5 +299,9 @@ export default {
 //历史记录为空时vant的样式
 ::v-deep .van-empty {
   height: 200px;
+}
+
+::v-deep .van-search {
+  height: 50px;
 }
 </style>

@@ -3,7 +3,7 @@
     <com-head title="优惠券"></com-head>
     <div class="couponContent">
       <div class="noCoupon">
-        <img src="@/assets/images/coupon.png" class="couponImg" alt="" />
+        <img src="@/assets/images/coupon.png" class="couponImg" alt="优惠券" />
         <span class="notextTop">暂无优惠券</span>
         <span class="notextBotoom">据说下单后有机会获得大额劵喔~</span>
       </div>
