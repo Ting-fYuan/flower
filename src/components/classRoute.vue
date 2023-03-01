@@ -6,7 +6,7 @@
         <img src="../assets/images/banner1_m.jpg.png" alt="" />
       </div>
       <main>
-        <div class="title">{{ classList.name }}</div>
+        <div class="title">{{ nameList }}</div>
 
         <ul>
           <li
@@ -14,7 +14,7 @@
             :key="index"
             @click="toClassification(item)"
           >
-            {{ item.name }}
+            {{ item?.name }}
           </li>
         </ul>
       </main>
@@ -28,13 +28,44 @@ export default {
   data() {
     return {
       loading: true,
+      name: "",
+      arr: [],
     };
+  },
+  watch: {
+    $route: {
+      immediate: true,
+      handler(q) {
+        // 有id再存
+        if (q.query.id) {
+          this.$store.commit("classflyStore/updateClassIdx", q.query.id);
+        }
+
+        // console.log(this.id);
+      },
+    },
   },
   computed: {
     classList() {
-      return this.$store.state.classflyStore;
+      // console.log(this.id);
+      return this.$store.state.classflyStore.arr[this.classIdx]?.children;
+    },
+    nameList() {
+      // console.log(this.$store.state.classflyStore.arr[this.id]?.name);
+      return this.$store.state.classflyStore.arr[this.classIdx]?.name;
+    },
+    // 当前分类ID
+    classIdx() {
+      return this.$store.state.classflyStore.classId;
     },
   },
+  // created() {
+  //   setTimeout((item) => {
+  //     console.log(item);
+  //     this.arr = this.$store.state.classflyStore;
+  //     this.name = this.$store.state.classflyStore.name;
+  //   }, 700);
+  // },
   mounted() {
     this.loading = false;
   },
@@ -75,6 +106,7 @@ export default {
       height: 35px;
       line-height: 35px;
       color: rgba(85, 85, 85, 1);
+      margin-left: 10px;
       font-size: 16px;
       font-weight: 600;
       text-align: left;

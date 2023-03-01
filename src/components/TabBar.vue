@@ -17,7 +17,7 @@
         </template>
       </van-tabbar-item>
 
-      <van-tabbar-item to="/category/UseView">
+      <van-tabbar-item :to="`/category/UseView?id=${classIdx || 0}`">
         <span>分类</span>
         <template #icon="category">
           <i
@@ -58,6 +58,7 @@ export default {
   data() {
     return {
       active: 0,
+      id: 0,
       icon: {
         index: {
           active: "iconfont icon-huangguan",
@@ -78,13 +79,16 @@ export default {
       },
     };
   },
-  methods: {},
   computed: {
+    classIdx() {
+      return this.$store.state.classflyStore.classId;
+    },
     // 获取购物车数量
     shopCarNum() {
       return this.$store.state.shopCarStore.shopCarList.length;
     },
   },
+  methods: {},
 };
 </script>
 
