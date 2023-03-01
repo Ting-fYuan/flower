@@ -20,15 +20,15 @@
     <div class="moneyhead">
       <div class="moneyheadr">
         <div class="moneytop">
-          <h3>{{ resname }}</h3>
+          <h3>{{ resarr.name }}</h3>
         </div>
         <div class="moneybottom">
           <div class="leftmoney">
-            <p>&yen;{{ consale_price }}</p>
-            <p>&yen;{{ conprice }}</p>
+            <p>&yen;{{ resarr.sale_price }}</p>
+            <p>&yen;{{ resarr.price }}</p>
           </div>
           <div class="rightmoney">
-            <p>已售17229</p>
+            <p>已售&nbsp;{{ resarr.sold_num }}</p>
           </div>
         </div>
       </div>
@@ -43,6 +43,7 @@
         <div class="cutauto">
           <p>数量</p>
           <van-stepper v-model="value" max="10" />
+          <p>库存&nbsp;{{ resarr.stock_num }}</p>
         </div>
       </div>
       <!-- 订单评价 -->
@@ -127,12 +128,6 @@ export default {
     return {
       // 详情轮播图数据
       swipeArrs: [],
-      // 商品名称
-      resname: "",
-      // 商品原价
-      conprice: "",
-      // 商品优惠价格
-      consale_price: "",
       conspush: "",
       // 后台副文本上半部分数据
       consonptop: "",
@@ -145,6 +140,7 @@ export default {
       commentNum: "",
       // 评论数组
       commentArr: [],
+      resarr: "",
     };
   },
   created() {
@@ -177,16 +173,12 @@ export default {
     },
     async consonfn() {
       let res = await consondend(this.shopsId);
-
+      this.resarr = res.result;
+      console.log(this.resarr);
       // 轮播图取消第一个数据
       this.swipeArrs = res.result.s_goods_photos.splice(0, 1);
       // 轮播图数据
       this.swipeArrs = res.result.s_goods_photos;
-      // 商品名称
-      this.resname = res.result.name;
-      // 商品原价
-      this.conprice = res.result.price;
-      // 商品优惠价格
       this.consale_price = res.result.sale_price;
       this.conspush = res.result.rich_text;
       // 分隔后台数据
@@ -338,7 +330,7 @@ export default {
           width: 103px;
           height: 28px;
           display: flex;
-          justify-content: space-around;
+          justify-content: space-between;
           p {
             &:nth-of-type(1) {
               opacity: 1;
@@ -422,9 +414,15 @@ export default {
         font-family: "PingFang SC";
         text-align: left;
         line-height: 30px;
+        &:nth-of-type(2) {
+          width: 70px;
+          height: 30px;
+          font-size: 13px;
+          color: #555555;
+        }
       }
       .van-stepper {
-        width: 269.8px;
+        width: 200px;
         height: 32px;
       }
     }
@@ -494,6 +492,7 @@ export default {
         }
         .appraisBottom {
           p {
+            line-height: 25px;
             padding-top: 10px;
             font-size: 14px;
           }
@@ -512,13 +511,13 @@ export default {
         text-align: center;
 
         button {
-          width: 84px;
           height: 29px;
           opacity: 1;
           color: #232628;
           font-size: 12px;
           font-weight: 400;
           background-color: #fff;
+          border: none;
         }
       }
     }
