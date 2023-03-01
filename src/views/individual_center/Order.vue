@@ -7,7 +7,7 @@
     </div>
     <div class="orderTab">
       <keep-alive>
-        <van-tabs v-model="active" animated>
+        <van-tabs v-model="active" sticky animated swipeable color="#884e22">
           <van-tab
             v-for="item in titleList"
             :key="item.id"

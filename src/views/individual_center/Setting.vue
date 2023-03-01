@@ -46,6 +46,7 @@
       @cancel="clearErr"
       confirm-button-text="保存"
       theme="round-button"
+      confirmButtonColor="#884e22"
     >
       <!-- 旧密码模块 -->
       <div class="form">
