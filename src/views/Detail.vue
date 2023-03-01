@@ -43,6 +43,7 @@
         <div class="cutauto">
           <p>数量</p>
           <van-stepper v-model="value" max="10" />
+          <p>库存&nbsp;{{ resarr.stock_num }}</p>
         </div>
       </div>
       <!-- 订单评价 -->
@@ -173,6 +174,7 @@ export default {
     async consonfn() {
       let res = await consondend(this.shopsId);
       this.resarr = res.result;
+      console.log(this.resarr);
       // 轮播图取消第一个数据
       this.swipeArrs = res.result.s_goods_photos.splice(0, 1);
       // 轮播图数据
@@ -415,9 +417,15 @@ export default {
         font-family: "PingFang SC";
         text-align: left;
         line-height: 30px;
+        &:nth-of-type(2) {
+          width: 70px;
+          height: 30px;
+          font-size: 13px;
+          color: #555555;
+        }
       }
       .van-stepper {
-        width: 269.8px;
+        width: 200px;
         height: 32px;
       }
     }
