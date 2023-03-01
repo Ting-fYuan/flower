@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- 入口文件 -->
-    <keep-alive> <router-view /></keep-alive>
+    <router-view />
   </div>
 </template>
 
