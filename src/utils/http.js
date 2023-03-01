@@ -86,7 +86,7 @@ http.interceptors.request.use(
 // 响应拦截器 (每次响应都会触发)
 http.interceptors.response.use(
   function (response) {
-    // 关闭loadding
+    // 关闭loading
     Toast.clear();
 
     // 响应数据返回出去
@@ -94,7 +94,7 @@ http.interceptors.response.use(
   },
 
   function (error) {
-    // 关闭loadding
+    // 关闭loading
     Toast.clear();
     const { status, data } = error.response;
     // token过期

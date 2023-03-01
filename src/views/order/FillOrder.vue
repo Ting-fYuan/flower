@@ -51,7 +51,7 @@
         :style="{ height: '80%' }"
       >
         <div id="sumbit-content">
-          <p>￥{{ total.toFixed(2) }}</p>
+          <p>￥{{ buyShopTotal?.toFixed(2) || total.toFixed(2) }}</p>
           <div class="sumbit-box">
             <p>支付宝账号</p>
             <p>{{ userInfo.phone }}</p>
@@ -200,20 +200,20 @@
       </div>
       <div class="priceBox">
         <div class="priceBoxTop">
-          <p>共 {{ selectShopMsg.length }} 件商品</p>
-          <p>优惠： -￥{{ discount }}</p>
+          <p>共 {{ selectShopMsg.length || 1 }} 件商品</p>
+          <p>优惠： -￥{{ buyShopCoupon || discount }}</p>
         </div>
         <div class="priceBoxBtm">
           <p>运费￥ {{ deliveryfee }}</p>
           <p>
-            商品总价: <span>￥{{ total }}</span>
+            商品总价: <span>￥{{ buyShopTotal || total }}</span>
           </p>
         </div>
       </div>
     </main>
     <footer>
       <div class="footerMain">
-        <p class="footerLeft">实付款：￥{{ total }}</p>
+        <p class="footerLeft">实付款：￥{{ buyShopTotal || total }}</p>
         <button class="footerRight" @click="sumbitHadnle">提交订单</button>
       </div>
       <div class="footerBox"></div>
@@ -276,7 +276,8 @@ export default {
       try {
         const res = await goodsDataApi(this.$route.query.id);
         this.goodsList = res.result;
-        // console.log(res.result);
+        // this.goodsList.nun = this.$route.query.num;
+        this.$set(this.goodsList, "num", Number(this.$route.query.num));
       } catch (err) {
         return err;
       }
@@ -326,6 +327,7 @@ export default {
               ],
               addr_id: id,
             });
+            // console.log("直购了", res);
           } else {
             res = await addOrder({
               goods_info: GoodsList,
@@ -336,7 +338,6 @@ export default {
           this.showPsw = false;
           this.showSumbit = false;
           this.keyWrodValue = "";
-          console.log(res);
           // ! bug 库存不足
           if (res.code == 1) {
             Toast({
@@ -346,6 +347,7 @@ export default {
           }
           // 添加订单成功
           if (res.msg == "添加成功") {
+            // ! 手动支付订单
             const payRes = await orderPay({
               id: res.result.id,
               status: 1,
@@ -397,7 +399,18 @@ export default {
     deliveryfee() {
       return this.$store.getters["fillOrderStore/getDeliveryfee"];
     },
-    // 商品信息
+    // 直购商品的总价
+    buyShopTotal() {
+      return this.goodsList && this.goodsList.sale_price * this.goodsList.num;
+    },
+    // 直购商品的优惠
+    buyShopCoupon() {
+      return (
+        this.goodsList &&
+        this.goodsList.price * this.goodsList.num -
+          this.goodsList.sale_price * this.goodsList.num
+      );
+    },
   },
   methods: {
     // 跳转填写地址

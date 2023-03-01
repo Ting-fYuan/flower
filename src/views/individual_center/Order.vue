@@ -2,12 +2,7 @@
 <template>
   <div class="order">
     <div class="orderHead">
-      <van-icon
-        name="arrow-left"
-        color="#333333"
-        class="arrowLeft"
-        @click="goBack()"
-      />
+      <i class="iconfont icon-yiliaohangyedeICON- backBtn" @click="goBack()" />
       <span>我的订单</span>
     </div>
     <div class="orderTab">
@@ -21,10 +16,10 @@
           ></van-tab>
         </van-tabs>
       </keep-alive>
+    </div>
 
-      <div class="orderContent">
-        <router-view />
-      </div>
+    <div class="orderContent">
+      <router-view />
     </div>
   </div>
 </template>
@@ -72,36 +67,47 @@ export default {
 
 <style lang="scss" scoped>
 .order {
+  padding: 40px 0;
   width: 100%;
   height: 100%;
   .orderHead {
-    width: 100%;
+    position: fixed;
+    top: 0;
+    width: 95%;
+    padding: 0 2.5%;
     height: 42px;
     opacity: 1;
     border-bottom: 1px solid rgba(243, 245, 247, 1);
     background: rgba(255, 255, 255, 1);
     display: flex;
     justify-content: flex-start; /* 左对齐 */
+    z-index: 999;
     .arrowLeft {
       line-height: 42px;
       font-size: 23px;
     }
     span {
-      width: 80px;
-      height: 42px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      align-self: center;
       opacity: 1;
       color: rgba(85, 85, 85, 1);
       font-size: 14px;
       font-weight: 500;
-      line-height: 42px;
-      margin-left: auto; /* 居中对齐的样式 */
-      margin-right: auto;
     }
   }
   .orderTab {
+    position: fixed;
+    top: 40px;
     width: 100%;
-    height: calc(100vh - 42px);
-    margin-top: 13px;
+    z-index: 99;
   }
+}
+
+.backBtn {
+  align-self: center;
+  font-size: 13px;
+  color: #727272;
 }
 </style>

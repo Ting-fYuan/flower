@@ -42,7 +42,7 @@
       <div class="cutbut">
         <div class="cutauto">
           <p>数量</p>
-          <van-stepper v-model="value" />
+          <van-stepper v-model="value" max="10" />
         </div>
       </div>
       <!-- 订单评价 -->

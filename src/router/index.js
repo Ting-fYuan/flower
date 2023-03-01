@@ -175,6 +175,7 @@ const routes = [
     name: "fillOrder",
     meta: {
       title: "填写订单",
+      isAuth: true,
     },
     component: () => import("@/views/order/FillOrder.vue"),
   },
