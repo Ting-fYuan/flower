@@ -136,7 +136,7 @@ export default {
           if (result && e.isDefault && result.default_set != 1) {
             const res = await setDefaultApi(result.id);
             if (res) {
-              await this.$store.dispatch("addressStore/getUserAddress");
+              await this.$store.dispatch("addressStore/getUserAddress", true);
               this.$router.back();
               Toast({
                 message: "添加地址成功",
@@ -166,7 +166,7 @@ export default {
             if (result && e.isDefault) {
               const res = await setDefaultApi(result.id);
               if (res) {
-                await this.$store.dispatch("addressStore/getUserAddress");
+                await this.$store.dispatch("addressStore/getUserAddress", true);
                 // 有redirect值就跳转回去
                 if (this.$route.query.redirect) {
                   this.$router.replace({
@@ -180,7 +180,7 @@ export default {
               }
               // 跳转回去
             } else if (result) {
-              await this.$store.dispatch("addressStore/getUserAddress");
+              await this.$store.dispatch("addressStore/getUserAddress", true);
               // 有redirect值就跳转回去
               if (this.$route.query.redirect) {
                 this.$router.replace({
