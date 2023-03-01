@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <!-- 入口文件 -->
-    <keep-alive> <router-view /></keep-alive>
+    <keep-alive><router-view v-if="$route.meta.keepAlive" /></keep-alive>
+    <router-view v-if="!$route.meta.keepAlive" />
   </div>
 </template>
 

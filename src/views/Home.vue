@@ -107,6 +107,8 @@ export default {
         let logoutRes = await logout();
         if (logoutRes) {
           this.$store.commit("loginStore/clearUserInfo");
+          this.$store.commit("addressStore/clearAddress");
+          this.$store.commit("shopCarStore/clearShopCar");
           Toast.success("注销成功");
         }
       }

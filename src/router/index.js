@@ -16,6 +16,7 @@ const routes = [
     path: "/index",
     name: "index",
     meta: {
+      keepAlive: true,
       title: "订花乐 - 鲜花店_订花_送花_鲜花配送",
     },
     component: () => import("@/views/Index.vue"),
