@@ -6,8 +6,8 @@
       <div class="UserArea">
         <img src="../../src/assets/images/homeBackground.jpg" />
         <div class="content" v-if="!token">
-          <p>Hi,欢迎来到订花乐!</p>
-          <button class="loginBtn" @click="goLogin">登录/注册</button>
+          <p>Hi, 欢迎来到订花乐 !</p>
+          <button class="loginBtn" @click="goLogin">登录 / 注册</button>
         </div>
         <div class="content" v-if="token">
           <div>
@@ -20,7 +20,9 @@
           <div class="OrderBox">
             <p>
               <span>我的订单</span>
-              <span @click="goSearch">全部订单&gt;</span>
+              <span @click="goSearch"
+                >全部订单<i class="iconfont icon-youjiantou"></i
+              ></span>
             </p>
             <ul>
               <li @click="goPayment">
@@ -49,21 +51,21 @@
                   <i class="iconfont icon-youhuiquan"></i>
                   <span>优惠券</span>
                 </p>
-                <p>&gt;</p>
+                <i class="iconfont icon-youjiantou"></i>
               </li>
               <li @click="goAddress">
                 <p>
                   <i class="iconfont icon-dizhi"></i>
                   <span>收获地址</span>
                 </p>
-                <p>&gt;</p>
+                <i class="iconfont icon-youjiantou"></i>
               </li>
               <li @click="goSetting">
                 <p>
                   <i class="iconfont icon-shezhi"></i>
                   <span>设置</span>
                 </p>
-                <p>&gt;</p>
+                <i class="iconfont icon-youjiantou"></i>
               </li>
             </ul>
           </div>
@@ -159,8 +161,10 @@ export default {
 .UserArea {
   position: relative;
   width: 100%;
-  height: 140px;
+  // height: 140px;
+  height: 200px;
   > img {
+    height: 100%;
     width: inherit;
   }
   // @ 登录用户
@@ -175,20 +179,24 @@ export default {
     width: inherit;
     height: 90px;
     > p {
-      font-size: 14px;
-      color: white;
+      font-weight: 500;
+      font-size: 20px;
+      color: #321804;
     }
     > button {
-      width: 120px;
-      height: 36px;
+      width: 150px;
+      height: 40px;
       border: none;
-      border-radius: 18px;
+      border-radius: 20px;
       background-color: white;
       font-size: 14px;
     }
     .loginBtn {
+      margin-top: 8px;
+      font-size: 16px;
+      font-weight: 600;
       background-color: #fff;
-      color: #000;
+      color: #894e22;
     }
 
     > div {
@@ -225,9 +233,12 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     margin: 0 auto;
-    margin-top: -10px;
-    width: 364px;
-    height: 256px;
+    margin-top: -30px;
+    width: 96vw;
+    .icon-youjiantou {
+      font-size: 14px;
+      vertical-align: middle;
+    }
 
     .OrderBox {
       display: flex;
@@ -246,7 +257,7 @@ export default {
         width: 90%;
         height: 40px;
         > span {
-          font-size: 14px;
+          font-size: 15px;
           color: #555555;
         }
       }
@@ -262,7 +273,7 @@ export default {
           > i {
             color: #555555;
             margin-bottom: 2px;
-            font-size: 18px;
+            font-size: 24px;
           }
           > span {
             color: #555555;
@@ -273,12 +284,11 @@ export default {
     }
     .OtherActivity {
       width: inherit;
-      height: 130px;
       background-color: #fff;
       border-radius: 8px;
       > ul {
         > li {
-          padding: 0px 10px;
+          padding: 10px 10px;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -291,7 +301,7 @@ export default {
             i {
               margin-right: 6px;
               vertical-align: middle;
-              font-size: 18px;
+              font-size: 24px;
             }
             span {
               vertical-align: middle;
