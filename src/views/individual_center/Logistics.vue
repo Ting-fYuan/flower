@@ -61,22 +61,20 @@ export default {
 <style lang="scss" scoped>
 .logistics {
   .nologisticsContent {
-    width: 100%;
-    height: 300px;
-    background: rgba(255, 255, 255, 1);
-    margin-top: 20px;
+    margin: 20px auto 0;
     display: flex;
     flex-direction: column;
     justify-content: center; /*水平居中*/
     align-items: center; /*垂直居中*/
     .logisticsImg {
       margin-bottom: 10px;
+      width: 50%;
     }
     .logisticsText {
-      color: #ff734c;
-      font-size: 14px;
-      font-weight: 400;
       margin-bottom: 5px;
+      color: #555555;
+      font-size: 14px;
+      font-weight: 600;
     }
   }
 }
