@@ -176,17 +176,18 @@ export default {
       Dialog.confirm({
         title: "提示",
         message: "确认删除此购物车?",
-      })
-        .then(() => {
-          // 删除
-          this.$store.dispatch("shopCarStore/deleteShopCar", {
-            id: $id,
-            idx: $idx,
-          });
-        })
-        .catch(() => {
-          // on cancel
+      }).then(() => {
+        Toast.clear();
+        Toast({
+          message: "删除成功",
+          position: "bottom",
         });
+        // 删除
+        this.$store.dispatch("shopCarStore/deleteShopCar", {
+          id: $id,
+          idx: $idx,
+        });
+      });
     },
     // 全选按钮
     toggleHandle() {

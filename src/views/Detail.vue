@@ -218,9 +218,12 @@ export default {
         });
         if (res) {
           // 更新数据
-          await this.$store.dispatch("shopCarStore/getShopCarList");
-          Toast.success("加入成功");
-          this.value = 1;
+          const res = await this.$store.dispatch("shopCarStore/getShopCarList");
+          if (res == "商品已在购物车中，数量已更新") {
+            Toast.success("数量已更新");
+          } else {
+            Toast.success("添加成功");
+          }
         }
       } catch (err) {
         return err;
