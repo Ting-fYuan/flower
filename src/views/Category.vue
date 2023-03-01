@@ -10,14 +10,14 @@
 
     <main>
       <nav>
-        <!-- <router-link to="/category/UseView?id=0">用途</router-link>
+        <router-link to="/category/UseView?id=0">用途</router-link>
         <router-link to="/category/UseView?id=1">花材</router-link>
         <router-link to="/category/UseView?id=2">类别</router-link>
-        <router-link to="/category/UseView?id=3">枝数</router-link> -->
-        <router-link to="/category/UseView">用途</router-link>
+        <router-link to="/category/UseView?id=3">枝数</router-link>
+        <!-- <router-link to="/category/UseView?id=0">用途</router-link>
         <router-link to="/category/MaterialView">花材</router-link>
         <router-link to="/category/ClassView">类别</router-link>
-        <router-link to="/category/NumberView?">枝数</router-link>
+        <router-link to="/category/NumberView?">枝数</router-link> -->
       </nav>
       <keep-alive>
         <router-view />
@@ -47,10 +47,8 @@ export default {
   // watch: {
   //   $route: {
   //     immediate: true,
-  //     handler() {
-  //       if (this.$route.path) {
-  //         console.log(1);
-  //       }
+  //     handler(q) {
+  //       console.log(q);
   //     },
   //   },
   // },

@@ -14,11 +14,12 @@ export default {
     console.log("指数触发");
     indexImg({})
       .then((res) => {
-        // console.log(res.result[2]);
-        this.$store.state.classflyStore = res.result[3].children;
-        // console.log(this.$store.state.classflyStore.arr);
-        this.$store.state.classflyStore.name = res.result[3].name;
-        // console.log(this.$store.state.classflyStore.name);
+        this.$store.commit(
+          "classflyStore/getClassDate",
+          res.result[3].children
+        );
+        this.$store.commit("classflyStore/getClassName", res.result[3].name);
+        // this.$store.classflyStore.name = res.result[0].name;
       })
       .catch((err) => {
         console.log(err);

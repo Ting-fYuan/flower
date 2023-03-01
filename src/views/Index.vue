@@ -240,8 +240,6 @@
       <div class="footer_text2">蜀ICP备20016463号-2</div>
     </footer>
     <div>
-      <h1>首页</h1>
-      <i class="iconfont icon-caidan"></i>
       <TabBar />
     </div>
   </div>
@@ -260,47 +258,49 @@ export default {
   components: { TabBar },
 
   created() {
-    //获取轮播图数据
-    detailSwipe({
-      site_id: 365,
-      // project_id: 295,
-    })
-      .then((res) => {
-        res.result.forEach((item) => {
-          this.images.push(item.s_photos[0].path);
+    if (this.images.length == 0) {
+      //获取轮播图数据
+      detailSwipe({
+        site_id: 365,
+        // project_id: 295,
+      })
+        .then((res) => {
+          res.result.forEach((item) => {
+            this.images.push(item.s_photos[0].path);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
 
-    //获取首页一秒选花数据
-    indexImg({})
-      .then((res) => {
-        // console.log(res.result[0].children[0]);
-        //获取一秒选花上三宗
-        let arr = res.result[4].children[0].s_goods;
-        this.yimiaoxuanhua = arr;
-        //获取一秒选花下五宗
-        let arr2 = res.result[4].children[1].s_goods;
-        this.yimiaoxuanhua2 = arr2;
-        this.loading = false;
-        //获取爱情鲜花
-        this.love = res.result[0].children[0];
-        //获取友情鲜花
-        this.friendly = res.result[0].children[2];
-        //获取鲜花礼盒
-        this.flowerBox = res.result[2].children[1];
-        //获取蛋糕
-        this.cake = res.result[2].children[2];
-        //获取开业花篮
-        this.startBusinsse = res.result[2].children[3];
-        //获取绿植
-        this.greenFlower = res.result[2].children[4];
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      //获取首页一秒选花数据
+      indexImg({})
+        .then((res) => {
+          // console.log(res.result[0].children[0]);
+          //获取一秒选花上三宗
+          let arr = res.result[4].children[0].s_goods;
+          this.yimiaoxuanhua = arr;
+          //获取一秒选花下五宗
+          let arr2 = res.result[4].children[1].s_goods;
+          this.yimiaoxuanhua2 = arr2;
+          this.loading = false;
+          //获取爱情鲜花
+          this.love = res.result[0].children[0];
+          //获取友情鲜花
+          this.friendly = res.result[0].children[2];
+          //获取鲜花礼盒
+          this.flowerBox = res.result[2].children[1];
+          //获取蛋糕
+          this.cake = res.result[2].children[2];
+          //获取开业花篮
+          this.startBusinsse = res.result[2].children[3];
+          //获取绿植
+          this.greenFlower = res.result[2].children[4];
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   },
   data() {
     return {
@@ -475,6 +475,7 @@ export default {
 .box {
   width: 100%;
   height: 100%;
+  padding-bottom: 50px;
   .top {
     height: 50px;
     background-color: white;
@@ -682,6 +683,7 @@ export default {
           font-weight: 400;
           text-align: left;
           line-height: 20px;
+          margin-top: 5px;
         }
         .goods_price {
           width: 100%;

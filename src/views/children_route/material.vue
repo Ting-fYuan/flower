@@ -14,11 +14,12 @@ export default {
     console.log("花材组件触发");
     indexImg({})
       .then((res) => {
-        // console.log(res.result[2]);
-        this.$store.state.classflyStore = res.result[1].children;
-        // console.log(this.$store.state.classflyStore.arr);
-        this.$store.state.classflyStore.name = res.result[1].name;
-        // console.log(this.$store.state.classflyStore.name);
+        this.$store.commit(
+          "classflyStore/getClassDate",
+          res.result[1].children
+        );
+        this.$store.commit("classflyStore/getClassName", res.result[1].name);
+        // this.$store.classflyStore.name = res.result[0].name;
       })
       .catch((err) => {
         console.log(err);

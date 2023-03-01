@@ -6,15 +6,15 @@
         <img src="../assets/images/banner1_m.jpg.png" alt="" />
       </div>
       <main>
-        <div class="title">{{ name }}</div>
+        <div class="title">{{ nameList }}</div>
 
         <ul>
           <li
-            v-for="(item, index) in arr"
+            v-for="(item, index) in classList"
             :key="index"
             @click="toClassification(item)"
           >
-            {{ item.name }}
+            {{ item?.name }}
           </li>
         </ul>
       </main>
@@ -32,21 +32,40 @@ export default {
       arr: [],
     };
   },
-  // computed: {
-  //   classList() {
-  //     return this.$store.state.classflyStore;
-  //   },
-  // },
-  created() {
-    setTimeout((item) => {
-      console.log(item);
-      this.arr = this.$store.state.classflyStore;
-      this.name = this.$store.state.classflyStore.name;
-    }, 700);
-    //
-    // console.log(this.$store.state.classflyStore.name);
-    //
+  watch: {
+    $route: {
+      immediate: true,
+      handler(q) {
+        // 有id再存
+        if (q.query.id) {
+          this.$store.commit("classflyStore/updateClassIdx", q.query.id);
+        }
+
+        // console.log(this.id);
+      },
+    },
   },
+  computed: {
+    classList() {
+      // console.log(this.id);
+      return this.$store.state.classflyStore.arr[this.classIdx]?.children;
+    },
+    nameList() {
+      // console.log(this.$store.state.classflyStore.arr[this.id]?.name);
+      return this.$store.state.classflyStore.arr[this.classIdx]?.name;
+    },
+    // 当前分类ID
+    classIdx() {
+      return this.$store.state.classflyStore.classId;
+    },
+  },
+  // created() {
+  //   setTimeout((item) => {
+  //     console.log(item);
+  //     this.arr = this.$store.state.classflyStore;
+  //     this.name = this.$store.state.classflyStore.name;
+  //   }, 700);
+  // },
   mounted() {
     this.loading = false;
   },
