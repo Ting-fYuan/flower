@@ -27,17 +27,18 @@
             <i>综合</i>
           </div>
         </template>
-        <div class="ContentBox">
-          <div v-for="goodsInfo of ClassifyGoodsList" :key="goodsInfo.id">
-            <!-- <img
-              :src="goodsInfo['s_goods_photos'][0].path"
-              v-lazy="goodsInfo['s_goods_photos'][0].path"
-            /> -->
+        <div class="ContentBox" v-show="emptyState">
+          <div
+            v-for="goodsInfo of ClassifyGoodsList"
+            :key="goodsInfo.id"
+            @click="goDetailPage(goodsInfo.id)"
+          >
             <van-image :src="goodsInfo['s_goods_photos'][0].path" lazy-load>
-              <template v-slot:loading>
+              <template v-slot:err>
                 <van-loading type="spinner" size="20" />
               </template>
             </van-image>
+
             <div class="GoodsInfo">
               <p>{{ goodsInfo.name }}</p>
               <p>
@@ -50,6 +51,12 @@
             </div>
           </div>
         </div>
+        <van-empty
+          v-show="!emptyState"
+          class="custom-image"
+          image="https://img01.yzcdn.cn/vant/custom-empty-image.png"
+          description="没有相关商品"
+        />
       </van-tab>
 
       <!-- 销量区间 -->
@@ -69,13 +76,18 @@
             </p>
           </div>
         </template>
-        <div class="ContentBox">
-          <div v-for="goodsInfo of SaleClassifyGoodsList" :key="goodsInfo.id">
-            <!-- <van-image :src="goodsInfo['s_goods_photos'][0].path" /> -->
-            <img
-              :src="goodsInfo['s_goods_photos'][0].path"
-              v-lazy="goodsInfo['s_goods_photos'][0].path"
-            />
+        <div class="ContentBox" v-show="emptyState">
+          <div
+            v-for="goodsInfo of SaleClassifyGoodsList"
+            :key="goodsInfo.id"
+            @click="goDetailPage(goodsInfo.id)"
+          >
+            <van-image :src="goodsInfo['s_goods_photos'][0].path" lazy-load>
+              <template v-slot:err>
+                <van-loading type="spinner" size="20" />
+              </template>
+            </van-image>
+
             <div class="GoodsInfo">
               <p>{{ goodsInfo.name }}</p>
               <p>
@@ -88,6 +100,12 @@
             </div>
           </div>
         </div>
+        <van-empty
+          v-show="!emptyState"
+          class="custom-image"
+          image="https://img01.yzcdn.cn/vant/custom-empty-image.png"
+          description="没有相关商品"
+        />
       </van-tab>
 
       <!-- 价格区间 -->
@@ -107,9 +125,17 @@
             </p>
           </div>
         </template>
-        <div class="ContentBox">
-          <div v-for="goodsInfo of PriceClassifyGoodsList" :key="goodsInfo.id">
-            <van-image :src="goodsInfo['s_goods_photos'][0].path" />
+        <div class="ContentBox" v-show="emptyState">
+          <div
+            v-for="goodsInfo of PriceClassifyGoodsList"
+            :key="goodsInfo.id"
+            @click="goDetailPage(goodsInfo.id)"
+          >
+            <van-image :src="goodsInfo['s_goods_photos'][0].path" lazy-load>
+              <template v-slot:err>
+                <van-loading type="spinner" size="20" />
+              </template>
+            </van-image>
             <div class="GoodsInfo">
               <p>{{ goodsInfo.name }}</p>
               <p>
@@ -122,6 +148,12 @@
             </div>
           </div>
         </div>
+        <van-empty
+          v-show="!emptyState"
+          class="custom-image"
+          image="https://img01.yzcdn.cn/vant/custom-empty-image.png"
+          description="没有相关商品"
+        />
       </van-tab>
 
       <!-- 筛选区间 -->
@@ -165,6 +197,7 @@ export default {
     return {
       active: "综合",
       show: false,
+      loading: "default", // 控制骨架屏的显示
       actions: [{ name: "选项一" }, { name: "选项二" }, { name: "选项三" }],
       ClassifyGoodsList: [],
       SaleClassifyGoodsList: [],
@@ -180,6 +213,8 @@ export default {
 
       salePriceArrowUp: "unactiveStyle", //价格上箭头
       salePriceArrowDown: "unactiveStyle", //价格下箭头
+
+      emptyState: true, //空状态的时候展示空内容提示
     };
   },
   mounted() {
@@ -193,20 +228,26 @@ export default {
     getClassifyGoods: debounce(async function () {
       try {
         let SearchRes = await SearchDetails(this.$route.query.id);
-        this.ClassifyGoodsList = JSON.parse(JSON.stringify(SearchRes.result));
-        this.SaleClassifyGoodsList = JSON.parse(
-          JSON.stringify(SearchRes.result)
-        );
-        this.PriceClassifyGoodsList = JSON.parse(
-          JSON.stringify(SearchRes.result)
-        );
-        // this.SaleClassifyGoodsList = SearchRes.result;
-        // this.PriceClassifyGoodsList = SearchRes.result;
-        // console.log("初始化数据", this.ClassifyGoodsList);
+        // todo:判断类别下面是否拥"有数据"，有存数据，没有展示空
+        if (SearchRes.result.length != 0) {
+          this.ClassifyGoodsList = JSON.parse(JSON.stringify(SearchRes.result));
+          this.SaleClassifyGoodsList = JSON.parse(
+            JSON.stringify(SearchRes.result)
+          );
+          this.PriceClassifyGoodsList = JSON.parse(
+            JSON.stringify(SearchRes.result)
+          );
+          this.emptyState = true;
+          this.loading = false;
+          // console.log("有数据", SearchRes.result);
+        } else {
+          this.emptyState = false;
+          console.log("无数据", SearchRes.result);
+        }
       } catch (error) {
         console.log(error);
       }
-    }, 1000),
+    }, 500),
 
     // todo:获取到所有的商品分类
     async getAllClassify() {
@@ -221,14 +262,12 @@ export default {
 
     // todo:获取销量数据
     getSortData(title) {
-      console.log(this.ClassifyGoodsList, this.SaleClassifyGoodsList);
-
       switch (title) {
         case "综合":
           this.saleNumberSort = true; // @初始化图标样式
           this.salePriceSort = true;
           this.ClearStyle();
-          // this.getClassifyGoods(); //@更新数据
+          this.getClassifyGoods(); //@更新数据
           // console.log("综合");
           break;
         case "销量":
@@ -297,7 +336,7 @@ export default {
 
     // todo:点击子类跳转到分类页面
     goClassifyPage(data) {
-      // console.log(data.name, data.id);
+      console.log(data.name, data.id);
       this.$router.replace({
         path: "/classification",
         query: { id: data.id, name: data.name },
@@ -325,6 +364,12 @@ export default {
       } else {
         this.topShow = "backTop backTopHidden";
       }
+    },
+
+    // 跳转每个商品的详情页面
+    goDetailPage(data) {
+      console.log(data);
+      this.$router.push({ path: "/Detail", query: { id: data } });
     },
   },
 };
@@ -510,6 +555,11 @@ export default {
         }
       }
     }
+  }
+  ::v-deep .custom-image .van-empty__image {
+    margin-top: 50%;
+    width: 100px;
+    height: 100px;
   }
 }
 </style>
