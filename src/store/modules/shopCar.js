@@ -56,9 +56,12 @@ export default {
     },
     // 清空购物车
     clearShopCar(state) {
+      state.shopCarList = [];
       state.chooseShopList = [];
       state.selectShopMsg = [];
-      sessionStorage.clear();
+      sessionStorage.removeItem("shopCarList");
+      sessionStorage.removeItem("chooseShopList");
+      sessionStorage.removeItem("selectShopMsg");
     },
   },
   actions: {
