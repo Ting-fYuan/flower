@@ -6,8 +6,8 @@
       <div class="UserArea">
         <img src="../../src/assets/images/homeBackground.jpg" />
         <div class="content" v-if="!token">
-          <p>Hi,欢迎来到订花乐!</p>
-          <button class="loginBtn" @click="goLogin">登录/注册</button>
+          <p>Hi, 欢迎来到订花乐 !</p>
+          <button class="loginBtn" @click="goLogin">登录 / 注册</button>
         </div>
         <div class="content" v-if="token">
           <div>
@@ -20,7 +20,9 @@
           <div class="OrderBox">
             <p>
               <span>我的订单</span>
-              <span @click="goSearch">全部订单&gt;</span>
+              <span @click="goSearch"
+                >全部订单<i class="iconfont icon-youjiantou"></i
+              ></span>
             </p>
             <ul>
               <li @click="goPayment">
@@ -49,21 +51,21 @@
                   <i class="iconfont icon-youhuiquan"></i>
                   <span>优惠券</span>
                 </p>
-                <p>&gt;</p>
+                <i class="iconfont icon-youjiantou"></i>
               </li>
               <li @click="goAddress">
                 <p>
                   <i class="iconfont icon-dizhi"></i>
                   <span>收获地址</span>
                 </p>
-                <p>&gt;</p>
+                <i class="iconfont icon-youjiantou"></i>
               </li>
               <li @click="goSetting">
                 <p>
                   <i class="iconfont icon-shezhi"></i>
                   <span>设置</span>
                 </p>
-                <p>&gt;</p>
+                <i class="iconfont icon-youjiantou"></i>
               </li>
             </ul>
           </div>
@@ -75,7 +77,7 @@
 </template>
 
 <script>
-import defaultAvatar from "@/assets/images/avatar.png";
+// import defaultAvatar from "@/assets/images/avatar.png";
 import TabBar from "@/components/TabBar.vue";
 import { logout } from "@/api/user";
 import { Toast } from "vant";
@@ -84,7 +86,8 @@ export default {
   components: { TabBar },
   data() {
     return {
-      defaultAvatar,
+      defaultAvatar:
+        "https://img2.baidu.com/it/u=3072027427,2673781637&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
     };
   },
   async created() {
@@ -159,8 +162,10 @@ export default {
 .UserArea {
   position: relative;
   width: 100%;
-  height: 140px;
+  // height: 140px;
+  height: 200px;
   > img {
+    height: 100%;
     width: inherit;
   }
   // @ 登录用户
@@ -175,20 +180,24 @@ export default {
     width: inherit;
     height: 90px;
     > p {
-      font-size: 14px;
-      color: white;
+      font-weight: 500;
+      font-size: 20px;
+      color: #321804;
     }
     > button {
-      width: 120px;
-      height: 36px;
+      width: 150px;
+      height: 40px;
       border: none;
-      border-radius: 18px;
+      border-radius: 20px;
       background-color: white;
       font-size: 14px;
     }
     .loginBtn {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 600;
       background-color: #fff;
-      color: #000;
+      color: #894e22;
     }
 
     > div {
@@ -196,11 +205,12 @@ export default {
       align-items: center;
       img {
         margin-right: 8px;
-        width: 64px;
-        height: 64px;
+        width: 60px;
+        height: 60px;
         border-radius: 32px;
         opacity: 1;
         border: 2px solid rgba(255, 255, 255, 0.5);
+        margin-bottom: 10px;
       }
       span {
         width: 70.2px;
@@ -215,8 +225,11 @@ export default {
     }
 
     button {
-      color: #ffffff;
-      background-color: transparent;
+      box-sizing: border-box;
+      width: 100px;
+      color: #000;
+      background-color: #fff;
+      padding: 10px 0;
     }
   }
 
@@ -225,16 +238,19 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     margin: 0 auto;
-    margin-top: -10px;
-    width: 364px;
-    height: 256px;
+    margin-top: -30px;
+    width: 96vw;
+    .icon-youjiantou {
+      font-size: 14px;
+      vertical-align: middle;
+    }
 
     .OrderBox {
       display: flex;
       flex-direction: column;
       justify-content: space-around;
       width: inherit;
-      height: 120px;
+      height: 140px;
       background-color: #fff;
       border-radius: 8px;
       > p {
@@ -244,9 +260,9 @@ export default {
         align-items: center;
         justify-content: space-between;
         width: 90%;
-        height: 40px;
+        height: 50px;
         > span {
-          font-size: 14px;
+          font-size: 15px;
           color: #555555;
         }
       }
@@ -262,7 +278,7 @@ export default {
           > i {
             color: #555555;
             margin-bottom: 2px;
-            font-size: 18px;
+            font-size: 24px;
           }
           > span {
             color: #555555;
@@ -273,12 +289,11 @@ export default {
     }
     .OtherActivity {
       width: inherit;
-      height: 130px;
       background-color: #fff;
       border-radius: 8px;
       > ul {
         > li {
-          padding: 0px 10px;
+          padding: 10px 10px;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -291,7 +306,7 @@ export default {
             i {
               margin-right: 6px;
               vertical-align: middle;
-              font-size: 18px;
+              font-size: 24px;
             }
             span {
               vertical-align: middle;

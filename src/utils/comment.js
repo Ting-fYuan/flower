@@ -138,6 +138,32 @@ const flowerServices = [
   "便捷的购物体验",
 ];
 
+// 引入本地图片
+const commentImgs = [];
+commentImgs.push(require("@/assets/images/commentImg/3-1-1.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/3-1-2.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/4-1-1.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/6-1.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/7-1.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/8-1.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/10-1.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/11-1.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/11-2.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/12-1.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/12-2.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/14-1.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/15-1.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/16-1.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/23-4.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/24-3.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/34-1.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/35-1.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/36-1.jpg"));
+commentImgs.push(require("@/assets/images/commentImg/37-2.jpg"));
+
+// 打乱图片数组
+const newArr = commentImgs.sort(() => Math.random() - 0.5);
+
 // 生成随机评论并导出
 export function generateComment() {
   // 从数组中随机选择元素
@@ -147,7 +173,19 @@ export function generateComment() {
   const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
   const services =
     flowerServices[Math.floor(Math.random() * flowerServices.length)];
+  // 随机两位数
+  const phoneNumFront = Math.floor(Math.random() * 90 + 10);
+  // 随机四位数
+  const phoneNumBehind = Math.floor(Math.random() * 10000)
+    .toString()
+    .padStart(4, "0");
 
+  const generateComment = {
+    phoneNumFront: phoneNumFront,
+    phoneNumBehind: phoneNumBehind,
+    comment: `${adjective}${name}！${comment}并且这里拥有${services}，体验真的很好！很推荐大家都来这里购物！`,
+    commentImgs: newArr,
+  };
   // 返回拼接好的评论字符串
-  return `${adjective}${name}！${comment}并且这里的${services}，体验真的很好！`;
+  return generateComment;
 }
