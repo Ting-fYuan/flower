@@ -3,8 +3,8 @@
     <com-head title="支付订单" menu="true"></com-head>
     <main>
       <div class="order-top">
-        <p>等待买家付款</p>
-        <p>剩{{ orderTime }}自动关闭</p>
+        <p>待付款时间 :</p>
+        <p>剩 {{ orderTime }} 后自动关闭</p>
       </div>
       <div class="address">
         <div class="address-left">
@@ -24,35 +24,82 @@
       </div>
       <div class="order-ctn">
         <div class="shop">
-          <p>商品信息</p>
+          <div class="shopTitle">
+            <i class="iconfont icon-huacai"></i>
+            <span>订花乐官方平台</span>
+            <i class="iconfont icon-youjiantou"></i>
+          </div>
+          <!-- 商品信息 -->
           <div class="shop-msg">
-            <img src="" alt="" />
+            <img
+              :src="orderData?.goods_info[0].s_goods_photos[0].path"
+              alt="商品图片"
+            />
             <div class="shop-msg-center">
-              <p>商品名称</p>
-              <p>商品数量</p>
+              <p>{{ orderData?.goods_info[0].goods_name }}</p>
+              <p>全国包邮，质保鲜花</p>
+              <p>付款后，24小时内发货</p>
+              <p>下单积攒积分</p>
             </div>
-            <div class="shop-msg-right">商品价格</div>
+            <div class="shop-msg-right">
+              <p><span>￥</span>{{ orderData?.total_price }}</p>
+              <p>×{{ orderData?.goods_info[0].num }}</p>
+            </div>
           </div>
         </div>
-        <div class="total">
-          <p>商品总价</p>
-          <p>￥{{ orderData?.total_price }}</p>
+
+        <div class="AddshopCar">
+          <button>加入购物车</button>
         </div>
-        <div class="fare">
-          <p>运费</p>
-          <p>卖家赠送</p>
+
+        <!-- 价格区域 -->
+        <div class="goodsPayDetails">
+          <p>
+            <span>商品总价</span>
+            <span>
+              <span>商品总价</span>
+              <span
+                ><i>￥</i
+                ><b>{{
+                  orderData?.goods_info[0].num * orderData?.total_price
+                }}</b></span
+              >
+            </span>
+          </p>
+          <p>
+            <span>运费</span>
+            <span>
+              <span>运费(快递)</span>
+              <span><i>￥</i><b>0.00</b></span>
+            </span>
+          </p>
+          <p>
+            <span>运费险</span>
+            <span>
+              <span>运费险 | </span>
+              <span>商家已支付</span>
+            </span>
+          </p>
+          <p>
+            <span>需付款</span>
+            <span style="color: #fd0e0e; font-size: 36px; font-weight: 600"
+              >￥{{
+                orderData?.goods_info[0].num * orderData?.total_price
+              }}</span
+            >
+          </p>
         </div>
-        <div class="need-total">
-          <p>需付款</p>
-          <p>￥{{ orderData?.total_price }}</p>
-        </div>
-        <div class="order-id">
-          <p>订单编号：</p>
-          <p>{{ orderData?.order_id }}</p>
-        </div>
-        <div class="create">
-          <p>创建时间</p>
-          <p>{{ createTime }}</p>
+
+        <!-- 订单详细区域 -->
+        <div class="goodsInfoDetails">
+          <p>
+            <span>订单编号:</span>
+            <span>{{ orderData?.order_id }}</span>
+          </p>
+          <p>
+            <span>创建时间：</span>
+            <span>{{ orderData?.order_time }}</span>
+          </p>
         </div>
       </div>
     </main>
@@ -213,100 +260,230 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.address {
-  display: flex;
-  margin: 0 auto;
-  padding: 15px 0;
-  align-items: center;
-  background-color: #ffffff;
-  .address-left {
-    margin: 0 15px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #894e22;
-    text-align: center;
-
-    i {
-      line-height: 40px;
-      font-size: 20px;
-      color: #ffffffd8;
+.pay-order-box {
+  main {
+    padding: 8px 4px;
+    background-color: skyblue;
+    .order-top {
+      padding: 6px 10px;
+      display: flex;
+      justify-content: space-between;
+      > p {
+        color: #894e22;
+        font-size: 14px;
+        font-weight: 600;
+      }
     }
-  }
-  .address-right {
-    p {
-      font-size: 14px;
-      &:first-of-type {
-        margin-bottom: 5px;
-        span {
-          display: inline-block;
-          text-indent: 1em;
-          font-size: 12px;
-          color: #000000a4;
+    .address {
+      display: flex;
+      padding: 15px 0;
+      align-items: center;
+      border-radius: 8px;
+      background-color: #ffffff;
+      .address-left {
+        margin: 0 15px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #894e22;
+        text-align: center;
+
+        i {
+          line-height: 40px;
+          font-size: 20px;
+          color: #ffffffd8;
         }
       }
-      &:last-of-type {
-        font-size: 12px;
+      .address-right {
+        > p {
+          font-size: 14px;
+          &:first-of-type {
+            margin-bottom: 5px;
+            span {
+              display: inline-block;
+              text-indent: 1em;
+              font-size: 12px;
+              color: #000000a4;
+            }
+          }
+          &:last-of-type {
+            font-size: 14px;
+            line-height: 20px;
+          }
+        }
+      }
+    }
+
+    .order-ctn {
+      padding: 4px;
+      margin-top: 8px;
+      background-color: #fff;
+      border-radius: 8px;
+      .shop {
+        .shopTitle {
+          display: flex;
+          align-items: center;
+          .icon-huacai {
+            margin-top: 4px;
+            margin-right: 6px;
+            margin-bottom: 4px;
+            font-size: 20px;
+            color: rgb(255, 1, 43);
+          }
+          span {
+            vertical-align: middle;
+            font-size: 14px;
+          }
+          .icon-youjiantou {
+            margin-left: 6px;
+            margin-top: 4px;
+            vertical-align: middle;
+            font-size: 12px;
+          }
+        }
+        .shop-msg {
+          display: flex;
+          justify-content: space-evenly;
+          img {
+            border-radius: 4px;
+          }
+          .shop-msg-center {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            > p {
+              font-size: 12px;
+            }
+            p:first-of-type {
+              font-weight: 600;
+              font-size: 14px;
+            }
+            p:nth-of-type(2) {
+              color: #888;
+            }
+            p:nth-of-type(3) {
+              color: #f2ba31;
+            }
+            p:last-of-type {
+              letter-spacing: 2px;
+              color: rgb(237, 42, 91);
+            }
+          }
+
+          .shop-msg-right {
+            padding-bottom: 10px;
+            p:first-of-type {
+              margin-bottom: 10px;
+              font-size: 16px;
+              font-weight: 600;
+              > span {
+                font-size: 12px;
+              }
+            }
+            p:last-of-type {
+              text-align: right;
+              font-size: 14px;
+              color: #888;
+            }
+          }
+        }
+      }
+
+      .AddshopCar {
+        padding: 10px 0px;
+        width: 100%;
+        text-align: right;
+        button {
+          width: 80px;
+          height: 30px;
+          border: 1px solid #894e22;
+          font-size: 12px;
+          background-color: #894e22;
+          color: #fff;
+          border-radius: 15px;
+        }
+      }
+
+      .goodsPayDetails {
+        padding-bottom: 20px;
+        border-bottom: 1px solid #d1d1d1;
+
+        display: flex;
+        flex-direction: column;
+        > p {
+          display: flex;
+          justify-content: space-between;
+          margin: 10px 6px;
+        }
+      }
+
+      .goodsInfoDetails {
+        display: flex;
+        flex-direction: column;
+        > p {
+          padding: 10px 6px;
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+
+    // 密码面板
+    #sumbit-content {
+      padding: 0 10px;
+      border-top: 1px solid #f0f0f0;
+      & > p {
+        padding: 40px 0;
+        width: 100%;
+        color: #000;
+        text-align: center;
+        font-weight: 600;
+        font-size: 28px;
+      }
+      .sumbit-box {
+        display: flex;
+        justify-content: space-between;
+        padding: 18px 0;
+        border-bottom: 0.5px solid #d0d0d0;
+        p {
+          font-size: 16px;
+        }
+      }
+      .sumbit-button {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 20px;
+        font-size: 16px;
+        color: blue;
       }
     }
   }
-}
-
-footer {
-  position: fixed;
-  display: flex;
-  padding: 10px 5%;
-  width: 90%;
-  justify-content: space-between;
-  bottom: 0;
-  background-color: #fff;
-  border-top: 0.5px solid gray;
-
-  button {
-    width: 80px;
-    height: 30px;
-    border: none;
-    border-radius: 15px;
-    &:first-of-type {
-      background-color: #fff;
-      color: #894e22;
-      border: 0.5px solid #894e22;
-    }
-    &:last-of-type {
-      background-color: #894e22;
-      color: #fff;
-    }
-  }
-}
-
-// 密码面板
-#sumbit-content {
-  padding: 0 10px;
-  border-top: 1px solid #f0f0f0;
-  & > p {
-    padding: 40px 0;
-    width: 100%;
-    color: #000;
-    text-align: center;
-    font-weight: 600;
-    font-size: 28px;
-  }
-  .sumbit-box {
-    display: flex;
-    justify-content: space-between;
-    padding: 18px 0;
-    border-bottom: 0.5px solid #d0d0d0;
-    p {
-      font-size: 16px;
-    }
-  }
-  .sumbit-button {
+  footer {
     position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 20px;
-    font-size: 16px;
-    color: blue;
+    display: flex;
+    padding: 10px 5%;
+    width: 90%;
+    justify-content: space-between;
+    bottom: 0;
+    background-color: #fff;
+    border-top: 0.5px solid gray;
+
+    button {
+      width: 80px;
+      height: 30px;
+      border: none;
+      border-radius: 15px;
+      &:first-of-type {
+        background-color: #fff;
+        color: #894e22;
+        border: 0.5px solid #894e22;
+      }
+      &:last-of-type {
+        background-color: #894e22;
+        color: #fff;
+      }
+    }
   }
 }
 </style>
