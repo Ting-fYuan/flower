@@ -256,7 +256,10 @@ export default {
             }
           }
         } else {
-          Toast.fail("商品库存不足");
+          Toast({
+            message: "商品库存不足",
+            position: "bottom",
+          });
         }
       } catch (err) {
         return err;

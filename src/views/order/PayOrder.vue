@@ -2,10 +2,6 @@
   <div class="pay-order-box">
     <com-head title="支付订单" menu="true"></com-head>
     <main>
-      <div class="order-top">
-        <p>待付款时间 :</p>
-        <p>剩 {{ orderTime }} 后自动关闭</p>
-      </div>
       <div class="address">
         <div class="address-left">
           <i class="iconfont icon-dizhi"></i>
@@ -30,28 +26,24 @@
             <i class="iconfont icon-youjiantou"></i>
           </div>
           <!-- 商品信息 -->
-          <div class="shop-msg">
-            <img
-              :src="orderData?.goods_info[0].s_goods_photos[0].path"
-              alt="商品图片"
-            />
+          <div
+            class="shop-msg"
+            v-for="item in orderData?.goods_info"
+            :key="item.id"
+          >
+            <img :src="item.s_goods_photos[0].path" alt="商品图片" />
             <div class="shop-msg-center">
-              <p>{{ orderData?.goods_info[0].goods_name }}</p>
+              <p>{{ item.goods_name }}</p>
               <p>全国包邮，质保鲜花</p>
               <p>付款后，24小时内发货</p>
-              <p>下单积攒积分</p>
+              <!-- <p>下单积攒积分</p> -->
             </div>
             <div class="shop-msg-right">
-              <p><span>￥</span>{{ orderData?.total_price }}</p>
-              <p>×{{ orderData?.goods_info[0].num }}</p>
+              <p><span>￥</span>{{ item.sale_price }}</p>
+              <p>×{{ item.num }}</p>
             </div>
           </div>
         </div>
-
-        <div class="AddshopCar">
-          <button>加入购物车</button>
-        </div>
-
         <!-- 价格区域 -->
         <div class="goodsPayDetails">
           <p>
@@ -163,10 +155,6 @@ export default {
   async created() {
     try {
       const { id } = this.$route.query;
-      if (!id) {
-        this.$router.replace("/index");
-        return;
-      }
       // 获取单条订单
       const { result } = await getSingleOrder(id);
       this.orderData = result;
@@ -264,7 +252,6 @@ export default {
 .pay-order-box {
   main {
     padding: 8px 4px;
-    background-color: skyblue;
     .order-top {
       padding: 6px 10px;
       display: flex;
@@ -365,10 +352,10 @@ export default {
             p:nth-of-type(3) {
               color: #f2ba31;
             }
-            p:last-of-type {
-              letter-spacing: 2px;
-              color: rgb(237, 42, 91);
-            }
+            // p:last-of-type {
+            //   letter-spacing: 2px;
+            //   color: rgb(237, 42, 91);
+            // }
           }
 
           .shop-msg-right {
@@ -389,22 +376,6 @@ export default {
           }
         }
       }
-
-      .AddshopCar {
-        padding: 10px 0px;
-        width: 100%;
-        text-align: right;
-        button {
-          width: 80px;
-          height: 30px;
-          border: 1px solid #894e22;
-          font-size: 12px;
-          background-color: #894e22;
-          color: #fff;
-          border-radius: 15px;
-        }
-      }
-
       .goodsPayDetails {
         padding-bottom: 20px;
         border-bottom: 1px solid #d1d1d1;
@@ -426,37 +397,6 @@ export default {
           display: flex;
           justify-content: space-between;
         }
-      }
-    }
-
-    // 密码面板
-    #sumbit-content {
-      padding: 0 10px;
-      border-top: 1px solid #f0f0f0;
-      & > p {
-        padding: 40px 0;
-        width: 100%;
-        color: #000;
-        text-align: center;
-        font-weight: 600;
-        font-size: 28px;
-      }
-      .sumbit-box {
-        display: flex;
-        justify-content: space-between;
-        padding: 18px 0;
-        border-bottom: 0.5px solid #d0d0d0;
-        p {
-          font-size: 16px;
-        }
-      }
-      .sumbit-button {
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 20px;
-        font-size: 16px;
-        color: blue;
       }
     }
   }
@@ -484,6 +424,36 @@ export default {
         background-color: #894e22;
         color: #fff;
       }
+    }
+  }
+  // 密码面板
+  #sumbit-content {
+    padding: 0 10px;
+    border-top: 1px solid #f0f0f0;
+    & > p {
+      padding: 40px 0;
+      width: 100%;
+      color: #000;
+      text-align: center;
+      font-weight: 600;
+      font-size: 28px;
+    }
+    .sumbit-box {
+      display: flex;
+      justify-content: space-between;
+      padding: 18px 0;
+      border-bottom: 0.5px solid #d0d0d0;
+      p {
+        font-size: 16px;
+      }
+    }
+    .sumbit-button {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 20px;
+      font-size: 16px;
+      color: blue;
     }
   }
 }
