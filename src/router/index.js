@@ -260,6 +260,16 @@ const routes = [
       title: "搜索结果",
     },
   },
+  // 支付订单
+  {
+    path: "/payorder",
+    name: "payorder",
+    component: () => import("@/views/order/PayOrder.vue"),
+    meta: {
+      title: "支付订单",
+      isAuth: true,
+    },
+  },
 ];
 
 // BUG catch

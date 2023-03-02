@@ -48,6 +48,7 @@
           <div class="like-more-title">
             <p>猜你喜欢</p>
           </div>
+          <van-skeleton class="skeleton" title :row="4" :loading="loading" />
           <div class="like-more-main">
             <div
               class="commodity"
@@ -64,6 +65,7 @@
                 </div>
               </div>
             </div>
+            <p>没有更多了~</p>
           </div>
         </div>
       </div>
@@ -99,6 +101,10 @@ export default {
       list: [],
       // 全选按钮
       toggleBtn: false,
+      // 骨架屏
+      loading: true,
+      // 没有更多了
+      noMore: false,
     };
   },
   computed: {
@@ -164,6 +170,7 @@ export default {
     // 猜你喜欢
     const { result } = await guessLikeApi();
     this.likeList = result;
+    this.loading = false;
   },
   methods: {
     // 去逛逛
@@ -204,6 +211,9 @@ export default {
       if (this.chooseShopList.length) {
         this.$router.push({
           path: "/fillOrder",
+          query: {
+            shopcar: true,
+          },
         });
       } else {
         Toast({
@@ -230,6 +240,9 @@ export default {
 ::v-deep .van-checkbox__icon--checked .van-icon {
   background-color: #884e22;
   border-color: #884e22;
+}
+.skeleton {
+  margin-top: 30px;
 }
 .shop-view-box {
   height: 100vh;
@@ -321,6 +334,8 @@ export default {
           margin: 15px auto 0;
           width: 122px;
           height: 30px;
+          outline: none;
+          border: none;
           border-radius: 15px;
           opacity: 1;
           background: rgba(136, 78, 34, 1);
@@ -346,6 +361,13 @@ export default {
           padding-bottom: 30%;
           justify-content: space-between;
           flex-wrap: wrap;
+
+          & > p {
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+            color: gray;
+          }
 
           .commodity {
             margin-bottom: 10px;

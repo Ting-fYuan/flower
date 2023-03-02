@@ -201,10 +201,11 @@ export default {
     // 封装鉴权
     authHandle() {
       if (!this.token) {
-        Toast.fail("请先登录");
-        setTimeout(() => {
-          this.$router.push("/login");
-        }, 1500);
+        this.$router.push("/login");
+        Toast({
+          message: "请先登录",
+          position: "bottom",
+        });
         return false;
       } else return true;
     },
