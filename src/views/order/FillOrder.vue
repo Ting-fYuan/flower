@@ -323,6 +323,11 @@ export default {
             id: this.id,
             status: 1,
           });
+          Toast({
+            message: "支付成功",
+            position: "bottom",
+          });
+          this.$router.back();
           this.showPsw = false;
           this.showSumbit = false;
           this.keyWrodValue = "";
@@ -386,6 +391,10 @@ export default {
     },
     // 放弃支付
     cancelHandle() {
+      // 清空选中购物车
+      this.$store.commit("shopCarStore/clearShopCar");
+      // 更新购物车
+      this.$store.dispatch("shopCarStore/getShopCarList");
       this.$router.replace({
         path: "/payorder",
         query: {
@@ -465,28 +474,20 @@ export default {
             addr_id: id,
           });
           // 添加订单成功
-          if (res.msg == "添加成功") {
-            this.showSumbit = true;
-            // 存储id
-            this.id = res.result.id;
-            sessionStorage.setItem("orderId", res.result.id);
-            // 清空选中购物车
-            this.$store.commit("shopCarStore/clearShopCar");
-            // 更新购物车
-            this.$store.dispatch("shopCarStore/getShopCarList");
-          }
+          this.showSumbit = true;
+          // 存储id
+          this.id = res.result.id;
+          sessionStorage.setItem("orderId", res.result.id);
         } else {
           res = await addOrder({
             goods_info: GoodsList,
             addr_id: id,
             shoppingCartIds: CarList,
           });
-          if (res.msg == "添加成功") {
-            this.showSumbit = true;
-            // 存储id
-            this.id = res.result.id;
-            sessionStorage.setItem("orderId", res.result.id);
-          }
+          this.showSumbit = true;
+          // 存储id
+          this.id = res.result.id;
+          sessionStorage.setItem("orderId", res.result.id);
         }
       } catch (err) {
         return err;
