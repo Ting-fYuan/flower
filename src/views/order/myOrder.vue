@@ -329,7 +329,7 @@ export default {
       this.$router.push({
         path: "/payorder",
         query: {
-          order_id: $id,
+          id: $id,
         },
       });
     },

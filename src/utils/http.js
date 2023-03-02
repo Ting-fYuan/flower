@@ -49,11 +49,11 @@ const http = axios.create({
 http.interceptors.request.use(
   function (config) {
     // 每次请求显示加载中
-    // Toast.loading({
-    //   message: "加载中...",
-    //   forbidClick: true, // 禁用点击背景
-    //   duration: 20000, // 时长
-    // });
+    Toast.loading({
+      message: "加载中...",
+      forbidClick: true, // 禁用点击背景
+      duration: 20000, // 时长
+    });
     // 从vuex获取token
     const token = store.state.loginStore.token;
     // 是否需要token
@@ -88,7 +88,6 @@ http.interceptors.response.use(
   function (response) {
     // 关闭loading
     Toast.clear();
-
     // 响应数据返回出去
     return response.data;
   },
