@@ -28,7 +28,7 @@
             <p>&yen;{{ resarr.price }}</p>
           </div>
           <div class="rightmoney">
-            <p>已售&nbsp;{{ resarr.sold_num }}</p>
+            <p>已售{{ resarr.sold_num >= 1000 ? "999+" : resarr.sold_num }}</p>
           </div>
         </div>
       </div>
@@ -43,7 +43,15 @@
         <div class="cutauto">
           <p>数量</p>
           <van-stepper v-model="value" max="10" />
-          <p>库存&nbsp;{{ resarr.stock_num <= 0 ? 0 : resarr.stock_num }}</p>
+          <p>
+            库存&nbsp;{{
+              resarr.stock_num <= 0
+                ? 0
+                : resarr.stock_num || resarr.stock_num >= 1000
+                ? "999+"
+                : resarr.stock_num
+            }}
+          </p>
         </div>
       </div>
       <!-- 订单评价 -->

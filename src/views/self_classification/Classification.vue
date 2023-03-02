@@ -48,7 +48,11 @@
                   <i>￥{{ goodsInfo.price }}</i>
                 </span>
 
-                <span>销量 {{ goodsInfo.sold_num }} 笔</span>
+                <span
+                  >销量{{
+                    goodsInfo.sold_num >= 1000 ? "999+" : goodsInfo.sold_num
+                  }}</span
+                >
               </p>
             </div>
           </div>
@@ -98,7 +102,11 @@
                   <b>￥{{ goodsInfo.sale_price }}</b>
                   <i>￥{{ goodsInfo.price }}</i>
                 </span>
-                <span>销量 {{ goodsInfo.sold_num }} 笔</span>
+                <span
+                  >销量{{
+                    goodsInfo.sold_num >= 1000 ? "999+" : goodsInfo.sold_num
+                  }}</span
+                >
               </p>
             </div>
           </div>
@@ -146,7 +154,11 @@
                   <b>￥{{ goodsInfo.sale_price }}</b>
                   <i>￥{{ goodsInfo.price }}</i>
                 </span>
-                <span>销量 {{ goodsInfo.sold_num }} 笔</span>
+                <span
+                  >销量{{
+                    goodsInfo.sold_num >= 1000 ? "999+" : goodsInfo.sold_num
+                  }}</span
+                >
               </p>
             </div>
           </div>
@@ -514,7 +526,7 @@ export default {
             }
             i {
               margin-left: 6px;
-              vertical-align: bottom;
+              vertical-align: middle;
               color: rgba(153, 153, 153, 1);
               font-size: 10px;
               text-decoration: line-through;
@@ -529,6 +541,7 @@ export default {
             font-weight: 400;
             font-family: "PingFang SC";
             text-align: left;
+            vertical-align: bottom;
           }
         }
       }
