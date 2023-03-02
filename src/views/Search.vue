@@ -10,21 +10,29 @@
         shape="round"
       >
         <template>
-          <van-icon name="arrow-left" size="20" slot="left" @click="goback()" />
+          <i
+            class="iconfont icon-yiliaohangyedeICON- backIcon"
+            slot="left"
+            @click="goback"
+          ></i>
+          <i class="iconfont icon-icon_sousuo MirrorIcon" slot="left-icon"></i>
         </template>
         <template #action>
-          <div @click="Search">搜索</div>
+          <div @click="Search" class="SearchButton">搜索</div>
         </template>
       </van-search>
     </div>
     <!-- 历史记录 -->
     <div class="searchHistory">
-      <div class="history">历史记录</div>
-      <van-icon name="delete-o" size="36" class="delIcon" @click="delAll" />
+      <div class="history">
+        <span class="historyTitle">历史记录</span>
+        <i class="iconfont icon-iconfontshanchu delIcon" @click="delAll"></i>
+      </div>
       <div class="noHistory" v-if="history == ''">
         <van-empty
           image="search"
-          image-size="100"
+          image-size="160"
+          style="margin-top: -80px"
           description="暂无搜索记录~"
         />
       </div>
@@ -39,11 +47,14 @@
           v-for="(item, index) in history"
           :data-value="item"
           :key="index"
-          >{{ item }} <van-icon name="cross" @click="dleItem(item)"
-        /></span>
+          >{{ item }}
+        </span>
       </div>
     </div>
-    <van-divider :style="{ color: '#1989fa', borderColor: 'pink' }" />
+    <van-divider
+      :dashed="true"
+      :style="{ color: '#1989fa', borderColor: 'rgb(136, 78, 34)' }"
+    />
     <!-- 热搜 -->
     <div class="hotSearch">
       <div class="hot">热门搜索</div>
@@ -57,7 +68,7 @@
           <div class="ctn-bottom" @click="handleClick">
             <p class="goods-name" :data-value="item.name">{{ item.name }}</p>
             <div class="ctn-bottom-box">
-              <p class="price">￥ {{ item.price }}</p>
+              <p class="price">￥{{ item.price }}</p>
               <p class="sale">销量{{ item.sold_num && item.sold_num }}笔</p>
             </div>
           </div>
@@ -68,8 +79,8 @@
 </template>
 
 <script>
-import { goodsSearch, hotSearch } from "@/api/search/index";
-import { Toast } from "vant";
+import { hotSearch } from "@/api/search/index";
+// import { Toast } from "vant";
 export default {
   name: "SearchView",
   data() {
@@ -97,7 +108,6 @@ export default {
     async Search() {
       try {
         if (this.value === "") return false;
-        let res = await goodsSearch({ name: this.value });
         // 添加到历史记录
         this.history.unshift(this.value);
         let historySet = new Set(this.history);
@@ -110,12 +120,12 @@ export default {
           );
         }
         localStorage.setItem("searchHistory", JSON.stringify(this.history));
-        if (res.result.count === 0) {
-          Toast("没有该商品信息，请尝试更换关键词");
-          this.value = "";
-        } else if (res.result.count != 0) {
-          this.$router.push("/category");
-        }
+        this.$router.push({
+          path: "/searchresult",
+          query: {
+            keyword: this.value,
+          },
+        });
       } catch (error) {
         console.log(error);
       }
@@ -147,41 +157,63 @@ export default {
       localStorage.removeItem("searchHistory");
       this.history = [];
     },
-    // 点击x号移除历史记录
-    dleItem(e) {
-      console.log(e);
-      const index = this.history.indexOf(e);
-      if (index > -1) {
-        this.history.splice(index, 1);
-        localStorage.setItem("searchHistory", JSON.stringify(this.history));
-      }
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .search {
+  padding: 50px 0;
   width: 100%;
   height: 100vh;
-  background: #e9ecf0;
+  background: #fff;
+
+  .searchHead {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    border-bottom: 0.5px solid gray;
+    .backIcon {
+      margin-left: -4px;
+      margin-right: 8px;
+      font-size: 18px;
+      color: #888;
+    }
+
+    .MirrorIcon {
+      font-size: 24px;
+      color: #888;
+    }
+  }
+  .SearchButton {
+    width: 54px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 15px;
+    color: white;
+    box-shadow: 3px 2px 12px rgba(136, 78, 34, 0.6);
+    background-color: rgb(136, 78, 34);
+  }
   // 历史记录
   .searchHistory {
     width: 100%;
     height: 200px;
     .history {
-      width: 80px;
-      height: 21px;
-      font-size: 15px;
-      padding-left: 10px;
-      padding-top: 20px;
-      display: inline-block;
+      padding: 16px 10px 10px 10px;
+      display: flex;
+      justify-content: space-between;
+      > .historyTitle {
+        font-size: 15px;
+        color: rgb(136, 78, 34);
+        font-weight: 600;
+      }
+      .delIcon {
+        font-size: 22px;
+        color: #444;
+      }
     }
-    .delIcon {
-      float: right;
-      top: 10%;
-      right: 5%;
-    }
+
     .noHistory {
       width: 100%;
       height: 120px;
@@ -189,62 +221,62 @@ export default {
     }
     .historyText {
       display: flex;
+      padding: 0 15px;
       flex-wrap: wrap;
-      justify-content: space-around;
       .historySpan {
+        margin: 3px 8px;
+        padding: 5px 10px;
         height: 21px;
-        font-size: 13px;
+        font-size: 14px;
+        border-radius: 2px;
         text-align: center;
         line-height: 21px;
-        background: #fff;
-        flex-basis: calc(50% - 20px);
-        margin: 10px;
+        background: rgba(142, 142, 142, 0.1);
+        // flex-basis: calc(50% - 20px);
+        border-radius: 5px;
       }
     }
   }
   // 热搜
   .hotSearch {
     .hot {
-      width: 60px;
-      height: 21px;
-      font-size: 15px;
+      font-size: 16px;
+      color: rgb(136, 78, 34);
+      font-weight: 600;
       padding-left: 10px;
       padding-top: 8px;
     }
     .like-more-main {
       display: flex;
       margin-top: 15px;
-      padding-bottom: 30%;
-      justify-content: space-between;
+      padding-bottom: 20;
+      justify-content: space-around;
       flex-wrap: wrap;
 
       .commodity {
         margin-bottom: 10px;
         width: 165px;
-        height: 235px;
         box-shadow: 0 5px 10px 0 #dee2e5;
+        border-radius: 0 0 5px 5px;
 
         img {
           width: 100%;
           height: 165px;
         }
         .ctn-bottom {
+          padding: 6px 8px;
           display: flex;
-          margin: 0 5px;
-          justify-content: space-between;
           flex-direction: column;
-          height: 30%;
           .goods-name {
-            margin-top: 20px;
-            font-size: 14px;
+            margin-bottom: 20px;
+            font-size: 16px;
             color: #333333;
           }
           .ctn-bottom-box {
             display: flex;
-            margin: 5px 0;
             justify-content: space-between;
             .price {
-              font-size: 14px;
+              font-size: 16px;
               color: #ff734c;
               font-weight: 600;
             }
@@ -259,13 +291,17 @@ export default {
   }
 }
 
-::v-deep .van-search__action {
-  background: #ff734c;
-  color: #ffffff;
-  border-radius: 50%;
-}
+// ::v-deep .van-search__action {
+//   background: #ff734c;
+//   color: #ffffff;
+//   border-radius: 50%;
+// }
 //历史记录为空时vant的样式
 ::v-deep .van-empty {
   height: 200px;
+}
+
+::v-deep .van-search {
+  height: 50px;
 }
 </style>

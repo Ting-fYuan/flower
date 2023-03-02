@@ -2,20 +2,15 @@
 <template>
   <div class="detail">
     <!-- 详情页导航栏 -->
-    <nav>
-      <div class="lefticon" @click="lefticonfn">
-        <i
-          class="iconfont icon-yiliaohangyedeICON-"
-          style="font-size: 30px"
-        ></i>
-      </div>
-      <div class="middleimg">
-        <img src="http://www.dinghuale.com/public/images/logo.png" alt="logo" />
-      </div>
-      <div class="righticon">
-        <i class="iconfont icon-caidan" style="font-size: 30px"></i>
-      </div>
-    </nav>
+    <com-head showMid="true" menu="true">
+      <template slot="header-center">
+        <img
+          class="nav-img"
+          src="http://www.dinghuale.com/public/images/logo.png"
+          alt="logo"
+        />
+      </template>
+    </com-head>
     <!-- 详情页轮播图 -->
     <van-swipe class="my-swipe" :autoplay="3000" touchable>
       <van-swipe-item v-for="(item, index) in swipeArrs" :key="index"
@@ -25,15 +20,15 @@
     <div class="moneyhead">
       <div class="moneyheadr">
         <div class="moneytop">
-          <h3>{{ resname }}</h3>
+          <h3>{{ resarr.name }}</h3>
         </div>
         <div class="moneybottom">
           <div class="leftmoney">
-            <p>&yen;{{ consale_price }}</p>
-            <p>&yen;{{ conprice }}</p>
+            <p>&yen;{{ resarr.sale_price }}</p>
+            <p>&yen;{{ resarr.price }}</p>
           </div>
           <div class="rightmoney">
-            <p>已售17229</p>
+            <p>已售&nbsp;{{ resarr.sold_num }}</p>
           </div>
         </div>
       </div>
@@ -47,7 +42,8 @@
       <div class="cutbut">
         <div class="cutauto">
           <p>数量</p>
-          <van-stepper v-model="value" />
+          <van-stepper v-model="value" max="10" />
+          <p>库存&nbsp;{{ resarr.stock_num <= 0 ? 0 : resarr.stock_num }}</p>
         </div>
       </div>
       <!-- 订单评价 -->
@@ -55,30 +51,20 @@
         <div class="appraisalBox">
           <div class="appraisalhead">
             <p>订单评价</p>
-            <p>最近已有1330评论</p>
+            <p>最近已有{{ commentNum }}评论</p>
           </div>
-          <div class="appraisalmain">
+          <div
+            class="appraisalmain"
+            v-for="(item, index) in commentArr.slice(0, 2)"
+            :key="index"
+          >
             <div class="appraisTop">
               <img src="../assets/images/morenTou.png.webp" alt="图片" />
               <p>147****2479</p>
               <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
             </div>
             <div class="appraisBottom">
-              <p>一大束玫瑰花，老婆非常喜欢。花也很新鲜，推荐大家买</p>
-              <img
-                src="../assets/images/202012251046531552.jpeg.webp"
-                alt="图片"
-              />
-            </div>
-          </div>
-          <div class="appraisalmain">
-            <div class="appraisTop">
-              <img src="../assets/images/morenTou.png.webp" alt="图片" />
-              <p>147****2479</p>
-              <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
-            </div>
-            <div class="appraisBottom">
-              <p>一大束玫瑰花，老婆非常喜欢。花也很新鲜，推荐大家买</p>
+              <p>{{ item }}</p>
               <img
                 src="../assets/images/202012251046531552.jpeg.webp"
                 alt="图片"
@@ -86,7 +72,7 @@
             </div>
           </div>
           <div class="appraibtn">
-            <button>查看更多评价</button>
+            <button @click="goComments()">查看更多评价</button>
           </div>
         </div>
       </div>
@@ -99,14 +85,29 @@
     <footer>
       <div class="footer">
         <van-goods-action>
-          <van-goods-action-icon icon="chat-o" text="客服" />
-          <van-goods-action-icon icon="cart-o" text="购物车" />
+          <van-goods-action-icon
+            icon="wap-home-o"
+            text="首页"
+            @click="toIndex"
+          />
+          <van-goods-action-icon
+            icon="cart-o"
+            text="购物车"
+            @click="toShopCar"
+            :badge="carListNum.length ? carListNum.length : ''"
+          />
           <van-goods-action-button
             type="warning"
             text="加入购物车"
-            @click="warningfn"
+            @click="shopCarHandle"
+            color="#3d4d42"
           />
-          <van-goods-action-button type="danger" text="立即购买" />
+          <van-goods-action-button
+            type="danger"
+            text="立即购买"
+            color="#ff734c"
+            @click="orderHandle"
+          />
         </van-goods-action>
       </div>
     </footer>
@@ -116,18 +117,17 @@
 <script>
 // import { detailSwipe } from "@/api/swiper";
 import { consondend } from "@/api/detail";
+import { generateComment } from "@/utils/comment";
+import { addShopCar } from "@/api/shopCar";
+import { Toast } from "vant";
+// import { addOrder } from "@/api/order";
+import { defaultAddressApi } from "@/api/address";
 export default {
   name: "DetailView",
   data() {
     return {
       // 详情轮播图数据
       swipeArrs: [],
-      // 商品名称
-      resname: "",
-      // 商品原价
-      conprice: "",
-      // 商品优惠价格
-      consale_price: "",
       conspush: "",
       // 后台副文本上半部分数据
       consonptop: "",
@@ -136,13 +136,35 @@ export default {
       // 数量
       value: 1,
       shopsId: "",
+      // 评论数量
+      commentNum: "",
+      // 评论数组
+      commentArr: [],
+      resarr: "",
     };
   },
   created() {
     // 获取商品id
     this.shopsId = this.$route.query.id;
-    console.log(this.shopsId);
     this.consonfn();
+    // 生成随机评论数
+    this.commentNum = Math.floor(Math.random() * 100 + 6);
+    localStorage.setItem("commentNum", this.commentNum);
+    // 评论生成
+    for (let i = 0; i < this.commentNum; i++) {
+      // console.log(generateComment());
+      this.commentArr.push(generateComment());
+    }
+  },
+  computed: {
+    // 购物车数量
+    carListNum() {
+      return this.$store.state.shopCarStore.shopCarList;
+    },
+    // 登录状态
+    token() {
+      return this.$store.state.loginStore.token;
+    },
   },
   methods: {
     // 后退按钮
@@ -151,15 +173,11 @@ export default {
     },
     async consonfn() {
       let res = await consondend(this.shopsId);
+      this.resarr = res.result;
       // 轮播图取消第一个数据
       this.swipeArrs = res.result.s_goods_photos.splice(0, 1);
       // 轮播图数据
       this.swipeArrs = res.result.s_goods_photos;
-      // 商品名称
-      this.resname = res.result.name;
-      // 商品原价
-      this.conprice = res.result.price;
-      // 商品优惠价格
       this.consale_price = res.result.sale_price;
       this.conspush = res.result.rich_text;
       // 分隔后台数据
@@ -172,8 +190,91 @@ export default {
         )[1];
       }
     },
-    warningfn() {
-      // this.$router()
+    // 跳转首页
+    toIndex() {
+      this.$router.push("/index");
+    },
+    // 跳转购物车
+    toShopCar() {
+      this.$router.push("/shop");
+    },
+    // 封装鉴权
+    authHandle() {
+      if (!this.token) {
+        Toast.fail("请先登录");
+        setTimeout(() => {
+          this.$router.push("/login");
+        }, 1500);
+        return false;
+      } else return true;
+    },
+    // 添加购物车
+    async shopCarHandle() {
+      // 鉴权
+      if (!this.authHandle()) return;
+      try {
+        // ! 库存bug 小于负数不添加购物车
+        if (this.resarr.stock_num > 0 && this.value <= this.resarr.stock_num) {
+          // 请求
+          const res = await addShopCar({
+            goods_id: this.shopsId,
+            num: this.value,
+          });
+          if (res) {
+            const res = await this.$store.dispatch(
+              "shopCarStore/getShopCarList"
+            );
+            if (res == "商品已在购物车中，数量已更新") {
+              Toast.success("数量已更新");
+            } else {
+              Toast.success("添加成功");
+            }
+          }
+        } else {
+          Toast.fail("商品库存不足");
+        }
+      } catch (err) {
+        return err;
+      }
+
+      this.value;
+    },
+    // 添加订单
+    async orderHandle() {
+      try {
+        // 鉴权
+        if (!this.authHandle()) return;
+        const address = await defaultAddressApi();
+        // 是否有默认地址
+        if (address.result) {
+          this.$router.push({
+            path: "fillOrder",
+            query: {
+              id: this.shopsId,
+              num: this.value,
+            },
+          });
+        } else {
+          Toast({
+            message: "请先添加默认地址",
+            position: "bottom",
+          });
+          setTimeout(() => {
+            // 没有默认地址跳转地址页面
+            this.$router.push({
+              path: "/addressEdit",
+              // 完整路径
+              query: { redirect: this.$route.fullPath },
+            });
+          }, 1500);
+        }
+      } catch (err) {
+        return err;
+      }
+    },
+    // 打开评论页面
+    goComments() {
+      this.$router.push("/comments");
     },
   },
 };
@@ -183,34 +284,10 @@ export default {
 .detail {
   width: 100%;
   height: 100%;
+  background-color: #e9ecf0;
   // 头部导航栏
-  nav {
-    width: 375px;
-    height: 55px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-    .lefticon {
-      width: 13px;
-      height: 22px;
-      margin-left: 20px;
-    }
-    .middleimg {
-      width: 85px;
-      height: 40.8px;
-      // background-color: skyblue;
-      img {
-        width: 100%;
-        height: 100%;
-      }
-    }
-    .righticon {
-      width: 17px;
-      height: 15px;
-      margin-right: 10px;
-    }
+  .nav-img {
+    height: 31px;
   }
   // 轮播图
   .my-swipe {
@@ -226,6 +303,7 @@ export default {
     height: 95px;
     position: relative;
     background-color: #fff;
+    border-bottom: 0.5px solid #c7c5c5;
     .moneyheadr {
       position: absolute;
       width: 345px;
@@ -240,7 +318,6 @@ export default {
         height: 21px;
 
         h3 {
-          width: 60px;
           height: 21px;
           opacity: 1;
           color: rgba(85, 85, 85, 1);
@@ -257,11 +334,12 @@ export default {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+
         .leftmoney {
           width: 103px;
           height: 28px;
           display: flex;
-          justify-content: space-around;
+          justify-content: space-between;
           p {
             &:nth-of-type(1) {
               opacity: 1;
@@ -299,20 +377,23 @@ export default {
     }
   }
   .constop {
+    padding-bottom: 10px;
     width: 375px;
     height: 173px;
-    border-top: 1px solid #555555;
+    border-top: 0.5px solid #e9ecf0;
     background-color: #fff;
     p {
-      width: 345px;
-      height: 41px;
+      display: block;
       margin: 0 auto;
+      padding: 15px;
       font-size: 15px;
       color: #555555;
       line-height: 41px;
+      border-bottom: 0.5px solid red;
     }
   }
   .cutbut {
+    margin: 10px 0;
     width: 375px;
     height: 62px;
     opacity: 1;
@@ -342,9 +423,15 @@ export default {
         font-family: "PingFang SC";
         text-align: left;
         line-height: 30px;
+        &:nth-of-type(2) {
+          width: 70px;
+          height: 30px;
+          font-size: 13px;
+          color: #555555;
+        }
       }
       .van-stepper {
-        width: 269.8px;
+        width: 200px;
         height: 32px;
       }
     }
@@ -353,11 +440,12 @@ export default {
     width: 375px;
     background-color: #fff;
     .appraisalBox {
+      margin-bottom: 10px;
+      padding: 0px 15px 30px;
       width: 345px;
-      padding: 0px 15px;
       .appraisalhead {
-        height: 40px;
         display: flex;
+        padding: 15px 0;
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid #e9ecf0;
@@ -413,6 +501,7 @@ export default {
         }
         .appraisBottom {
           p {
+            line-height: 25px;
             padding-top: 10px;
             font-size: 14px;
           }
@@ -428,26 +517,26 @@ export default {
         height: 29px;
         border: 1px solid #232628;
         margin: 0 auto;
+        text-align: center;
 
         button {
-          width: 84px;
           height: 29px;
           opacity: 1;
           color: #232628;
           font-size: 12px;
           font-weight: 400;
           background-color: #fff;
+          border: none;
         }
       }
     }
   }
   .consbottom {
-    width: 360px;
+    margin-bottom: 30px;
+    padding: 20px 10px 70px;
     height: 100%;
     background-color: #fff;
-    margin-bottom: 30px;
     span {
-      padding-left: 15px;
       width: 66px;
       height: 23px;
       opacity: 1;

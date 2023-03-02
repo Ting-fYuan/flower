@@ -51,7 +51,7 @@
         :style="{ height: '80%' }"
       >
         <div id="sumbit-content">
-          <p>￥{{ total.toFixed(2) }}</p>
+          <p>￥{{ buyShopTotal?.toFixed(2) || total.toFixed(2) }}</p>
           <div class="sumbit-box">
             <p>支付宝账号</p>
             <p>{{ userInfo.phone }}</p>
@@ -200,20 +200,20 @@
       </div>
       <div class="priceBox">
         <div class="priceBoxTop">
-          <p>共 {{ selectShopMsg.length }} 件商品</p>
-          <p>优惠： -￥{{ discount }}</p>
+          <p>共 {{ selectShopMsg.length || 1 }} 件商品</p>
+          <p>优惠： -￥{{ buyShopCoupon || discount }}</p>
         </div>
         <div class="priceBoxBtm">
           <p>运费￥ {{ deliveryfee }}</p>
           <p>
-            商品总价: <span>￥{{ total }}</span>
+            商品总价: <span>￥{{ buyShopTotal || total }}</span>
           </p>
         </div>
       </div>
     </main>
     <footer>
       <div class="footerMain">
-        <p class="footerLeft">实付款：￥{{ total }}</p>
+        <p class="footerLeft">实付款：￥{{ buyShopTotal || total }}</p>
         <button class="footerRight" @click="sumbitHadnle">提交订单</button>
       </div>
       <div class="footerBox"></div>
@@ -225,6 +225,7 @@
 import { Toast } from "vant";
 import { mapState } from "vuex";
 import { addOrder, orderPay } from "@/api/order";
+import { goodsDataApi } from "@/api/goods";
 export default {
   name: "FillOrder",
   data() {
@@ -263,12 +264,24 @@ export default {
       keyWrodValue: "",
       // 密码聚焦
       showKeyboard: true,
+      // 直接购买的数据
+      goodsList: null,
     };
   },
   beforeDestroy() {},
-  created() {
+  async created() {
     // 没有商品跳转首页
-    if (!this.$store.state.shopCarStore.chooseShopList.length) {
+    if (this.$route.query.id) {
+      // 是否直接购买
+      try {
+        const res = await goodsDataApi(this.$route.query.id);
+        this.goodsList = res.result;
+        // this.goodsList.nun = this.$route.query.num;
+        this.$set(this.goodsList, "num", Number(this.$route.query.num));
+      } catch (err) {
+        return err;
+      }
+    } else if (!this.$store.state.shopCarStore.chooseShopList.length) {
       return this.$router.push("/");
     }
     // 获取默认地址
@@ -303,11 +316,25 @@ export default {
         // 购物车id
         const CarList = this.selectShopMsg?.map((item) => item.id);
         try {
-          const res = await addOrder({
-            goods_info: GoodsList,
-            addr_id: id,
-            shoppingCartIds: CarList,
-          });
+          let res = null;
+          if (this.goodsList) {
+            res = await addOrder({
+              goods_info: [
+                {
+                  id: this.$route.query.id,
+                  num: this.$route.query.num,
+                },
+              ],
+              addr_id: id,
+            });
+            // console.log("直购了", res);
+          } else {
+            res = await addOrder({
+              goods_info: GoodsList,
+              addr_id: id,
+              shoppingCartIds: CarList,
+            });
+          }
           this.showPsw = false;
           this.showSumbit = false;
           this.keyWrodValue = "";
@@ -320,6 +347,7 @@ export default {
           }
           // 添加订单成功
           if (res.msg == "添加成功") {
+            // ! 手动支付订单
             const payRes = await orderPay({
               id: res.result.id,
               status: 1,
@@ -371,12 +399,28 @@ export default {
     deliveryfee() {
       return this.$store.getters["fillOrderStore/getDeliveryfee"];
     },
-    // 商品信息
+    // 直购商品的总价
+    buyShopTotal() {
+      return this.goodsList && this.goodsList.sale_price * this.goodsList.num;
+    },
+    // 直购商品的优惠
+    buyShopCoupon() {
+      return (
+        this.goodsList &&
+        this.goodsList.price * this.goodsList.num -
+          this.goodsList.sale_price * this.goodsList.num
+      );
+    },
   },
   methods: {
     // 跳转填写地址
     toAddressHandle() {
-      this.$router.push("address");
+      this.$router.push({
+        path: "/address",
+        query: {
+          order: true,
+        },
+      });
     },
     // 日历
     formatDate(date) {

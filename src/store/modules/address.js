@@ -1,7 +1,7 @@
-import { getAddressApi, getAllcityApi } from "@/api/address";
+import { getAddressApi, getAllCityApi } from "@/api/address";
 
 export default {
-  // 地址 vuex
+  // 地址
   namespaced: true,
   state: {
     // 城市列表
@@ -12,7 +12,7 @@ export default {
   getters: {
     // 获取地址
     getAddressList(state) {
-      // 数据做处理兼容 vant
+      // 数据做处理兼容 Ui组件
       return state.addressData.map((item) => {
         item.tel = item.phone;
         item.address = item.area_name + item.desc;
@@ -33,13 +33,18 @@ export default {
       state.cityList = payload;
       sessionStorage.setItem("cityList", JSON.stringify(payload));
     },
+    // 清空地址
+    clearAddress(state) {
+      state.addressData = [];
+    },
   },
   actions: {
     // 获取用户地址
-    async getUserAddress(ctx) {
+    async getUserAddress(ctx, flag) {
+      // @ flag 是否刷新地址
       try {
         // 没有地址再请求
-        if (ctx.state.addressData.length === 0) {
+        if (ctx.state.addressData.length === 0 || flag) {
           const { result } = await getAddressApi();
           ctx.commit("updateAddress", result);
         }
@@ -51,7 +56,7 @@ export default {
     async getAllcity(ctx) {
       // 有数据不请求
       if (ctx.state.cityList.length === 0) {
-        const { result } = await getAllcityApi();
+        const { result } = await getAllCityApi();
         ctx.commit("updateCity", result);
       }
     },

@@ -8,14 +8,21 @@ import ClassRoute from "@/components/classRoute.vue";
 export default {
   name: "ClassView",
   components: { ClassRoute },
+  // watch: {
+  //   $route(q) {
+  //     console.log(q);
+  //   },
+  // },
   created() {
+    console.log("类别组件触发");
     indexImg({})
       .then((res) => {
-        // console.log(res.result[2]);
-        this.$store.state.classflyStore = res.result[2].children;
-        // console.log(this.$store.state.classflyStore.arr);
-        this.$store.state.classflyStore.name = res.result[2].name;
-        // console.log(this.$store.state.classflyStore.name);
+        this.$store.commit(
+          "classflyStore/getClassDate",
+          res.result[2].children
+        );
+        this.$store.commit("classflyStore/getClassName", res.result[2].name);
+        // this.$store.classflyStore.name = res.result[0].name;
       })
       .catch((err) => {
         console.log(err);

@@ -26,6 +26,7 @@ import {
   Search,
   Divider,
   Empty,
+  Overlay,
   GoodsAction,
   GoodsActionIcon,
   GoodsActionButton,
@@ -42,6 +43,7 @@ import {
   NumberKeyboard,
   Step,
   Steps,
+  Loading,
 } from "vant";
 
 Vue.use(AddressList);
@@ -51,7 +53,6 @@ Vue.use(Swipe);
 Vue.use(SwipeItem);
 Vue.use(Lazyload);
 Vue.use(AddressList);
-Vue.use(Toast);
 Vue.use(CouponCell);
 Vue.use(CouponList);
 Vue.use(Popup);
@@ -72,6 +73,7 @@ Vue.use(Tab);
 Vue.use(Tabs);
 Vue.use(Divider);
 Vue.use(Empty);
+Vue.use(Overlay);
 Vue.use(GoodsAction);
 Vue.use(GoodsActionButton);
 Vue.use(GoodsActionIcon);
@@ -88,3 +90,4 @@ Vue.use(PasswordInput);
 Vue.use(NumberKeyboard);
 Vue.use(Step);
 Vue.use(Steps);
+Vue.use(Loading);

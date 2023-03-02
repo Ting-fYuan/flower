@@ -10,3 +10,11 @@ export const logoSwiper = (params) => {
     },
   });
 };
+
+// 获取单个商品信息
+export const goodsDataApi = (id) => {
+  return http({
+    url: `/goods/${id}`,
+    method: "GET",
+  });
+};

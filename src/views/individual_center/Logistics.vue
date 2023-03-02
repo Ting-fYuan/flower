@@ -3,7 +3,15 @@
     <div class="logisticsHead">
       <com-head title="物流"></com-head>
     </div>
-    <div class="logisticsContent">
+    <div class="nologisticsContent" v-if="logisticsList == ''">
+      <img
+        src="@/assets/images/coupon.png"
+        class="logisticsImg"
+        alt="暂无东西~"
+      />
+      <span class="logisticsText">暂时没有物流信息</span>
+    </div>
+    <div class="logisticsContent" v-else>
       <van-steps direction="vertical" :active="active" active-color="#884e22">
         <van-step
           v-for="(item, index) in logisticsList"
@@ -51,6 +59,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.logistics {
+  .nologisticsContent {
+    margin: 20px auto 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /*水平居中*/
+    align-items: center; /*垂直居中*/
+    .logisticsImg {
+      margin-bottom: 10px;
+      width: 50%;
+    }
+    .logisticsText {
+      margin-bottom: 5px;
+      color: #555555;
+      font-size: 14px;
+      font-weight: 600;
+    }
+  }
+}
 p {
   font-size: 13px;
   font-weight: 300;

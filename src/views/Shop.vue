@@ -1,7 +1,7 @@
 <!-- 购物车 -->
 <template>
   <div class="shop-view-box">
-    <com-head :showBack="false" title="购物车"></com-head>
+    <com-head :showBack="true" title="购物车"></com-head>
     <main>
       <div class="shop-car-box">
         <div class="shop" v-if="showShopList">
@@ -49,7 +49,12 @@
             <p>猜你喜欢</p>
           </div>
           <div class="like-more-main">
-            <div class="commodity" v-for="item in likeList" :key="item.id">
+            <div
+              class="commodity"
+              v-for="item in likeList"
+              :key="item.id"
+              @click="toDetail(item.id)"
+            >
               <img :src="item.s_goods_photos[0].path" :alt="item.name" />
               <div class="ctn-bottom">
                 <p class="goods-name">{{ item.name }}</p>
@@ -81,7 +86,7 @@
 <script>
 import { guessLikeApi } from "@/api/shopCar";
 import TabBar from "@/components/TabBar.vue";
-import { Toast } from "vant";
+import { Dialog, Toast } from "vant";
 export default {
   name: "ShopView",
   data() {
@@ -149,7 +154,6 @@ export default {
       if (result?.length) {
         // 展示购物车列表
         this.showShopList = true;
-        // console.log("购物车列表", result);
       } else this.showShopList = false;
       // 是否有选中购物车
       const { chooseShopList } = this.$store.state.shopCarStore;
@@ -160,7 +164,6 @@ export default {
     // 猜你喜欢
     const { result } = await guessLikeApi();
     this.likeList = result;
-    // console.log("猜你喜欢", result);
   },
   methods: {
     // 去逛逛
@@ -170,9 +173,20 @@ export default {
     },
     // 删除购物车
     delShopCarHandle($id, $idx) {
-      this.$store.dispatch("shopCarStore/deleteShopCar", {
-        id: $id,
-        idx: $idx,
+      Dialog.confirm({
+        title: "提示",
+        message: "确认删除此购物车?",
+      }).then(() => {
+        Toast.clear();
+        Toast({
+          message: "删除成功",
+          position: "bottom",
+        });
+        // 删除
+        this.$store.dispatch("shopCarStore/deleteShopCar", {
+          id: $id,
+          idx: $idx,
+        });
       });
     },
     // 全选按钮
@@ -198,12 +212,25 @@ export default {
         });
       }
     },
+    // 跳转详情
+    toDetail($id) {
+      this.$router.push({
+        path: "/detail",
+        query: {
+          id: $id,
+        },
+      });
+    },
   },
   components: { TabBar },
 };
 </script>
 
 <style lang="scss" scoped>
+::v-deep .van-checkbox__icon--checked .van-icon {
+  background-color: #884e22;
+  border-color: #884e22;
+}
 .shop-view-box {
   height: 100vh;
   background-color: #e8ecef;
@@ -240,7 +267,7 @@ export default {
               justify-content: center;
 
               p {
-                font-size: 14px;
+                font-size: 13px;
                 color: #555555;
 
                 &:first-of-type {
@@ -325,6 +352,7 @@ export default {
             width: 165px;
             height: 235px;
             box-shadow: 0 5px 10px 0 #dee2e5;
+            border-radius: 0 0 5px 5px;
 
             img {
               width: 100%;

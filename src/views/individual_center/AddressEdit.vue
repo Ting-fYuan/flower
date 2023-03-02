@@ -27,7 +27,7 @@
       <van-address-edit
         show-set-default
         show-search-result
-        save-button-text="保存"
+        :save-button-text="editTxt"
         tel-maxlength="11"
         :show-area="false"
         :show-delete="editType"
@@ -70,6 +70,8 @@ export default {
       // false 新增地址
       // true 修改地址
       editType: false,
+      // 类型
+      editTxt: "新增",
       // 收货人信息初始值
       AddressInfo: {},
     };
@@ -83,6 +85,7 @@ export default {
     // 修改为保存类型
     if (id) {
       this.editType = true;
+      this.editTxt = "保存";
       await this.$store.dispatch("addressStore/getUserAddress");
       // 寻找地址
       const res = await this.addressData?.find(
@@ -101,6 +104,7 @@ export default {
       }
     } else {
       this.editType = false; // 修改为新增类型
+      this.editTxt = "新增";
     }
   },
   watch: {
@@ -132,7 +136,7 @@ export default {
           if (result && e.isDefault && result.default_set != 1) {
             const res = await setDefaultApi(result.id);
             if (res) {
-              await this.$store.dispatch("addressStore/getUserAddress");
+              await this.$store.dispatch("addressStore/getUserAddress", true);
               this.$router.back();
               Toast({
                 message: "添加地址成功",
@@ -162,8 +166,13 @@ export default {
             if (result && e.isDefault) {
               const res = await setDefaultApi(result.id);
               if (res) {
-                await this.$store.dispatch("addressStore/getUserAddress");
-                this.$router.back();
+                await this.$store.dispatch("addressStore/getUserAddress", true);
+                // 有redirect值就跳转回去
+                if (this.$route.query.redirect) {
+                  this.$router.replace({
+                    path: this.$route.query.redirect,
+                  });
+                } else this.$router.back();
                 Toast({
                   message: "添加地址成功",
                   position: "bottom",
@@ -171,8 +180,13 @@ export default {
               }
               // 跳转回去
             } else if (result) {
-              await this.$store.dispatch("addressStore/getUserAddress");
-              this.$router.back();
+              await this.$store.dispatch("addressStore/getUserAddress", true);
+              // 有redirect值就跳转回去
+              if (this.$route.query.redirect) {
+                this.$router.replace({
+                  path: this.$route.query.redirect,
+                });
+              } else this.$router.back();
               Toast({
                 message: "添加地址成功",
                 position: "bottom",

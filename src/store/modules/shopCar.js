@@ -52,12 +52,16 @@ export default {
     // 删除购物车
     delShop(state, $id) {
       state.shopCarList.splice($id, 1);
+      sessionStorage.setItem("shopCarList", JSON.stringify(state.shopCarList));
     },
     // 清空购物车
     clearShopCar(state) {
+      state.shopCarList = [];
       state.chooseShopList = [];
       state.selectShopMsg = [];
-      sessionStorage.clear();
+      sessionStorage.removeItem("shopCarList");
+      sessionStorage.removeItem("chooseShopList");
+      sessionStorage.removeItem("selectShopMsg");
     },
   },
   actions: {
@@ -77,7 +81,14 @@ export default {
         const { id, idx } = payload;
         // 删除请求
         const res = await delShopCarApi(id);
+        ctx.dispatch("getShopCarList");
+        // 删除购物车中的数据
         ctx.commit("delShop", idx);
+        // 如果删除选中的商品，更新选中
+        ctx.commit(
+          "upDataChooseShop",
+          ctx.state.chooseShopList.filter((item) => item.id === id)
+        );
         return res;
       } catch (error) {
         return error;
