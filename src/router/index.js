@@ -284,7 +284,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
   // 操作页面滚动
-  scrollBehavior(to, from) {
+  scrollBehavior(to, from, savedPosition) {
     // 页面详情页面需要top 0
     // @ 订单页面不需要top 0
     if (to.name === "detail" && from.name !== "fillOrder") {
@@ -292,6 +292,13 @@ const router = new VueRouter({
     }
     if (to.name === "fillOrder") {
       return { y: 0 };
+    }
+    if (savedPosition && to.meta.keepAlive) {
+      // console.log(savedPosition);
+      // console.log(to.meta.keepAlive);
+      return savedPosition;
+    } else {
+      return { x: 0, y: 0 };
     }
   },
 });

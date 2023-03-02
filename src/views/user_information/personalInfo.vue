@@ -210,11 +210,7 @@ export default {
       this.uqdateUserInfo(fileRes.result.path);
       this.userInfo.header_img = fileRes.result.path;
     },
-    // // 昵称修改
-    // putName() {
-    //   this.uqdateUserInfo(this.modelSet.nikeName);
-    //   this.userInfo.name = this.modelSet.nikeName;
-    // },
+
     // 昵称修改
     onBeforeClose(action, done) {
       if (action === "confirm") {
@@ -258,8 +254,8 @@ export default {
     ::v-deep i {
       position: absolute;
       top: 0;
-      left: 10px;
-      font-size: 18px;
+      left: 5px;
+      font-size: 16px;
     }
     p {
       font-size: 16px;
@@ -369,6 +365,11 @@ export default {
         }
       }
     }
+  }
+  .pay {
+    width: 100%;
+    height: 100px;
+    background-color: #ccc;
   }
   footer {
     width: 100%;

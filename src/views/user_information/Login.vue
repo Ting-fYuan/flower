@@ -28,7 +28,8 @@
       </div>
       <!-- logo图片 -->
       <div class="logo">
-        <img :src="logo" alt="logo" />
+        <!-- <img :src="logo" alt="logo" /> -->
+        <img src="http://www.dinghuale.com/public/images/logo.png" alt="logo" />
       </div>
     </header>
     <!-- 内容 -->
@@ -79,8 +80,13 @@
               <i class="iconfont icon-yanjing-biyan" @click="loginEye"></i>
             </div>
             <!-- 点击登录 -->
-            <div class="form">
-              <button class="btn" @click="loginSubmit" type="button">
+            <div class="form" v-if="!btnIsShow">
+              <button
+                ref="loginBtn"
+                class="btn"
+                @click="loginSubmit"
+                type="button"
+              >
                 登录
               </button>
             </div>
@@ -136,8 +142,10 @@
               <i class="iconfont icon-yanjing-biyan" @click="regSameEye"></i>
             </div>
             <!-- 注册按钮模块 -->
-            <div class="form">
-              <button class="btn" @click="regiaterSubmit">注册</button>
+            <div class="form" v-if="btnIsShow">
+              <button ref="regBtn" class="btn" @click="regiaterSubmit">
+                注册
+              </button>
             </div>
           </div>
         </van-tab>
@@ -152,7 +160,7 @@
 // 引入logoApi
 import { logoSwiper } from "@/api/swiper";
 // 引入vant组件提示
-import { Toast } from "vant";
+// import { Toast } from "vant";
 export default {
   name: "LoginView",
   data() {
@@ -198,6 +206,12 @@ export default {
       showPopover: false,
       // 控制眼睛是否显示
       eyeShow: false,
+      // 是否存在历史页面栈
+      hasBackHistory: false,
+      // 切换登录注册两个的button
+      btnIsShow: false,
+      // logo
+      // logo: requrire(""),
       // 手机正则
       phoneRule:
         /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/,
@@ -207,6 +221,13 @@ export default {
     // 获取logo请求
     let res = await logoSwiper(1620);
     this.logo = res.result.s_photos[0].path;
+  },
+  beforeRouteEnter(to, from, next) {
+    let hasBackHistory = false;
+    if (from.name !== null) hasBackHistory = true;
+    next((vm) => {
+      vm.hasBackHistory = hasBackHistory;
+    });
   },
   // 绑定监听事件
   mounted() {
@@ -253,6 +274,7 @@ export default {
     // 切换tab栏去除另一边的错误提示
     tabsState(e) {
       if (e == "login") {
+        this.btnIsShow = !this.btnIsShow;
         if (
           this.form.regPhone == "" &&
           this.form.regPassword == "" &&
@@ -278,6 +300,7 @@ export default {
           this.classHandel("errRemove", "reg_cp_err");
         }
       } else {
+        this.btnIsShow = !this.btnIsShow;
         if (this.form.loginPhone == "" && this.form.loginPassword == "") {
           this.classHandel("errRemove", "login_m_err");
           this.classHandel("errRemove", "login_p_err");
@@ -384,15 +407,15 @@ export default {
         this.err.login_p_err = "密码不能为空";
         this.classHandel("errAdd", "login_p_err");
         this.classHandel("errAdd", "login_m_err");
-        Toast.fail("请填写账号密码");
+        // Toast.fail("请填写账号密码");
       } else if (this.form.loginPassword == "") {
         this.err.login_p_err = "密码不能为空";
         this.classHandel("errAdd", "login_p_err");
-        Toast.fail("请填写密码");
+        // Toast.fail("请填写密码");
       } else if (this.form.loginPhone == "") {
         this.err.login_m_err = "手机号不能为空";
         this.classHandel("errAdd", "login_m_err");
-        Toast.fail("请填写手机号");
+        // Toast.fail("请填写手机号");
       } else if (
         this.phoneRule.test(this.form.loginPhone) &&
         this.form.loginPassword != ""
@@ -450,20 +473,37 @@ export default {
         this.form.regPassword === this.form.regSamePass
       ) {
         // 执行
-        this.$store.dispatch("loginStore/registerResquest", regValues);
+        try {
+          const res = await this.$store.dispatch(
+            "loginStore/registerResquest",
+            regValues
+          );
+          // 获得注册返回的账号密码执行登录
+          this.$store.dispatch("loginStore/loginResquest", res);
+        } catch (error) {
+          return false;
+        }
       }
     },
     // 回车登录
     keyEnter() {
       document.onkeydown = (e) => {
-        if (e.key === "Enter") {
+        if (e.key === "Enter" && this.$refs.loginBtn) {
           this.loginSubmit();
+        } else if (e.key === "Enter" && this.$refs.regBtn) {
+          this.regiaterSubmit();
+        } else {
+          return true;
         }
       };
     },
     // 返回
     back() {
-      this.$router.back(1);
+      if (this.hasBackHistory) {
+        this.$router.back(1);
+      } else {
+        this.$router.push("/home");
+      }
     },
     // 登录密码点击是否显示密码
     loginEye(e) {

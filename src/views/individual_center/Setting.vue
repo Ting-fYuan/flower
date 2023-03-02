@@ -417,6 +417,7 @@ export default {
         .icon {
           .iconfont {
             font-size: 14px;
+            color: rgba(0, 0, 0, 0.5);
           }
         }
       }
@@ -437,6 +438,7 @@ export default {
         align-items: center;
         i {
           font-size: 14px;
+          color: rgba(0, 0, 0, 0.5);
           &:nth-child(1) {
             color: skyblue;
             font-size: 18px;
