@@ -174,7 +174,6 @@ export default {
     async consonfn() {
       let res = await consondend(this.shopsId);
       this.resarr = res.result;
-      console.log(this.resarr);
       // 轮播图取消第一个数据
       this.swipeArrs = res.result.s_goods_photos.splice(0, 1);
       // 轮播图数据
