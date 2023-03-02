@@ -323,6 +323,7 @@ export default {
             id: this.id,
             status: 1,
           });
+          this.$router.back();
           this.showPsw = false;
           this.showSumbit = false;
           this.keyWrodValue = "";
