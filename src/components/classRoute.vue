@@ -1,36 +1,44 @@
 <template>
   <div class="box">
-    <van-skeleton title :row="3" :loading="loading" />
     <div class="box2">
       <div class="img">
         <img src="../assets/images/banner1_m.jpg.png" alt="" />
       </div>
       <main>
-        <div class="title">{{ nameList }}</div>
+        <!-- <van-skeleton title :row="4" /> -->
+        <van-skeleton title :row="5" :loading="loading">
+          <div class="title">{{ nameList }}</div>
 
-        <ul>
-          <li
-            v-for="(item, index) in classList"
-            :key="index"
-            @click="toClassification(item)"
-          >
-            {{ item?.name }}
-          </li>
-        </ul>
+          <ul>
+            <li
+              v-for="(item, index) in classList"
+              :key="index"
+              @click="toClassification(item)"
+            >
+              {{ item?.name }}
+            </li>
+          </ul>
+        </van-skeleton>
       </main>
     </div>
   </div>
 </template>
 
 <script>
+import Vue from "vue";
+import { Skeleton } from "vant";
+
+Vue.use(Skeleton);
 export default {
   name: "ClassRoute",
   data() {
     return {
       loading: true,
       name: "",
-      arr: [],
     };
+  },
+  mounted() {
+    // this.loading = false;
   },
   watch: {
     $route: {
@@ -40,8 +48,17 @@ export default {
         if (q.query.id) {
           this.$store.commit("classflyStore/updateClassIdx", q.query.id);
         }
-
-        // console.log(this.id);
+      },
+    },
+    classList: {
+      //立刻执行
+      immediate: true,
+      handler(newvalue) {
+        if (newvalue) {
+          console.log(this.loading);
+          this.loading = false;
+          console.log(this.loading);
+        }
       },
     },
   },
@@ -66,9 +83,6 @@ export default {
   //     this.name = this.$store.state.classflyStore.name;
   //   }, 700);
   // },
-  mounted() {
-    this.loading = false;
-  },
   methods: {
     toClassification(item) {
       // console.log(item.id);

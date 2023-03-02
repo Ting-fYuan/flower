@@ -20,9 +20,6 @@ export default {
       state.classId = id;
       sessionStorage.setItem("classId", id);
     },
-    // updateClassName(state, newvalue) {
-    //   this.state.classflyStore.name = newvalue;
-    // },
   },
   actions: {
     getClassData(ctx) {
