@@ -151,6 +151,8 @@
 <script>
 // 引入logoApi
 import { logoSwiper } from "@/api/swiper";
+// 引入vant组件提示
+import { Toast } from "vant";
 export default {
   name: "LoginView",
   data() {
@@ -382,19 +384,21 @@ export default {
         this.err.login_p_err = "密码不能为空";
         this.classHandel("errAdd", "login_p_err");
         this.classHandel("errAdd", "login_m_err");
+        Toast.fail("请填写账号密码");
       } else if (this.form.loginPassword == "") {
         this.err.login_p_err = "密码不能为空";
         this.classHandel("errAdd", "login_p_err");
+        Toast.fail("请填写密码");
       } else if (this.form.loginPhone == "") {
         this.err.login_m_err = "手机号不能为空";
         this.classHandel("errAdd", "login_m_err");
+        Toast.fail("请填写手机号");
       } else if (
         this.phoneRule.test(this.form.loginPhone) &&
         this.form.loginPassword != ""
       ) {
         // 执行
         this.$store.dispatch("loginStore/loginResquest", values);
-        return false;
       }
     },
     // 注册请求

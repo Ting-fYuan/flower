@@ -74,12 +74,7 @@
         <!-- 错误提示 -->
         <div class="err_msg" ref="new_p_err">{{ err.new_p_err }}</div>
         <!-- 眼睛 -->
-        <van-icon
-          ref="regEyeRef"
-          name="closed-eye"
-          size="40"
-          @click="newPassEye"
-        />
+        <i class="iconfont icon-yanjing-biyan" @click="newPassEye"></i>
       </div>
       <!-- 确认密码模块 -->
       <div class="form">
@@ -94,12 +89,8 @@
         <!-- 错误提示 -->
         <div class="err_msg" ref="same_p_err">{{ err.same_p_err }}</div>
         <!-- 眼睛 -->
-        <van-icon
-          ref="sameEyeRef"
-          name="closed-eye"
-          size="40"
-          @click="samePassEye"
-        />
+
+        <i class="iconfont icon-yanjing-biyan" @click="samePassEye"></i>
       </div>
     </van-dialog>
     <footer>
@@ -527,11 +518,12 @@ export default {
           display: none;
         }
         // icon
-        .van-icon {
+        i {
           position: absolute;
           right: 18%;
           top: 50%;
           transform: translateY(-50%);
+          font-size: 16px;
         }
       }
     }
