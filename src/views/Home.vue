@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import defaultAvatar from "@/assets/images/avatar.png";
+// import defaultAvatar from "@/assets/images/avatar.png";
 import TabBar from "@/components/TabBar.vue";
 import { logout } from "@/api/user";
 import { Toast } from "vant";
@@ -86,7 +86,8 @@ export default {
   components: { TabBar },
   data() {
     return {
-      defaultAvatar,
+      defaultAvatar:
+        "https://img2.baidu.com/it/u=3072027427,2673781637&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
     };
   },
   async created() {
@@ -193,7 +194,7 @@ export default {
     }
     .loginBtn {
       margin-top: 8px;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       background-color: #fff;
       color: #894e22;
@@ -204,11 +205,12 @@ export default {
       align-items: center;
       img {
         margin-right: 8px;
-        width: 64px;
-        height: 64px;
+        width: 60px;
+        height: 60px;
         border-radius: 32px;
         opacity: 1;
         border: 2px solid rgba(255, 255, 255, 0.5);
+        margin-bottom: 10px;
       }
       span {
         width: 70.2px;
@@ -223,8 +225,11 @@ export default {
     }
 
     button {
-      color: #ffffff;
-      background-color: transparent;
+      box-sizing: border-box;
+      width: 100px;
+      color: #000;
+      background-color: #fff;
+      padding: 10px 0;
     }
   }
 
@@ -245,7 +250,7 @@ export default {
       flex-direction: column;
       justify-content: space-around;
       width: inherit;
-      height: 120px;
+      height: 140px;
       background-color: #fff;
       border-radius: 8px;
       > p {
@@ -255,7 +260,7 @@ export default {
         align-items: center;
         justify-content: space-between;
         width: 90%;
-        height: 40px;
+        height: 50px;
         > span {
           font-size: 15px;
           color: #555555;

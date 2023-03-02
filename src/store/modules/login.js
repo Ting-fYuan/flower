@@ -60,8 +60,8 @@ export default {
     async loginResquest(ctx, payload) {
       try {
         let loginRes = await login({
-          phone: payload["modile"].trim(),
-          password: payload["password"].trim(),
+          phone: payload["modile"],
+          password: payload["password"],
         });
         Toast.success("登陆成功");
         // 存储到vuex
@@ -75,6 +75,7 @@ export default {
       } catch (error) {
         // console.log(error.response.data.msg);
         Toast.fail(error.response.data.msg);
+        return false;
       }
     },
     // 注册请求
@@ -136,14 +137,16 @@ export default {
           realName: "ccc",
         });
         if (registerRes) {
-          Toast.success("注册成功");
-          router.go();
+          Toast.success("注册成功,已为您自动登录");
+          return { modile: payload["modile"], password: payload["password"] };
         }
       } catch (error) {
         if (error.response.data.msg === "手机号码已注册") {
           Toast.fail("手机号码已注册");
+          return false;
         } else {
           Toast.fail("注册失败，参数不对或缺失");
+          return false;
         }
       }
     },
