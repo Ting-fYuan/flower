@@ -1,7 +1,7 @@
 <template>
   <div class="comments">
     <div class="commentHead">
-      <com-head title="用户评价"></com-head>
+      <com-head title="用户评价" menu="true"></com-head>
     </div>
     <div class="content">
       <p>
@@ -9,15 +9,19 @@
         >人评价
       </p>
     </div>
-    <div class="appraisalmain" v-for="(item, index) in commentArr" :key="index">
+    <div
+      class="appraisalmain"
+      v-for="(item, index) in commentArr"
+      :key="index"
+      @scroll="onScroll()"
+    >
       <div class="appraisTop">
         <img src="@/assets/images/morenTou.png.webp" alt="图片" />
-        <p>147****{{ phoneNum }}</p>
-        <img src="@/assets/images/WechatIMG264 1.webp" alt="图片" />
+        <p>1{{ item.phoneNumFront }}****{{ item.phoneNumBehind }}</p>
       </div>
       <div class="appraisBottom">
-        <p>{{ item }}</p>
-        <img src="@/assets/images/202012251046531552.jpeg.webp" alt="图片" />
+        <p>{{ item.comment }}</p>
+        <img :src="item.commentImgs[index]" alt="图片" />
       </div>
     </div>
   </div>
@@ -30,7 +34,7 @@ export default {
   data() {
     return {
       commentNum: "",
-      // 评论数组
+      // 评论数组[]
       commentArr: [],
       phoneNum: "",
     };
@@ -46,6 +50,7 @@ export default {
       this.commentArr.push(generateComment());
     }
   },
+  methods: {},
 };
 </script>
 
@@ -67,6 +72,7 @@ export default {
       }
     }
   }
+
   .appraisalmain {
     padding-top: 20px;
     padding-bottom: 10px;
@@ -81,15 +87,6 @@ export default {
       padding-left: 5px;
       img {
         width: 20px;
-        height: 20px;
-        padding-right: 5px;
-        &:nth-of-type(2) {
-          position: absolute;
-          right: 0;
-          width: 14px;
-          height: 14px;
-          opacity: 1;
-        }
       }
       p {
         width: 85px;
@@ -97,25 +94,23 @@ export default {
         opacity: 1;
         padding-left: 10px;
         color: #777;
-        font-size: 20px;
+        font-size: 15px;
         font-weight: 400;
         font-family: "Tahoma";
       }
     }
     .appraisBottom {
       box-sizing: border-box;
-      padding-left: 5px;
+      padding-left: 6px;
       p {
         padding-top: 10px;
-        font-size: 15px;
-        text-indent: 2em;
+        font-size: 14px;
         font-family: "Microsoft YaHei", "宋体", Tahoma, Arial, sans-serif;
         color: #555;
       }
       img {
-        padding-top: 20px;
-        width: 55.19px;
-        height: 73.58px;
+        padding-top: 17px;
+        width: 55px;
       }
     }
   }
