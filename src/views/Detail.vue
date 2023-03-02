@@ -187,8 +187,7 @@ export default {
     // 评论生成
     if (this.resarr.sold_num > 0) {
       if (this.commentNum > this.resarr.sold_num) {
-        console.log(456);
-        for (let i = 0; i <= this.resarr.sold_num; i++) {
+        for (let i = 0; i < this.resarr.sold_num; i++) {
           this.commentArr.push(generateComment());
         }
       } else {
