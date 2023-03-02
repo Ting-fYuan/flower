@@ -59,7 +59,13 @@
         <div class="appraisalBox">
           <div class="appraisalhead">
             <p>订单评价</p>
-            <p>最近已有{{ commentNum }}评论</p>
+            <p v-if="resarr.sold_num != 0">
+              最近已有<span>{{
+                resarr.sold_num < commentNum ? resarr.sold_num : commentNum
+              }}</span
+              >评论
+            </p>
+            <p v-else>该商品暂无评价~</p>
           </div>
           <div
             class="appraisalmain"
@@ -68,18 +74,15 @@
           >
             <div class="appraisTop">
               <img src="../assets/images/morenTou.png.webp" alt="图片" />
-              <p>147****2479</p>
+              <p>1{{ item.phoneNumFront }}****{{ item.phoneNumBehind }}</p>
               <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
             </div>
             <div class="appraisBottom">
-              <p>{{ item }}</p>
-              <img
-                src="../assets/images/202012251046531552.jpeg.webp"
-                alt="图片"
-              />
+              <p>{{ item.comment }}</p>
+              <img :src="item.commentImgs[index]" alt="图片" />
             </div>
           </div>
-          <div class="appraibtn">
+          <div class="appraibtn" v-if="resarr.sold_num != 0">
             <button @click="goComments()">查看更多评价</button>
           </div>
         </div>
@@ -149,19 +152,51 @@ export default {
       // 评论数组
       commentArr: [],
       resarr: "",
+      // 销售数量
+      sold_num: "",
     };
   },
-  created() {
+  async created() {
     // 获取商品id
     this.shopsId = this.$route.query.id;
-    this.consonfn();
+
+    let res = await consondend(this.shopsId);
+    this.resarr = res.result;
+    // 轮播图取消第一个数据
+    this.swipeArrs = res.result.s_goods_photos.splice(0, 1);
+    // 轮播图数据
+    this.swipeArrs = res.result.s_goods_photos;
+    this.consale_price = res.result.sale_price;
+    this.conspush = res.result.rich_text;
+    // 分隔后台数据
+    if (this.conspush) {
+      this.consonptop = this.conspush.split("<blockquote><br></blockquote>")[0];
+      this.consonbottom = this.conspush.split(
+        "<blockquote><br></blockquote>"
+      )[1];
+    }
+
     // 生成随机评论数
-    this.commentNum = Math.floor(Math.random() * 100 + 6);
-    localStorage.setItem("commentNum", this.commentNum);
+    this.commentNum = Math.floor(Math.random() * 10 + 3);
+
+    if (this.resarr.sold_num < this.commentNum) {
+      localStorage.setItem("commentNum", this.resarr.sold_num);
+    } else {
+      localStorage.setItem("commentNum", this.commentNum);
+    }
     // 评论生成
-    for (let i = 0; i < this.commentNum; i++) {
-      // console.log(generateComment());
-      this.commentArr.push(generateComment());
+    if (this.resarr.sold_num > 0) {
+      if (this.commentNum > this.resarr.sold_num) {
+        console.log(456);
+        for (let i = 0; i <= this.resarr.sold_num; i++) {
+          this.commentArr.push(generateComment());
+        }
+      } else {
+        for (let i = 0; i < this.commentNum; i++) {
+          // console.log(generateComment());
+          this.commentArr.push(generateComment());
+        }
+      }
     }
   },
   computed: {
@@ -178,25 +213,6 @@ export default {
     // 后退按钮
     lefticonfn() {
       this.$router.back(1);
-    },
-    async consonfn() {
-      let res = await consondend(this.shopsId);
-      this.resarr = res.result;
-      // 轮播图取消第一个数据
-      this.swipeArrs = res.result.s_goods_photos.splice(0, 1);
-      // 轮播图数据
-      this.swipeArrs = res.result.s_goods_photos;
-      this.consale_price = res.result.sale_price;
-      this.conspush = res.result.rich_text;
-      // 分隔后台数据
-      if (this.conspush) {
-        this.consonptop = this.conspush.split(
-          "<blockquote><br></blockquote>"
-        )[0];
-        this.consonbottom = this.conspush.split(
-          "<blockquote><br></blockquote>"
-        )[1];
-      }
     },
     // 跳转首页
     toIndex() {
@@ -475,6 +491,9 @@ export default {
             font-weight: 400;
           }
         }
+        span {
+          color: #f60;
+        }
       }
       .appraisalmain {
         padding-top: 20px;
@@ -515,8 +534,7 @@ export default {
           }
           img {
             padding-top: 20px;
-            width: 55.19px;
-            height: 73.58px;
+            width: 55px;
           }
         }
       }
