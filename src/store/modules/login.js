@@ -141,6 +141,7 @@ export default {
           return { modile: payload["modile"], password: payload["password"] };
         }
       } catch (error) {
+        console.log(error);
         if (error.response.data.msg === "手机号码已注册") {
           Toast.fail("手机号码已注册");
           return false;
