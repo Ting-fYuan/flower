@@ -38,6 +38,7 @@
                 <van-loading type="spinner" size="20" />
               </template>
             </van-image>
+            <van-skeleton :row="3" :loading="loading" />
 
             <div class="GoodsInfo">
               <p>{{ goodsInfo.name }}</p>
@@ -46,11 +47,17 @@
                   <b>￥{{ goodsInfo.sale_price }}</b>
                   <i>￥{{ goodsInfo.price }}</i>
                 </span>
-                <span>销量 {{ goodsInfo.sold_num }} 笔</span>
+
+                <span
+                  >销量{{
+                    goodsInfo.sold_num >= 1000 ? "999+" : goodsInfo.sold_num
+                  }}</span
+                >
               </p>
             </div>
           </div>
         </div>
+
         <van-empty
           v-show="!emptyState"
           class="custom-image"
@@ -95,7 +102,11 @@
                   <b>￥{{ goodsInfo.sale_price }}</b>
                   <i>￥{{ goodsInfo.price }}</i>
                 </span>
-                <span>销量 {{ goodsInfo.sold_num }} 笔</span>
+                <span
+                  >销量{{
+                    goodsInfo.sold_num >= 1000 ? "999+" : goodsInfo.sold_num
+                  }}</span
+                >
               </p>
             </div>
           </div>
@@ -143,7 +154,11 @@
                   <b>￥{{ goodsInfo.sale_price }}</b>
                   <i>￥{{ goodsInfo.price }}</i>
                 </span>
-                <span>销量 {{ goodsInfo.sold_num }} 笔</span>
+                <span
+                  >销量{{
+                    goodsInfo.sold_num >= 1000 ? "999+" : goodsInfo.sold_num
+                  }}</span
+                >
               </p>
             </div>
           </div>
@@ -197,7 +212,7 @@ export default {
     return {
       active: "综合",
       show: false,
-      loading: "default", // 控制骨架屏的显示
+      loading: true, // 控制骨架屏的显示
       actions: [{ name: "选项一" }, { name: "选项二" }, { name: "选项三" }],
       ClassifyGoodsList: [],
       SaleClassifyGoodsList: [],
@@ -465,7 +480,8 @@ export default {
       height: 220px;
       border-radius: 0px 0px 6px 6px;
       background-color: #fff;
-      box-shadow: 1px 1px 8px #9d9d9d;
+      // box-shadow: 1px 1px 8px #9d9d9d;
+      filter: drop-shadow(2px 2px 4px rgba(157, 157, 157, 0.2));
       ::v-deep .van-image__img {
         margin: 0;
         padding: 0;
@@ -510,7 +526,7 @@ export default {
             }
             i {
               margin-left: 6px;
-              vertical-align: bottom;
+              vertical-align: middle;
               color: rgba(153, 153, 153, 1);
               font-size: 10px;
               text-decoration: line-through;
@@ -525,6 +541,7 @@ export default {
             font-weight: 400;
             font-family: "PingFang SC";
             text-align: left;
+            vertical-align: bottom;
           }
         }
       }
@@ -556,10 +573,16 @@ export default {
       }
     }
   }
+  // @ 内容为空的时候的样式展示
   ::v-deep .custom-image .van-empty__image {
     margin-top: 50%;
     width: 100px;
     height: 100px;
+  }
+
+  ::v-deep .van-skeleton__content {
+    padding-top: 6px;
+    height: 20px;
   }
 }
 </style>
