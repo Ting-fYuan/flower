@@ -98,7 +98,7 @@
           </p>
           <p>
             <span>创建时间：</span>
-            <span>{{ orderData?.order_time }}</span>
+            <span>{{ createTime }}</span>
           </p>
         </div>
       </div>
@@ -215,8 +215,9 @@ export default {
   computed: {
     // 订单创建时间
     createTime() {
-      const time = this.orderData?.createdAt.split("T");
-      return time && time[0] + "  " + time[1].slice(0, 8);
+      const time = this.orderData?.order_time;
+      return new Date(Number(time)).toLocaleString();
+      // return time;
     },
     // 订单剩余时间
     orderTime() {
