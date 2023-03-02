@@ -47,8 +47,6 @@ export default {
       newVal.phone = phoneReplace;
       newVal.mAES = phoneEncryption;
       newVal.pAES = passwordEncryption;
-      // console.log(newVal);
-
       state.token = newVal.token;
       state.userInfo = newVal;
       // tokrn数据持久化
@@ -142,7 +140,6 @@ export default {
           router.go();
         }
       } catch (error) {
-        console.log(error);
         if (error.response.data.msg === "手机号码已注册") {
           Toast.fail("手机号码已注册");
         } else {

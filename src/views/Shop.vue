@@ -1,7 +1,7 @@
 <!-- 购物车 -->
 <template>
   <div class="shop-view-box">
-    <com-head :showBack="false" title="购物车"></com-head>
+    <com-head :showBack="true" title="购物车"></com-head>
     <main>
       <div class="shop-car-box">
         <div class="shop" v-if="showShopList">
@@ -86,7 +86,7 @@
 <script>
 import { guessLikeApi } from "@/api/shopCar";
 import TabBar from "@/components/TabBar.vue";
-import { Toast } from "vant";
+import { Dialog, Toast } from "vant";
 export default {
   name: "ShopView",
   data() {
@@ -173,9 +173,20 @@ export default {
     },
     // 删除购物车
     delShopCarHandle($id, $idx) {
-      this.$store.dispatch("shopCarStore/deleteShopCar", {
-        id: $id,
-        idx: $idx,
+      Dialog.confirm({
+        title: "提示",
+        message: "确认删除此购物车?",
+      }).then(() => {
+        Toast.clear();
+        Toast({
+          message: "删除成功",
+          position: "bottom",
+        });
+        // 删除
+        this.$store.dispatch("shopCarStore/deleteShopCar", {
+          id: $id,
+          idx: $idx,
+        });
       });
     },
     // 全选按钮

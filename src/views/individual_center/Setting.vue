@@ -338,9 +338,10 @@ export default {
     // 退出登录
     async logout() {
       let logoutRes = await logout({});
-      console.log(logoutRes);
       if (logoutRes) {
         this.$store.commit("loginStore/clearUserInfo");
+        this.$store.commit("addressStore/clearAddress");
+        this.$store.commit("shopCarStore/clearShopCar");
         this.$router.push("/login");
       }
     },

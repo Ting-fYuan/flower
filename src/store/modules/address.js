@@ -33,6 +33,10 @@ export default {
       state.cityList = payload;
       sessionStorage.setItem("cityList", JSON.stringify(payload));
     },
+    // 清空地址
+    clearAddress(state) {
+      state.addressData = [];
+    },
   },
   actions: {
     // 获取用户地址

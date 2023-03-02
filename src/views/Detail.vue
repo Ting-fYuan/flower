@@ -43,6 +43,7 @@
         <div class="cutauto">
           <p>数量</p>
           <van-stepper v-model="value" max="10" />
+          <p>库存&nbsp;{{ resarr.stock_num <= 0 ? 0 : resarr.stock_num }}</p>
         </div>
       </div>
       <!-- 订单评价 -->
@@ -228,15 +229,25 @@ export default {
       // 鉴权
       if (!this.authHandle()) return;
       try {
-        const res = await addShopCar({
-          goods_id: this.shopsId,
-          num: this.value,
-        });
-        if (res) {
-          // 更新数据
-          await this.$store.dispatch("shopCarStore/getShopCarList");
-          Toast.success("加入成功");
-          this.value = 1;
+        // ! 库存bug 小于负数不添加购物车
+        if (this.resarr.stock_num > 0 && this.value <= this.resarr.stock_num) {
+          // 请求
+          const res = await addShopCar({
+            goods_id: this.shopsId,
+            num: this.value,
+          });
+          if (res) {
+            const res = await this.$store.dispatch(
+              "shopCarStore/getShopCarList"
+            );
+            if (res == "商品已在购物车中，数量已更新") {
+              Toast.success("数量已更新");
+            } else {
+              Toast.success("添加成功");
+            }
+          }
+        } else {
+          Toast.fail("商品库存不足");
         }
       } catch (err) {
         return err;
@@ -428,9 +439,15 @@ export default {
         font-family: "PingFang SC";
         text-align: left;
         line-height: 30px;
+        &:nth-of-type(2) {
+          width: 70px;
+          height: 30px;
+          font-size: 13px;
+          color: #555555;
+        }
       }
       .van-stepper {
-        width: 269.8px;
+        width: 200px;
         height: 32px;
       }
     }
