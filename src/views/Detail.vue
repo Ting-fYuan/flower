@@ -28,7 +28,7 @@
             <p>&yen;{{ resarr.price }}</p>
           </div>
           <div class="rightmoney">
-            <p>已售&nbsp;{{ resarr.sold_num }}</p>
+            <p>已售{{ resarr.sold_num >= 1000 ? "999+" : resarr.sold_num }}</p>
           </div>
         </div>
       </div>
@@ -43,7 +43,15 @@
         <div class="cutauto">
           <p>数量</p>
           <van-stepper v-model="value" max="10" />
-          <p>库存&nbsp;{{ resarr.stock_num <= 0 ? 0 : resarr.stock_num }}</p>
+          <p>
+            库存&nbsp;{{
+              resarr.stock_num <= 0
+                ? 0
+                : resarr.stock_num || resarr.stock_num >= 1000
+                ? "999+"
+                : resarr.stock_num
+            }}
+          </p>
         </div>
       </div>
       <!-- 订单评价 -->
@@ -51,7 +59,13 @@
         <div class="appraisalBox">
           <div class="appraisalhead">
             <p>订单评价</p>
-            <p>最近已有{{ commentNum }}评论</p>
+            <p v-if="resarr.sold_num != 0">
+              最近已有<span>{{
+                resarr.sold_num < commentNum ? resarr.sold_num : commentNum
+              }}</span
+              >评论
+            </p>
+            <p v-else>该商品暂无评价~</p>
           </div>
           <div
             class="appraisalmain"
@@ -60,18 +74,15 @@
           >
             <div class="appraisTop">
               <img src="../assets/images/morenTou.png.webp" alt="图片" />
-              <p>147****2479</p>
+              <p>1{{ item.phoneNumFront }}****{{ item.phoneNumBehind }}</p>
               <img src="../assets/images/WechatIMG264 1.webp" alt="图片" />
             </div>
             <div class="appraisBottom">
-              <p>{{ item }}</p>
-              <img
-                src="../assets/images/202012251046531552.jpeg.webp"
-                alt="图片"
-              />
+              <p>{{ item.comment }}</p>
+              <img :src="item.commentImgs[index]" alt="图片" />
             </div>
           </div>
-          <div class="appraibtn">
+          <div class="appraibtn" v-if="resarr.sold_num != 0">
             <button @click="goComments()">查看更多评价</button>
           </div>
         </div>
@@ -141,19 +152,51 @@ export default {
       // 评论数组
       commentArr: [],
       resarr: "",
+      // 销售数量
+      sold_num: "",
     };
   },
-  created() {
+  async created() {
     // 获取商品id
     this.shopsId = this.$route.query.id;
-    this.consonfn();
+
+    let res = await consondend(this.shopsId);
+    this.resarr = res.result;
+    // 轮播图取消第一个数据
+    this.swipeArrs = res.result.s_goods_photos.splice(0, 1);
+    // 轮播图数据
+    this.swipeArrs = res.result.s_goods_photos;
+    this.consale_price = res.result.sale_price;
+    this.conspush = res.result.rich_text;
+    // 分隔后台数据
+    if (this.conspush) {
+      this.consonptop = this.conspush.split("<blockquote><br></blockquote>")[0];
+      this.consonbottom = this.conspush.split(
+        "<blockquote><br></blockquote>"
+      )[1];
+    }
+
     // 生成随机评论数
-    this.commentNum = Math.floor(Math.random() * 100 + 6);
-    localStorage.setItem("commentNum", this.commentNum);
+    this.commentNum = Math.floor(Math.random() * 10 + 3);
+
+    if (this.resarr.sold_num < this.commentNum) {
+      localStorage.setItem("commentNum", this.resarr.sold_num);
+    } else {
+      localStorage.setItem("commentNum", this.commentNum);
+    }
     // 评论生成
-    for (let i = 0; i < this.commentNum; i++) {
-      // console.log(generateComment());
-      this.commentArr.push(generateComment());
+    if (this.resarr.sold_num > 0) {
+      if (this.commentNum > this.resarr.sold_num) {
+        console.log(456);
+        for (let i = 0; i <= this.resarr.sold_num; i++) {
+          this.commentArr.push(generateComment());
+        }
+      } else {
+        for (let i = 0; i < this.commentNum; i++) {
+          // console.log(generateComment());
+          this.commentArr.push(generateComment());
+        }
+      }
     }
   },
   computed: {
@@ -171,25 +214,6 @@ export default {
     lefticonfn() {
       this.$router.back(1);
     },
-    async consonfn() {
-      let res = await consondend(this.shopsId);
-      this.resarr = res.result;
-      // 轮播图取消第一个数据
-      this.swipeArrs = res.result.s_goods_photos.splice(0, 1);
-      // 轮播图数据
-      this.swipeArrs = res.result.s_goods_photos;
-      this.consale_price = res.result.sale_price;
-      this.conspush = res.result.rich_text;
-      // 分隔后台数据
-      if (this.conspush) {
-        this.consonptop = this.conspush.split(
-          "<blockquote><br></blockquote>"
-        )[0];
-        this.consonbottom = this.conspush.split(
-          "<blockquote><br></blockquote>"
-        )[1];
-      }
-    },
     // 跳转首页
     toIndex() {
       this.$router.push("/index");
@@ -201,10 +225,11 @@ export default {
     // 封装鉴权
     authHandle() {
       if (!this.token) {
-        Toast.fail("请先登录");
-        setTimeout(() => {
-          this.$router.push("/login");
-        }, 1500);
+        this.$router.push("/login");
+        Toast({
+          message: "请先登录",
+          position: "bottom",
+        });
         return false;
       } else return true;
     },
@@ -241,35 +266,39 @@ export default {
     },
     // 添加订单
     async orderHandle() {
+      // ! 库存bug 小于负数不添加购物车
+      if (this.resarr.stock_num <= 0 && this.value >= this.resarr.stock_num) {
+        Toast({
+          message: "商品库存不足",
+          position: "bottom",
+        });
+        return false;
+      }
       try {
         // 鉴权
         if (!this.authHandle()) return;
-        const address = await defaultAddressApi();
+        await defaultAddressApi();
+        await this.$router.push({
+          path: "fillOrder",
+          query: {
+            id: this.shopsId,
+            num: this.value,
+          },
+        });
+      } catch (err) {
         // 是否有默认地址
-        if (address.result) {
-          this.$router.push({
-            path: "fillOrder",
-            query: {
-              id: this.shopsId,
-              num: this.value,
-            },
-          });
-        } else {
+        if (err.response.data.msg === "找不到该地址信息") {
           Toast({
             message: "请先添加默认地址",
             position: "bottom",
           });
-          setTimeout(() => {
-            // 没有默认地址跳转地址页面
-            this.$router.push({
-              path: "/addressEdit",
-              // 完整路径
-              query: { redirect: this.$route.fullPath },
-            });
-          }, 1500);
+          // 没有默认地址跳转地址页面
+          this.$router.push({
+            path: "/addressEdit",
+            // 完整路径
+            query: { redirect: this.$route.fullPath },
+          });
         }
-      } catch (err) {
-        return err;
       }
     },
     // 打开评论页面
@@ -467,6 +496,9 @@ export default {
             font-weight: 400;
           }
         }
+        span {
+          color: #f60;
+        }
       }
       .appraisalmain {
         padding-top: 20px;
@@ -507,8 +539,7 @@ export default {
           }
           img {
             padding-top: 20px;
-            width: 55.19px;
-            height: 73.58px;
+            width: 55px;
           }
         }
       }

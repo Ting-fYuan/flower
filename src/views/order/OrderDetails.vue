@@ -16,7 +16,7 @@
       <div class="pay-bg">
         <div class="pay-bg-msg">
           <i class="iconfont icon-success"></i>
-          <p>订单已完成</p>
+          <p>支付已完成</p>
         </div>
       </div>
       <div class="goods-ctn">
