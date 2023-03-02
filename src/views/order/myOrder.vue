@@ -211,7 +211,7 @@ export default {
   async created() {
     try {
       // 获取订单列表
-      let orderres = await getOrder();
+      let orderres = await getOrder({ limit: 1000 });
       console.log(orderres.result.rows);
       this.orderList = orderres.result.rows;
 
