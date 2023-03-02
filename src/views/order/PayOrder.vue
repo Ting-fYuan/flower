@@ -264,7 +264,6 @@ export default {
 .pay-order-box {
   main {
     padding: 8px 4px;
-    background-color: skyblue;
     .order-top {
       padding: 6px 10px;
       display: flex;
