@@ -225,10 +225,11 @@ export default {
     // 封装鉴权
     authHandle() {
       if (!this.token) {
-        Toast.fail("请先登录");
-        setTimeout(() => {
-          this.$router.push("/login");
-        }, 1500);
+        this.$router.push("/login");
+        Toast({
+          message: "请先登录",
+          position: "bottom",
+        });
         return false;
       } else return true;
     },
@@ -265,35 +266,39 @@ export default {
     },
     // 添加订单
     async orderHandle() {
+      // ! 库存bug 小于负数不添加购物车
+      if (this.resarr.stock_num <= 0 && this.value >= this.resarr.stock_num) {
+        Toast({
+          message: "商品库存不足",
+          position: "bottom",
+        });
+        return false;
+      }
       try {
         // 鉴权
         if (!this.authHandle()) return;
-        const address = await defaultAddressApi();
+        await defaultAddressApi();
+        await this.$router.push({
+          path: "fillOrder",
+          query: {
+            id: this.shopsId,
+            num: this.value,
+          },
+        });
+      } catch (err) {
         // 是否有默认地址
-        if (address.result) {
-          this.$router.push({
-            path: "fillOrder",
-            query: {
-              id: this.shopsId,
-              num: this.value,
-            },
-          });
-        } else {
+        if (err.response.data.msg === "找不到该地址信息") {
           Toast({
             message: "请先添加默认地址",
             position: "bottom",
           });
-          setTimeout(() => {
-            // 没有默认地址跳转地址页面
-            this.$router.push({
-              path: "/addressEdit",
-              // 完整路径
-              query: { redirect: this.$route.fullPath },
-            });
-          }, 1500);
+          // 没有默认地址跳转地址页面
+          this.$router.push({
+            path: "/addressEdit",
+            // 完整路径
+            query: { redirect: this.$route.fullPath },
+          });
         }
-      } catch (err) {
-        return err;
       }
     },
     // 打开评论页面

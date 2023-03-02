@@ -23,16 +23,19 @@
 密码 20000212ywb
 
 #### 项目计划表
+
 "https://docs.qq.com/sheet/DTVNYU291WVlNTmpu?tab=BB08J2"
 
 ##### 公共头部设置
-可配置项
 
-1. showBack 默认值 false //是否展示返回键
-2. showMid="true"    //是否展示标题
-3. menu="true"           //是否展示菜单 
-4. title 默认值 标题
-5. 插槽
- "header-center" 中间 
- "header-right" 右边
+|  Props   | 说明                     |  类型   | 默认值 |
+| :------: | ------------------------ | :-----: | :----: |
+| showBack | 是否展示返回键，默认打开 | Boolean |  true  |
+| showMid  | 是否展示标题，默认打开   | Boolean |  true  |
+|   menu   | 是否展示菜单，默认关闭   | Boolean | false  |
+|  title   | 修改标题                 | String  |  标题  |
 
+|     Slots     |   说明   |
+| :-----------: | :------: |
+| header-center | 中间插入 |
+| header-right  | 右边插入 |
