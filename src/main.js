@@ -25,6 +25,7 @@ Vue.use(Skeleton);
 Vue.use(Lazyload);
 Vue.use(Swipe);
 Vue.use(SwipeItem);
+
 // 生产提示
 Vue.config.productionTip = false;
 
