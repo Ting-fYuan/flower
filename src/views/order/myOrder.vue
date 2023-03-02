@@ -37,7 +37,7 @@
               <button class="cancle" @click="goCancle(item.id)">
                 取消订单
               </button>
-              <button class="gopay" @click="gopay()">去支付</button>
+              <button class="gopay" @click="gopay(item.id)">去支付</button>
             </div>
             <div class="obligationBtn" v-show="item.status == 0">
               <span>订单已过期</span>
@@ -211,8 +211,8 @@ export default {
   async created() {
     try {
       // 获取订单列表
-      let orderres = await getOrder({ limit: 1000 });
-      console.log(orderres.result.rows);
+      let orderres = await getOrder();
+      // console.log(orderres.result.rows);
       this.orderList = orderres.result.rows;
 
       // 管理待付款的数组
@@ -263,9 +263,14 @@ export default {
         }
       });
     },
-    gopay() {
-      Toast("正在跳转支付~~");
+    gopay($id) {
       // 获取参数跳转支付页面
+      this.$router.push({
+        path: "/payorder",
+        query: {
+          order_id: $id,
+        },
+      });
     },
     // 派送中区域按钮
     checkDeli(e) {
