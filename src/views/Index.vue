@@ -3,9 +3,9 @@
   <div class="box">
     <div class="top">
       <i class="iconfont icon-icon_sousuo" @click="toSearch"></i>
-      <img src="../assets/images/微信图片_20230224172052.png" alt="" />
+      <img src="../assets/images/logo.png" alt="" />
     </div>
-    <van-swipe :autoplay="3000" class="swiper">
+    <van-swipe :autoplay="3000" class="swiper" indicator-color="#884E22">
       <van-swipe-item
         v-for="(image, index) in images"
         :key="index"
@@ -112,10 +112,8 @@
 
           <div class="goods_name">{{ item.name }}</div>
           <div class="goods_price">
-            <span class="price">￥{{ item.price }}</span>
-            <span class="number"
-              >销量{{ item.sold_num >= 1000 ? "999+" : item.sold_num }}</span
-            >
+            <span class="price">￥{{ item.sale_price }}</span>
+            <span class="number">销量{{ item.sold_num }}笔</span>
           </div>
         </div>
       </div>
@@ -137,7 +135,7 @@
           />
           <div class="goods_name">{{ item.name }}</div>
           <div class="goods_price">
-            <span class="price">￥{{ item.price }}</span>
+            <span class="price">￥{{ item.sale_price }}</span>
             <span class="number">销量{{ item.sold_num }}笔</span>
           </div>
         </div>
@@ -160,7 +158,7 @@
           />
           <div class="goods_name">{{ item.name }}</div>
           <div class="goods_price">
-            <span class="price">￥{{ item.price }}</span>
+            <span class="price">￥{{ item.sale_price }}</span>
             <span class="number">销量{{ item.sold_num }}笔</span>
           </div>
         </div>
@@ -183,7 +181,7 @@
           />
           <div class="goods_name">{{ item.name }}</div>
           <div class="goods_price">
-            <span class="price">￥{{ item.price }}</span>
+            <span class="price">￥{{ item.sale_price }}</span>
             <span class="number">销量{{ item.sold_num }}笔</span>
           </div>
         </div>
@@ -206,7 +204,7 @@
           />
           <div class="goods_name">{{ item.name }}</div>
           <div class="goods_price">
-            <span class="price">￥{{ item.price }}</span>
+            <span class="price">￥{{ item.sale_price }}</span>
             <span class="number">销量{{ item.sold_num }}笔</span>
           </div>
         </div>
@@ -229,7 +227,7 @@
           />
           <div class="goods_name">{{ item.name }}</div>
           <div class="goods_price">
-            <span class="price">￥{{ item.price }}</span>
+            <span class="price">￥{{ item.sale_price }}</span>
             <span class="number">销量{{ item.sold_num }}笔</span>
           </div>
         </div>
@@ -287,6 +285,7 @@ export default {
           this.yimiaoxuanhua2 = arr2;
           this.loading = false;
           //获取爱情鲜花
+          console.log(res.result[0].children[0]);
           this.love = res.result[0].children[0];
           //获取友情鲜花
           this.friendly = res.result[0].children[2];
