@@ -285,6 +285,7 @@ export default {
       }
     }
     .OtherActivity {
+      margin-bottom: 60px;
       width: inherit;
       background-color: #fff;
       border-radius: 8px;
