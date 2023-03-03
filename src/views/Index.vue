@@ -285,7 +285,7 @@ export default {
           this.yimiaoxuanhua2 = arr2;
           this.loading = false;
           //获取爱情鲜花
-          console.log(res.result[0].children[0]);
+          // console.log(res.result[0].children[0]);
           this.love = res.result[0].children[0];
           //获取友情鲜花
           this.friendly = res.result[0].children[2];
