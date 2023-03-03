@@ -55,9 +55,7 @@ export default {
       immediate: true,
       handler(newvalue) {
         if (newvalue) {
-          console.log(this.loading);
           this.loading = false;
-          console.log(this.loading);
         }
       },
     },
