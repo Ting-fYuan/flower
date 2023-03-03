@@ -455,7 +455,7 @@ export default {
 }
 .total-box {
   color: #fd0e0e;
-  font-size: 36px;
+  font-size: 18px;
   font-weight: 600;
 }
 </style>
