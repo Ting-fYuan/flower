@@ -17,14 +17,14 @@
         </template>
       </van-tabbar-item>
 
-      <van-tabbar-item :to="`/category/UseView?id=${classIdx || 0}`">
+      <van-tabbar-item :to="`/category/UseView?id=${classIdx}`">
         <span>分类</span>
         <template #icon="category">
           <i
             :class="
               category.active ? icon.category.active : icon.category.inactive
             "
-            class="iconfont_Style"
+            class="Category_iconfont_Style"
           ></i>
         </template>
       </van-tabbar-item>
@@ -55,6 +55,10 @@
 <script>
 export default {
   name: "TabbarComponent",
+  mounted() {
+    console.log(this.classIdx);
+    console.log(this.$store.state.classflyStore.classId);
+  },
   data() {
     return {
       active: 0,
@@ -95,5 +99,9 @@ export default {
 <style lang="scss" scoped>
 .iconfont_Style {
   font-size: 26px;
+}
+
+.Category_iconfont_Style {
+  font-size: 22px;
 }
 </style>
