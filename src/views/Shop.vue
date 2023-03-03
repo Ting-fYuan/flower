@@ -1,7 +1,10 @@
 <!-- 购物车 -->
 <template>
   <div class="shop-view-box">
-    <com-head :showBack="true" title="购物车"></com-head>
+    <com-head
+      :showBack="true"
+      :title="shopCarList.length ? `购物车(${shopCarList.length})` : '购物车'"
+    ></com-head>
     <main>
       <div class="shop-car-box">
         <div class="shop" v-if="showShopList">

@@ -29,7 +29,7 @@
         </template>
       </van-tabbar-item>
 
-      <van-tabbar-item to="/shop" :badge="shopCarNum || ''">
+      <van-tabbar-item to="/shop">
         <span>购物车</span>
         <template #icon="shop">
           <i
@@ -86,10 +86,6 @@ export default {
   computed: {
     classIdx() {
       return this.$store.state.classflyStore.classId;
-    },
-    // 获取购物车数量
-    shopCarNum() {
-      return this.$store.state.shopCarStore.shopCarList.length;
     },
   },
   methods: {},
