@@ -329,6 +329,7 @@ export default {
           display: flex;
           justify-content: space-evenly;
           img {
+            width: 100px;
             border-radius: 4px;
           }
           .shop-msg-center {
