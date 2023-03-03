@@ -17,19 +17,19 @@
         </template>
       </van-tabbar-item>
 
-      <van-tabbar-item :to="`/category/UseView?id=${classIdx || 0}`">
+      <van-tabbar-item :to="`/category/UseView?id=${classIdx}`">
         <span>分类</span>
         <template #icon="category">
           <i
             :class="
               category.active ? icon.category.active : icon.category.inactive
             "
-            class="iconfont_Style"
+            class="Category_iconfont_Style"
           ></i>
         </template>
       </van-tabbar-item>
 
-      <van-tabbar-item to="/shop" :badge="shopCarNum || ''">
+      <van-tabbar-item to="/shop">
         <span>购物车</span>
         <template #icon="shop">
           <i
@@ -55,6 +55,10 @@
 <script>
 export default {
   name: "TabbarComponent",
+  mounted() {
+    console.log(this.classIdx);
+    console.log(this.$store.state.classflyStore.classId);
+  },
   data() {
     return {
       active: 0,
@@ -83,10 +87,6 @@ export default {
     classIdx() {
       return this.$store.state.classflyStore.classId;
     },
-    // 获取购物车数量
-    shopCarNum() {
-      return this.$store.state.shopCarStore.shopCarList.length;
-    },
   },
   methods: {},
 };
@@ -95,5 +95,9 @@ export default {
 <style lang="scss" scoped>
 .iconfont_Style {
   font-size: 26px;
+}
+
+.Category_iconfont_Style {
+  font-size: 22px;
 }
 </style>

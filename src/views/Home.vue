@@ -90,10 +90,7 @@ export default {
         "https://img2.baidu.com/it/u=3072027427,2673781637&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
     };
   },
-  async created() {
-    // 请求地址
-    await this.$store.dispatch("addressStore/getAllcity").catch((err) => err);
-  },
+  async created() {},
   computed: {
     token() {
       return this.$store.state.loginStore.token;
@@ -288,6 +285,7 @@ export default {
       }
     }
     .OtherActivity {
+      margin-bottom: 60px;
       width: inherit;
       background-color: #fff;
       border-radius: 8px;

@@ -275,21 +275,17 @@ export default {
               }
             }
           });
-          setTimeout(() => {
-            Toast({
-              message: "已删除该订单",
-              icon: "success",
-            });
-          }, 1000);
+          Toast({
+            message: "已删除该订单",
+            icon: "success",
+          });
         })
         .catch(() => {
           // on cancel
-          setTimeout(() => {
-            Toast({
-              message: "取消删除",
-              icon: "success",
-            });
-          }, 1000);
+          Toast({
+            message: "取消删除",
+            icon: "success",
+          });
         });
     },
     // 待付款区域两个按钮
@@ -307,21 +303,17 @@ export default {
               }
             }
           });
-          setTimeout(() => {
-            Toast({
-              message: "已删除该订单",
-              icon: "success",
-            });
-          }, 1000);
+          Toast({
+            message: "已删除该订单",
+            icon: "success",
+          });
         })
         .catch(() => {
           // on cancel
-          setTimeout(() => {
-            Toast({
-              message: "取消删除",
-              icon: "success",
-            });
-          }, 1000);
+          Toast({
+            message: "取消删除",
+            icon: "success",
+          });
         });
     },
     gopay($id) {
@@ -356,21 +348,17 @@ export default {
               }
             }
           });
-          setTimeout(() => {
-            Toast({
-              message: "已删除该订单",
-              icon: "success",
-            });
-          }, 1000);
+          Toast({
+            message: "已删除该订单",
+            icon: "success",
+          });
         })
         .catch(() => {
           // on cancel
-          setTimeout(() => {
-            Toast({
-              message: "取消删除",
-              icon: "success",
-            });
-          }, 1000);
+          Toast({
+            message: "取消删除",
+            icon: "success",
+          });
         });
     },
     buyAgain(id) {
