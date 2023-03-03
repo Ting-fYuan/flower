@@ -507,7 +507,6 @@ export default {
     },
     // 登录密码点击是否显示密码
     loginEye(e) {
-      console.log(e);
       this.eyeHandle(e, "loginRef");
     },
     // 注册密码点击是否显示密码
