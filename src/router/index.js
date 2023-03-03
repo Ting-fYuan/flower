@@ -16,6 +16,7 @@ const routes = [
     path: "/index",
     name: "index",
     meta: {
+      keepAlive: true,
       title: "订花乐 - 鲜花店_订花_送花_鲜花配送",
     },
     component: () => import("@/views/Index.vue"),
@@ -259,6 +260,16 @@ const routes = [
       title: "搜索结果",
     },
   },
+  // 支付订单
+  {
+    path: "/payorder",
+    name: "payorder",
+    component: () => import("@/views/order/PayOrder.vue"),
+    meta: {
+      title: "支付订单",
+      isAuth: true,
+    },
+  },
 ];
 
 // BUG catch
@@ -283,7 +294,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
   // 操作页面滚动
-  scrollBehavior(to, from) {
+  scrollBehavior(to, from, savedPosition) {
     // 页面详情页面需要top 0
     // @ 订单页面不需要top 0
     if (to.name === "detail" && from.name !== "fillOrder") {
@@ -291,6 +302,13 @@ const router = new VueRouter({
     }
     if (to.name === "fillOrder") {
       return { y: 0 };
+    }
+    if (savedPosition && to.meta.keepAlive) {
+      // console.log(savedPosition);
+      // console.log(to.meta.keepAlive);
+      return savedPosition;
+    } else {
+      return { x: 0, y: 0 };
     }
   },
 });

@@ -49,6 +49,7 @@
         v-model="showSumbit"
         title="确认付款"
         :style="{ height: '80%' }"
+        @close="closeHandle"
       >
         <div id="sumbit-content">
           <p>￥{{ buyShopTotal?.toFixed(2) || total.toFixed(2) }}</p>
@@ -218,6 +219,17 @@
       </div>
       <div class="footerBox"></div>
     </footer>
+    <van-dialog
+      show-cancel-button
+      title="是否放弃本次付款"
+      confirmButtonText="继续支付"
+      cancelButtonText="放弃"
+      confirmButtonColor="#1378fe"
+      v-model="showPayConfirm"
+      @confirm="conFHandle"
+      @cancel="cancelHandle"
+    >
+    </van-dialog>
   </div>
 </template>
 
@@ -266,9 +278,11 @@ export default {
       showKeyboard: true,
       // 直接购买的数据
       goodsList: null,
+      // 是否继续支付面板
+      showPayConfirm: false,
+      id: sessionStorage.getItem("orderId") || null,
     };
   },
-  beforeDestroy() {},
   async created() {
     // 没有商品跳转首页
     if (this.$route.query.id) {
@@ -276,7 +290,6 @@ export default {
       try {
         const res = await goodsDataApi(this.$route.query.id);
         this.goodsList = res.result;
-        // this.goodsList.nun = this.$route.query.num;
         this.$set(this.goodsList, "num", Number(this.$route.query.num));
       } catch (err) {
         return err;
@@ -304,68 +317,24 @@ export default {
           position: "bottom",
         });
       } else if (value == "123456") {
-        // 选中的地址id
-        const { id } = this.$store.state.fillOrderStore.chooseAddress;
-        // 商品组信息
-        const GoodsList = this.selectShopMsg?.map((item) => {
-          return {
-            id: item.goods_id,
-            num: item.num,
-          };
-        });
-        // 购物车id
-        const CarList = this.selectShopMsg?.map((item) => item.id);
         try {
-          let res = null;
-          if (this.goodsList) {
-            res = await addOrder({
-              goods_info: [
-                {
-                  id: this.$route.query.id,
-                  num: this.$route.query.num,
-                },
-              ],
-              addr_id: id,
-            });
-            // console.log("直购了", res);
-          } else {
-            res = await addOrder({
-              goods_info: GoodsList,
-              addr_id: id,
-              shoppingCartIds: CarList,
-            });
-          }
+          // ! 手动支付订单
+          await orderPay({
+            id: this.id,
+            status: 1,
+          });
+          Toast({
+            message: "支付成功",
+            position: "bottom",
+          });
+          this.$router.back();
           this.showPsw = false;
           this.showSumbit = false;
           this.keyWrodValue = "";
-          // ! bug 库存不足
-          if (res.code == 1) {
-            Toast({
-              message: res.msg,
-              position: "bottom",
-            });
-          }
-          // 添加订单成功
-          if (res.msg == "添加成功") {
-            // ! 手动支付订单
-            const payRes = await orderPay({
-              id: res.result.id,
-              status: 1,
-            });
-            if (payRes.code === 200) {
-              // 清空选中购物车
-              this.$store.commit("shopCarStore/clearShopCar");
-              this.$router.replace({
-                path: "/paysuccess",
-                query: {
-                  order_id: payRes.data.order_id,
-                  id: payRes.data.id,
-                },
-              });
-              // 更新购物车
-              this.$store.dispatch("shopCarStore/getShopCarList");
-            }
-          }
+          // 清空购物车
+          this.$store.commit("shopCarStore/clearShopCar");
+          // 请求购物车
+          this.$store.dispatch("shopCarStore/getShopCarList");
         } catch (err) {
           return err;
         }
@@ -412,7 +381,31 @@ export default {
       );
     },
   },
+  destroyed() {
+    sessionStorage.removeItem("orderId");
+  },
   methods: {
+    // 继续支付
+    conFHandle() {
+      this.showSumbit = true;
+    },
+    // 放弃支付
+    cancelHandle() {
+      // 清空选中购物车
+      this.$store.commit("shopCarStore/clearShopCar");
+      // 更新购物车
+      this.$store.dispatch("shopCarStore/getShopCarList");
+      this.$router.replace({
+        path: "/payorder",
+        query: {
+          id: this.id,
+        },
+      });
+    },
+    // 取消支付
+    closeHandle() {
+      this.showPayConfirm = true;
+    },
     // 跳转填写地址
     toAddressHandle() {
       this.$router.push({
@@ -455,8 +448,50 @@ export default {
       this.$router.push("/receipt");
     },
     // 提交订单
-    sumbitHadnle() {
-      this.showSumbit = true;
+    async sumbitHadnle() {
+      // 选中的地址id
+      const { id } = this.$store.state.fillOrderStore.chooseAddress;
+      // 商品组信息
+      const GoodsList = this.selectShopMsg?.map((item) => {
+        return {
+          id: item.goods_id,
+          num: item.num,
+        };
+      });
+      // 购物车id
+      const CarList = this.selectShopMsg?.map((item) => item.id);
+      try {
+        let res = null;
+        // 是否直接购买
+        if (!this.$route.query.shopcar) {
+          res = await addOrder({
+            goods_info: [
+              {
+                id: Number(this.$route.query.id),
+                num: Number(this.$route.query.num),
+              },
+            ],
+            addr_id: id,
+          });
+          // 添加订单成功
+          this.showSumbit = true;
+          // 存储id
+          this.id = res.result.id;
+          sessionStorage.setItem("orderId", res.result.id);
+        } else {
+          res = await addOrder({
+            goods_info: GoodsList,
+            addr_id: id,
+            shoppingCartIds: CarList,
+          });
+          this.showSumbit = true;
+          // 存储id
+          this.id = res.result.id;
+          sessionStorage.setItem("orderId", res.result.id);
+        }
+      } catch (err) {
+        return err;
+      }
     },
   },
 };

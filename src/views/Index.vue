@@ -113,7 +113,9 @@
           <div class="goods_name">{{ item.name }}</div>
           <div class="goods_price">
             <span class="price">￥{{ item.price }}</span>
-            <span class="number">销量{{ item.sold_num }}笔</span>
+            <span class="number"
+              >销量{{ item.sold_num >= 1000 ? "999+" : item.sold_num }}</span
+            >
           </div>
         </div>
       </div>

@@ -112,6 +112,7 @@ nav {
   padding: 0 2.5%;
   height: 50px;
   top: 0;
+  left: 0;
   justify-content: space-between;
   align-items: center;
   background: rgba(255, 255, 255, 1);
