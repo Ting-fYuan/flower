@@ -80,7 +80,7 @@ export default {
           this.$router.push("/");
           break;
         case 1:
-          this.$router.push("/category");
+          this.$router.push("/category/UseView?id=0");
           break;
         case 2:
           this.$router.push("/shop");

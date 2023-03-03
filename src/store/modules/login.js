@@ -75,7 +75,6 @@ export default {
       } catch (error) {
         // console.log(error.response.data.msg);
         Toast.fail(error.response.data.msg);
-        return false;
       }
     },
     // 注册请求
@@ -141,12 +140,11 @@ export default {
           return { modile: payload["modile"], password: payload["password"] };
         }
       } catch (error) {
+        console.log(error);
         if (error.response.data.msg === "手机号码已注册") {
           Toast.fail("手机号码已注册");
-          return false;
         } else {
           Toast.fail("注册失败，参数不对或缺失");
-          return false;
         }
       }
     },
