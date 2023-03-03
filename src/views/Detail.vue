@@ -159,7 +159,10 @@ export default {
   async created() {
     // 获取商品id
     this.shopsId = this.$route.query.id;
-
+    if (this.token) {
+      // 获取购物车列表
+      this.$store.dispatch("shopCarStore/getShopCarList");
+    }
     let res = await consondend(this.shopsId);
     this.resarr = res.result;
     // 轮播图取消第一个数据
@@ -175,7 +178,6 @@ export default {
         "<blockquote><br></blockquote>"
       )[1];
     }
-
     // 生成随机评论数
     this.commentNum = Math.floor(Math.random() * 10 + 3);
 
@@ -187,7 +189,6 @@ export default {
     // 评论生成
     if (this.resarr.sold_num > 0) {
       if (this.commentNum > this.resarr.sold_num) {
-        console.log(456);
         for (let i = 0; i < this.resarr.sold_num; i++) {
           this.commentArr.push(generateComment());
         }

@@ -44,7 +44,6 @@ export default {
     this.order_id = this.$route.query.id;
     try {
       let res = await getLogistics({ order_id: this.order_id });
-      console.log(res.data);
       this.logisticsList = res.data;
     } catch (error) {
       console.log(error);

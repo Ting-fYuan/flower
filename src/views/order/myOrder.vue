@@ -14,35 +14,42 @@
     <div class="obligation" v-if="routeId == 1 && notPayment != ''">
       <div class="obligationContent">
         <div class="obligationGoods" v-for="item in notPayment" :key="item.id">
-          <van-swipe-cell v-if="item.status == 0 || item.status == 1">
-            <van-card
-              :num="JSON.parse(item.goods_info)[0]?.num"
-              :price="item.total_price"
-              :desc="JSON.parse(item.goods_info)[0]?.desc"
-              :title="JSON.parse(item.goods_info)[0]?.goods_name"
-              :thumb="JSON.parse(item.goods_info)[0]?.s_goods_photos[0].path"
-              disabled
-              lazy-load
-              centered
-            />
-            <template #right>
-              <van-button
-                square
-                type="danger"
-                text="删除"
-                @click="delCard(item.id)"
-              />
-            </template>
-            <div class="obligationBtn" v-show="item.status == 1">
-              <button class="cancle" @click="goCancle(item.id)">
-                取消订单
-              </button>
-              <button class="gopay" @click="gopay(item.id)">去支付</button>
+          <div v-if="item.status == 0 || item.status == 1">
+            <div
+              v-for="(shop, index) in JSON.parse(item.goods_info)"
+              :key="index"
+            >
+              <van-swipe-cell>
+                <van-card
+                  :num="shop.num"
+                  :price="shop.total_price"
+                  :desc="shop.desc"
+                  :title="shop.goods_name"
+                  :thumb="shop.s_goods_photos[0].path"
+                  disabled
+                  lazy-load
+                  centered
+                />
+                <template #right>
+                  <van-button
+                    square
+                    type="danger"
+                    text="删除"
+                    @click="delCard(item.id)"
+                  />
+                </template>
+                <div class="obligationBtn" v-show="item.status == 1">
+                  <button class="cancle" @click="goCancle(item.id)">
+                    取消订单
+                  </button>
+                  <button class="gopay" @click="gopay()">去支付</button>
+                </div>
+                <div class="obligationBtn" v-show="item.status == 0">
+                  <span>订单已过期</span>
+                </div>
+              </van-swipe-cell>
             </div>
-            <div class="obligationBtn" v-show="item.status == 0">
-              <span>订单已过期</span>
-            </div>
-          </van-swipe-cell>
+          </div>
         </div>
       </div>
     </div>
@@ -65,23 +72,39 @@
           v-for="item in orderList"
           :key="JSON.parse(item.id)"
         >
-          <van-swipe-cell disabled v-if="item.status == 3 || item.status == 2">
-            <van-card
-              :num="JSON.parse(item.goods_info)[0]?.num"
-              :price="item.total_price"
-              :desc="JSON.parse(item.goods_info)[0]?.desc"
-              :title="JSON.parse(item.goods_info)[0]?.goods_name"
-              :thumb="JSON.parse(item.goods_info)[0]?.s_goods_photos[0].path"
-              lazy-load
-              centered
-            />
-            <div class="deliveryBtn">
-              <span>待收货</span>
-              <button class="check" @click="checkDeli(item.order_id)">
-                查看物流
-              </button>
+          <div v-if="item.status == 3 || item.status == 2">
+            <div
+              v-for="(shop, index) in JSON.parse(item.goods_info)"
+              :key="index"
+            >
+              <van-swipe-cell>
+                <van-card
+                  :num="shop.num"
+                  :price="shop.total_price"
+                  :desc="shop.desc"
+                  :title="shop.goods_name"
+                  :thumb="shop.s_goods_photos[0].path"
+                  disabled
+                  lazy-load
+                  centered
+                />
+                <template #right>
+                  <van-button
+                    square
+                    type="danger"
+                    text="删除"
+                    @click="delCard(item.id)"
+                  />
+                </template>
+                <div class="deliveryBtn">
+                  <span>待收货</span>
+                  <button class="check" @click="checkDeli(item.order_id)">
+                    查看物流
+                  </button>
+                </div>
+              </van-swipe-cell>
             </div>
-          </van-swipe-cell>
+          </div>
         </div>
       </div>
     </div>
@@ -141,38 +164,44 @@
     <div class="finished" v-if="routeId == 4 && finishedList != ''">
       <div class="finishedContent">
         <div class="finishedGoods" v-for="item in orderList" :key="item.id">
-          <van-swipe-cell v-if="item.status == 6">
-            <van-card
-              :num="JSON.parse(item.goods_info)[0]?.num"
-              :price="item.total_price"
-              :desc="JSON.parse(item.goods_info)[0]?.desc"
-              :title="JSON.parse(item.goods_info)[0]?.goods_name"
-              :thumb="JSON.parse(item.goods_info)[0]?.s_goods_photos[0].path"
-              disabled
-              lazy-load
-              centered
-            />
-            <template #right>
-              <van-button
-                square
-                type="danger"
-                text="删除"
-                @click="delCard(item.id)"
-              />
-            </template>
-            <div class="finished">
-              <span>订单已完成</span>
-              <button class="delOrder" @click="delOrder(item.id)">
-                删除订单
-              </button>
-              <button
-                class="buyAgain"
-                @click="buyAgain(JSON.parse(item.goods_info)[0]?.id)"
-              >
-                再次购买
-              </button>
+          <div v-if="item.status == 6">
+            <div
+              v-for="(shop, index) in JSON.parse(item.goods_info)"
+              :key="index"
+            >
+              <van-swipe-cell>
+                <van-card
+                  :num="shop.num"
+                  :price="shop.total_price"
+                  :desc="shop.desc"
+                  :title="shop.goods_name"
+                  :thumb="shop.s_goods_photos[0].path"
+                  lazy-load
+                  centered
+                />
+                <template #right>
+                  <van-button
+                    square
+                    type="danger"
+                    text="删除"
+                    @click="delCard(item.id)"
+                  />
+                </template>
+                <div class="finished">
+                  <span>订单已完成</span>
+                  <button class="delOrder" @click="delOrder(item.id)">
+                    删除订单
+                  </button>
+                  <button
+                    class="buyAgain"
+                    @click="buyAgain(JSON.parse(item.goods_info)[0]?.id)"
+                  >
+                    再次购买
+                  </button>
+                </div>
+              </van-swipe-cell>
             </div>
-          </van-swipe-cell>
+          </div>
         </div>
       </div>
     </div>
@@ -181,7 +210,7 @@
 
 <script>
 import { getOrder, deleteOrder } from "@/api/order/index";
-import { Toast } from "vant";
+import { Toast, Dialog } from "vant";
 export default {
   name: "MyOrder",
   data() {
@@ -211,8 +240,8 @@ export default {
   async created() {
     try {
       // 获取订单列表
-      let orderres = await getOrder();
-      // console.log(orderres.result.rows);
+      let orderres = await getOrder({ limit: 1000 });
+      console.log(orderres.result.rows);
       this.orderList = orderres.result.rows;
 
       // 管理待付款的数组
@@ -227,41 +256,65 @@ export default {
       console.log(error);
     }
   },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
   methods: {
     // 右滑时点击的删除按钮
     delCard(e) {
-      setTimeout(() => {
-        Toast({
-          message: "已删除该订单",
-          icon: "success",
+      Dialog.confirm({
+        message: "确认删除该订单？",
+      })
+        .then(() => {
+          // on confirm
+          const index = this.orderList.findIndex((item) => item.id === e);
+          deleteOrder(e).then((res) => {
+            if (res.msg == "删除成功") {
+              if (index > -1) {
+                this.orderList.splice(index, 1);
+              }
+            }
+          });
+          Toast({
+            message: "已删除该订单",
+            icon: "success",
+          });
+        })
+        .catch(() => {
+          // on cancel
+          Toast({
+            message: "取消删除",
+            icon: "success",
+          });
         });
-      }, 1500);
-      const index = this.orderList.findIndex((item) => item.id === e);
-      deleteOrder(e).then((res) => {
-        if (res.msg == "删除成功") {
-          if (index > -1) {
-            this.orderList.splice(index, 1);
-          }
-        }
-      });
     },
     // 待付款区域两个按钮
     goCancle(e) {
-      setTimeout(() => {
-        Toast({
-          message: "订单已取消",
-          icon: "success",
+      Dialog.confirm({
+        message: "确认删除该订单？",
+      })
+        .then(() => {
+          // on confirm
+          const index = this.orderList.findIndex((item) => item.id === e);
+          deleteOrder(e).then((res) => {
+            if (res.msg == "删除成功") {
+              if (index > -1) {
+                this.orderList.splice(index, 1);
+              }
+            }
+          });
+          Toast({
+            message: "已删除该订单",
+            icon: "success",
+          });
+        })
+        .catch(() => {
+          // on cancel
+          Toast({
+            message: "取消删除",
+            icon: "success",
+          });
         });
-      }, 1500);
-      // 删除订单（根据id）
-      const index = this.orderList.findIndex((item) => item.id === e);
-      deleteOrder(e).then((res) => {
-        if (res.msg == "删除成功") {
-          if (index > -1) {
-            this.orderList.splice(index, 1);
-          }
-        }
-      });
     },
     gopay($id) {
       // 获取参数跳转支付页面
@@ -282,20 +335,31 @@ export default {
     },
     // 已完成区域两个按钮
     delOrder(e) {
-      setTimeout(() => {
-        Toast({
-          message: "已删除该订单",
-          icon: "success",
+      Dialog.confirm({
+        message: "确认删除该订单？",
+      })
+        .then(() => {
+          // on confirm
+          const index = this.orderList.findIndex((item) => item.id === e);
+          deleteOrder(e).then((res) => {
+            if (res.msg == "删除成功") {
+              if (index > -1) {
+                this.orderList.splice(index, 1);
+              }
+            }
+          });
+          Toast({
+            message: "已删除该订单",
+            icon: "success",
+          });
+        })
+        .catch(() => {
+          // on cancel
+          Toast({
+            message: "取消删除",
+            icon: "success",
+          });
         });
-      }, 1500);
-      const index = this.orderList.findIndex((item) => item.id === e);
-      deleteOrder(e).then((res) => {
-        if (res.msg == "删除成功") {
-          if (index > -1) {
-            this.orderList.splice(index, 1);
-          }
-        }
-      });
     },
     buyAgain(id) {
       this.$router.push({ path: "/detail", query: { id: id } });

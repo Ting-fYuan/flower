@@ -74,11 +74,7 @@
           </p>
           <p>
             <span>需付款</span>
-            <span style="color: #fd0e0e; font-size: 36px; font-weight: 600"
-              >￥{{
-                orderData?.goods_info[0].num * orderData?.total_price
-              }}</span
-            >
+            <span class="total-box">￥{{ orderData?.total_price }}</span>
           </p>
         </div>
 
@@ -456,5 +452,10 @@ export default {
       color: blue;
     }
   }
+}
+.total-box {
+  color: #fd0e0e;
+  font-size: 36px;
+  font-weight: 600;
 }
 </style>

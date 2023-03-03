@@ -41,6 +41,8 @@ export default {
     },
   },
   async created() {
+    // 请求地址
+    await this.$store.dispatch("addressStore/getAllcity").catch((err) => err);
     if (!this.$route.query.order) {
       // 开启地址选择
       this.switchFlag = true;
