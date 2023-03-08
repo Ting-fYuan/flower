@@ -24,6 +24,8 @@ export default {
 
 <style lang="scss" scoped>
 div {
+  width: 100%;
   background-color: white;
+  // padding: 10px;
 }
 </style>

@@ -63,6 +63,7 @@ export default {
 .box {
   width: 100%;
   height: 100vh;
+  // height: 100vh;
   .top {
     width: 100%;
     height: 50px;
@@ -95,6 +96,7 @@ export default {
     height: 88vh;
     nav {
       width: 80px;
+      height: 100%;
       background-color: white;
       border: 1px solid rgba(233, 236, 240, 1);
       box-sizing: border-box;

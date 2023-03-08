@@ -1,26 +1,24 @@
 <template>
   <div class="box">
-    <div class="box2">
-      <div class="img">
-        <img src="../assets/images/banner1_m.jpg.png" alt="" />
-      </div>
-      <main>
-        <!-- <van-skeleton title :row="4" /> -->
-        <van-skeleton title :row="5" :loading="loading">
-          <div class="title">{{ nameList }}</div>
-
-          <ul>
-            <li
-              v-for="(item, index) in classList"
-              :key="index"
-              @click="toClassification(item)"
-            >
-              {{ item?.name }}
-            </li>
-          </ul>
-        </van-skeleton>
-      </main>
+    <div class="img">
+      <img src="../assets/images/banner1_m.jpg.png" alt="" />
     </div>
+    <main>
+      <!-- <van-skeleton title :row="4" /> -->
+      <van-skeleton title :row="5" :loading="loading">
+        <div class="title">{{ nameList }}</div>
+
+        <ul>
+          <li
+            v-for="(item, index) in classList"
+            :key="index"
+            @click="toClassification(item)"
+          >
+            {{ item?.name }}
+          </li>
+        </ul>
+      </van-skeleton>
+    </main>
   </div>
 </template>
 
@@ -98,18 +96,25 @@ export default {
 
 <style lang="scss" scoped>
 .box {
+  height: 100%;
   padding: 10px;
+  box-sizing: border-box;
+  // padding-right: 10px;
   background-color: white;
+  overflow: auto;
+
   .img {
-    width: 272px;
-    height: 140px;
+    // width: 272px;
+    width: 100%;
+    // height: 140px;
     img {
       width: 100%;
       height: 100%;
     }
   }
   main {
-    width: 272px;
+    // width: 272px;
+    width: 100%;
     height: 235px;
     border: 1px solid rgba(233, 236, 240, 1);
     box-sizing: border-box;
@@ -125,12 +130,14 @@ export default {
     }
     ul {
       width: 100%;
-      height: 200px;
+      // height: 200px;
+      height: 100%;
       display: flex;
       flex-direction: column;
       flex-wrap: wrap;
       li {
-        width: 136px;
+        // width: 136px;
+        width: 50%;
         height: 40px;
         text-align: center;
         line-height: 40px;
