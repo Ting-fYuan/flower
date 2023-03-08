@@ -346,34 +346,27 @@ export default {
     height: 31px;
   }
   // 轮播图
-  .my-swipe {
-    width: 375px;
-    height: 375px;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
+
   .moneyhead {
-    width: 375px;
-    height: 95px;
+    width: 100%;
+    height: 90px;
     position: relative;
     background-color: #fff;
     border-bottom: 0.5px solid #c7c5c5;
     .moneyheadr {
       position: absolute;
-      width: 345px;
-      height: 64px;
+      padding-left: 20px;
+      padding-top: 15px;
       left: 0;
       right: 0;
       top: 0;
       bottom: 0;
-      margin: auto;
 
       .moneytop {
         height: 21px;
 
         h3 {
+          width: 100%;
           height: 21px;
           opacity: 1;
           color: rgba(85, 85, 85, 1);
@@ -384,8 +377,6 @@ export default {
         }
       }
       .moneybottom {
-        width: 345px;
-        height: 43px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -434,8 +425,7 @@ export default {
   }
   .constop {
     padding-bottom: 10px;
-    width: 375px;
-    height: 173px;
+
     border-top: 0.5px solid #e9ecf0;
     background-color: #fff;
     p {
@@ -445,19 +435,18 @@ export default {
       font-size: 15px;
       color: #555555;
       line-height: 41px;
-      border-bottom: 0.5px solid red;
     }
   }
   .cutbut {
     margin: 10px 0;
-    width: 375px;
+    // width: 375px;
     height: 62px;
     opacity: 1;
     position: relative;
     background: #ffffff;
     .cutauto {
       position: absolute;
-      width: 345px;
+      padding-left: 15px;
       height: 52px;
       opacity: 1;
       left: 0;
@@ -487,18 +476,17 @@ export default {
         }
       }
       .van-stepper {
-        width: 200px;
+        width: 250px;
         height: 32px;
       }
     }
   }
   .appraisal {
-    width: 375px;
     background-color: #fff;
     .appraisalBox {
       margin-bottom: 10px;
       padding: 0px 15px 30px;
-      width: 345px;
+      // width: 345px;
       .appraisalhead {
         display: flex;
         padding: 15px 0;
