@@ -137,6 +137,8 @@ export default {
   name: "DetailView",
   data() {
     return {
+      loading: true,
+      // 详情页轮播图数据
       // 详情轮播图数据
       swipeArrs: [],
       conspush: "",
@@ -157,6 +159,7 @@ export default {
     };
   },
   async created() {
+    this.loading = false;
     // 获取商品id
     this.shopsId = this.$route.query.id;
     if (this.token) {
@@ -310,6 +313,7 @@ export default {
       this.$router.push("/comments");
     },
   },
+  mounted() {},
 };
 </script>
 

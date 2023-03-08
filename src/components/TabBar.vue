@@ -1,4 +1,5 @@
 <template>
+  <!-- 底部TabBar栏 -->
   <div>
     <van-tabbar
       v-model="active"
@@ -55,10 +56,6 @@
 <script>
 export default {
   name: "TabbarComponent",
-  mounted() {
-    console.log(this.classIdx);
-    console.log(this.$store.state.classflyStore.classId);
-  },
   data() {
     return {
       active: 0,
@@ -88,7 +85,6 @@ export default {
       return this.$store.state.classflyStore.classId;
     },
   },
-  methods: {},
 };
 </script>
 
