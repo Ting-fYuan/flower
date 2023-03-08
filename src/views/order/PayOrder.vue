@@ -329,6 +329,7 @@ export default {
           display: flex;
           justify-content: space-evenly;
           img {
+            width: 100px;
             border-radius: 4px;
           }
           .shop-msg-center {
@@ -455,7 +456,7 @@ export default {
 }
 .total-box {
   color: #fd0e0e;
-  font-size: 36px;
+  font-size: 18px;
   font-weight: 600;
 }
 </style>
