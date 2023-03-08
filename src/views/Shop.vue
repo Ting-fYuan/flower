@@ -276,6 +276,7 @@ export default {
             img {
               width: 135px;
               height: 135px;
+              background-color: #fff;
             }
             .shop-box-msg {
               display: flex;

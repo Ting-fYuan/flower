@@ -137,6 +137,8 @@ export default {
   name: "DetailView",
   data() {
     return {
+      loading: true,
+      // 详情页轮播图数据
       // 详情轮播图数据
       swipeArrs: [],
       conspush: "",
@@ -157,6 +159,7 @@ export default {
     };
   },
   async created() {
+    this.loading = false;
     // 获取商品id
     this.shopsId = this.$route.query.id;
     if (this.token) {
@@ -214,6 +217,25 @@ export default {
     // 后退按钮
     lefticonfn() {
       this.$router.back(1);
+    },
+    async consonfn() {
+      let res = await consondend(this.shopsId);
+      this.resarr = res.result;
+      // 轮播图取消第一个数据
+      this.swipeArrs = res.result.s_goods_photos.splice(0, 1);
+      // 轮播图数据
+      this.swipeArrs = res.result.s_goods_photos;
+      this.consale_price = res.result.sale_price;
+      this.conspush = res.result.rich_text;
+      // 分隔后台数据
+      if (this.conspush) {
+        this.consonptop = this.conspush.split(
+          "<blockquote><br></blockquote>"
+        )[0];
+        this.consonbottom = this.conspush.split(
+          "<blockquote><br></blockquote>"
+        )[1];
+      }
     },
     // 跳转首页
     toIndex() {
@@ -310,6 +332,7 @@ export default {
       this.$router.push("/comments");
     },
   },
+  mounted() {},
 };
 </script>
 
@@ -323,34 +346,27 @@ export default {
     height: 31px;
   }
   // 轮播图
-  .my-swipe {
-    width: 375px;
-    height: 375px;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
+
   .moneyhead {
-    width: 375px;
-    height: 95px;
+    width: 100%;
+    height: 90px;
     position: relative;
     background-color: #fff;
     border-bottom: 0.5px solid #c7c5c5;
     .moneyheadr {
       position: absolute;
-      width: 345px;
-      height: 64px;
+      padding-left: 20px;
+      padding-top: 15px;
       left: 0;
       right: 0;
       top: 0;
       bottom: 0;
-      margin: auto;
 
       .moneytop {
         height: 21px;
 
         h3 {
+          width: 100%;
           height: 21px;
           opacity: 1;
           color: rgba(85, 85, 85, 1);
@@ -361,8 +377,6 @@ export default {
         }
       }
       .moneybottom {
-        width: 345px;
-        height: 43px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -411,8 +425,7 @@ export default {
   }
   .constop {
     padding-bottom: 10px;
-    width: 375px;
-    height: 173px;
+
     border-top: 0.5px solid #e9ecf0;
     background-color: #fff;
     p {
@@ -422,19 +435,18 @@ export default {
       font-size: 15px;
       color: #555555;
       line-height: 41px;
-      border-bottom: 0.5px solid red;
     }
   }
   .cutbut {
     margin: 10px 0;
-    width: 375px;
+    // width: 375px;
     height: 62px;
     opacity: 1;
     position: relative;
     background: #ffffff;
     .cutauto {
       position: absolute;
-      width: 345px;
+      padding-left: 15px;
       height: 52px;
       opacity: 1;
       left: 0;
@@ -464,18 +476,17 @@ export default {
         }
       }
       .van-stepper {
-        width: 200px;
+        width: 250px;
         height: 32px;
       }
     }
   }
   .appraisal {
-    width: 375px;
     background-color: #fff;
     .appraisalBox {
       margin-bottom: 10px;
       padding: 0px 15px 30px;
-      width: 345px;
+      // width: 345px;
       .appraisalhead {
         display: flex;
         padding: 15px 0;

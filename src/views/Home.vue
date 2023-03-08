@@ -6,7 +6,7 @@
       <div class="UserArea">
         <img src="../../src/assets/images/homeBackground.jpg" />
         <div class="content" v-if="!token">
-          <p>Hi, 欢迎来到订花乐 !</p>
+          <p>Hi,&nbsp;&nbsp;欢迎来到订花乐&nbsp;!</p>
           <button class="loginBtn" @click="goLogin">登录 / 注册</button>
         </div>
         <div class="content" v-if="token">

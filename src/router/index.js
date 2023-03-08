@@ -298,6 +298,7 @@ const router = new VueRouter({
     // 页面详情页面需要top 0
     // @ 订单页面不需要top 0
     if (to.name === "detail" && from.name !== "fillOrder") {
+      // console.log(to)
       return { y: 0 };
     }
     if (to.name === "fillOrder") {
