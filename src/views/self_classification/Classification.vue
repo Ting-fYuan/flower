@@ -235,7 +235,7 @@ export default {
   mounted() {
     // todo:首次进入页面的数据渲染
     this.getClassifyGoods();
-    console.log(this.$route.query.name, this.$route.query.id);
+    // console.log(this.$route.query.name, this.$route.query.id);
   },
 
   methods: {
@@ -257,7 +257,7 @@ export default {
           // console.log("有数据", SearchRes.result);
         } else {
           this.emptyState = false;
-          console.log("无数据", SearchRes.result);
+          // console.log("无数据", SearchRes.result);
         }
       } catch (error) {
         console.log(error);
@@ -351,7 +351,7 @@ export default {
 
     // todo:点击子类跳转到分类页面
     goClassifyPage(data) {
-      console.log(data.name, data.id);
+      // console.log(data.name, data.id);
       this.$router.replace({
         path: "/classification",
         query: { id: data.id, name: data.name },
@@ -383,7 +383,7 @@ export default {
 
     // 跳转每个商品的详情页面
     goDetailPage(data) {
-      console.log(data);
+      // console.log(data);
       this.$router.push({ path: "/Detail", query: { id: data } });
     },
   },
