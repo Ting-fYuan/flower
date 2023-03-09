@@ -1,4 +1,5 @@
 <template>
+  <!-- 底部TabBar栏 -->
   <div>
     <van-tabbar
       v-model="active"
@@ -17,14 +18,17 @@
         </template>
       </van-tabbar-item>
 
-      <van-tabbar-item to="/category/UseView">
+      <van-tabbar-item
+        :to="`/category/UseView?id=${classIdx}`"
+        :style="classColor ? 'color:rgb(144, 91, 50)' : ''"
+      >
         <span>分类</span>
         <template #icon="category">
           <i
             :class="
               category.active ? icon.category.active : icon.category.inactive
             "
-            class="iconfont_Style"
+            class="Category_iconfont_Style"
           ></i>
         </template>
       </van-tabbar-item>
@@ -58,6 +62,9 @@ export default {
   data() {
     return {
       active: 0,
+      id: 0,
+      // 触发分类颜色
+      classColor: false,
       icon: {
         index: {
           active: "iconfont icon-huangguan",
@@ -78,12 +85,32 @@ export default {
       },
     };
   },
-  methods: {},
+  watch: {
+    $route: {
+      immediate: true,
+      handler(e) {
+        if (e.name === "UseView") {
+          this.classColor = true;
+        } else {
+          this.classColor = false;
+        }
+      },
+    },
+  },
+  computed: {
+    classIdx() {
+      return this.$store.state.classflyStore.classId;
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .iconfont_Style {
   font-size: 26px;
+}
+
+.Category_iconfont_Style {
+  font-size: 22px;
 }
 </style>
