@@ -18,7 +18,10 @@
         </template>
       </van-tabbar-item>
 
-      <van-tabbar-item :to="`/category/UseView?id=${classIdx}`">
+      <van-tabbar-item
+        :to="`/category/UseView?id=${classIdx}`"
+        :style="classColor ? 'color:rgb(144, 91, 50)' : ''"
+      >
         <span>分类</span>
         <template #icon="category">
           <i
@@ -60,6 +63,8 @@ export default {
     return {
       active: 0,
       id: 0,
+      // 触发分类颜色
+      classColor: false,
       icon: {
         index: {
           active: "iconfont icon-huangguan",
@@ -79,6 +84,18 @@ export default {
         },
       },
     };
+  },
+  watch: {
+    $route: {
+      immediate: true,
+      handler(e) {
+        if (e.name === "UseView") {
+          this.classColor = true;
+        } else {
+          this.classColor = false;
+        }
+      },
+    },
   },
   computed: {
     classIdx() {

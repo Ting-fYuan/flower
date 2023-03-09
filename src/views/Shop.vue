@@ -70,7 +70,7 @@
                 </div>
               </div>
             </div>
-            <p>没有更多了~</p>
+            <p v-if="likeList.length">没有更多了~</p>
           </div>
         </div>
       </div>
