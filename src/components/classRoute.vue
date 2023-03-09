@@ -1,20 +1,86 @@
 <template>
   <div class="box">
-    <div class="img">
-      <img src="../assets/images/banner1_m.jpg.png" alt="" />
+    <van-skeleton title :row="3" :loading="loading" />
+    <div class="box2">
+      <div class="img">
+        <img src="../assets/images/banner1_m.jpg.png" alt="" />
+      </div>
+      <main>
+        <div class="title">{{ nameList }}</div>
+
+        <ul>
+          <li
+            v-for="(item, index) in classList"
+            :key="index"
+            @click="toClassification(item)"
+          >
+            {{ item?.name }}
+          </li>
+        </ul>
+      </main>
     </div>
-    <main>
-      <div class="title">{{}}</div>
-      <ul>
-        <li>1</li>
-      </ul>
-    </main>
   </div>
 </template>
 
 <script>
 export default {
   name: "ClassRoute",
+  data() {
+    return {
+      loading: true,
+      name: "",
+      arr: [],
+    };
+  },
+  watch: {
+    $route: {
+      immediate: true,
+      handler(q) {
+        // 有id再存
+        if (q.query.id) {
+          this.$store.commit("classflyStore/updateClassIdx", q.query.id);
+        }
+
+        // console.log(this.id);
+      },
+    },
+  },
+  computed: {
+    classList() {
+      // console.log(this.id);
+      return this.$store.state.classflyStore.arr[this.classIdx]?.children;
+    },
+    nameList() {
+      // console.log(this.$store.state.classflyStore.arr[this.id]?.name);
+      return this.$store.state.classflyStore.arr[this.classIdx]?.name;
+    },
+    // 当前分类ID
+    classIdx() {
+      return this.$store.state.classflyStore.classId;
+    },
+  },
+  // created() {
+  //   setTimeout((item) => {
+  //     console.log(item);
+  //     this.arr = this.$store.state.classflyStore;
+  //     this.name = this.$store.state.classflyStore.name;
+  //   }, 700);
+  // },
+  mounted() {
+    this.loading = false;
+  },
+  methods: {
+    toClassification(item) {
+      // console.log(item.id);
+      this.$router.push({
+        path: "/classification",
+        query: {
+          id: item.id,
+          name: item.name,
+        },
+      });
+    },
+  },
 };
 </script>
 
@@ -40,6 +106,7 @@ export default {
       height: 35px;
       line-height: 35px;
       color: rgba(85, 85, 85, 1);
+      margin-left: 10px;
       font-size: 16px;
       font-weight: 600;
       text-align: left;

@@ -1,7 +1,7 @@
 <!-- 购物车 -->
 <template>
   <div class="shop-view-box">
-    <com-head :showBack="false" title="购物车"></com-head>
+    <com-head :showBack="true" title="购物车"></com-head>
     <main>
       <div class="shop-car-box">
         <div class="shop" v-if="showShopList">
@@ -48,24 +48,31 @@
           <div class="like-more-title">
             <p>猜你喜欢</p>
           </div>
+          <van-skeleton class="skeleton" title :row="4" :loading="loading" />
           <div class="like-more-main">
-            <div class="commodity" v-for="item in likeList" :key="item.id">
+            <div
+              class="commodity"
+              v-for="item in likeList"
+              :key="item.id"
+              @click="toDetail(item.id)"
+            >
               <img :src="item.s_goods_photos[0].path" :alt="item.name" />
               <div class="ctn-bottom">
                 <p class="goods-name">{{ item.name }}</p>
                 <div class="ctn-bottom-box">
                   <p class="price">￥ {{ item.price }}</p>
                   <p class="sale">
-                    销量{{ item.sold_num && item.sold_num.slice(0, 6) }}笔
+                    销量{{ item.sold_num >= 1000 ? "999+" : item.sold_num }}
                   </p>
                 </div>
               </div>
             </div>
+            <p>没有更多了~</p>
           </div>
         </div>
       </div>
     </main>
-    <div class="sumUpBox">
+    <div class="sumUpBox" v-if="isLogin && chooseShopList.length">
       <div class="toggle">
         <van-checkbox v-model="toggleBtn" @click="toggleHandle"
           ><p>全选</p></van-checkbox
@@ -83,6 +90,7 @@
 <script>
 import { guessLikeApi } from "@/api/shopCar";
 import TabBar from "@/components/TabBar.vue";
+import { Dialog, Toast } from "vant";
 export default {
   name: "ShopView",
   data() {
@@ -95,6 +103,10 @@ export default {
       list: [],
       // 全选按钮
       toggleBtn: false,
+      // 骨架屏
+      loading: true,
+      // 没有更多了
+      noMore: false,
     };
   },
   computed: {
@@ -134,6 +146,10 @@ export default {
         this.showShopList = false;
       }
     },
+    // ! （暂时）进入页面刷新
+    $route() {
+      this.$router.go(0);
+    },
   },
   async created() {
     // 是否登录
@@ -143,12 +159,10 @@ export default {
         "shopCarStore/getShopCarList"
       );
       // 是否有购物车商品
-      if (result.length) {
+      if (result?.length) {
         // 展示购物车列表
         this.showShopList = true;
-        console.log("购物车列表", result);
       } else this.showShopList = false;
-
       // 是否有选中购物车
       const { chooseShopList } = this.$store.state.shopCarStore;
       if (chooseShopList) {
@@ -158,7 +172,7 @@ export default {
     // 猜你喜欢
     const { result } = await guessLikeApi();
     this.likeList = result;
-    console.log("猜你喜欢", result);
+    this.loading = false;
   },
   methods: {
     // 去逛逛
@@ -168,9 +182,20 @@ export default {
     },
     // 删除购物车
     delShopCarHandle($id, $idx) {
-      this.$store.dispatch("shopCarStore/deleteShopCar", {
-        id: $id,
-        idx: $idx,
+      Dialog.confirm({
+        title: "提示",
+        message: "确认删除此购物车?",
+      }).then(() => {
+        Toast.clear();
+        Toast({
+          message: "删除成功",
+          position: "bottom",
+        });
+        // 删除
+        this.$store.dispatch("shopCarStore/deleteShopCar", {
+          id: $id,
+          idx: $idx,
+        });
       });
     },
     // 全选按钮
@@ -185,8 +210,27 @@ export default {
     },
     // 跳转结算页面
     toOrder() {
+      if (this.chooseShopList.length) {
+        this.$router.push({
+          path: "/fillOrder",
+          query: {
+            shopcar: true,
+          },
+        });
+      } else {
+        Toast({
+          message: "请先选择商品",
+          position: "bottom",
+        });
+      }
+    },
+    // 跳转详情
+    toDetail($id) {
       this.$router.push({
-        path: "/fillOrder",
+        path: "/detail",
+        query: {
+          id: $id,
+        },
       });
     },
   },
@@ -195,11 +239,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .van-checkbox__icon--checked .van-icon {
+  background-color: #884e22;
+  border-color: #884e22;
+}
+.skeleton {
+  margin-top: 30px;
+}
 .shop-view-box {
   height: 100vh;
   background-color: #e8ecef;
   main {
-    padding: 42px 0 0;
     .shop-car-box {
       .shop {
         .shop-list-box {
@@ -232,7 +282,7 @@ export default {
               justify-content: center;
 
               p {
-                font-size: 14px;
+                font-size: 13px;
                 color: #555555;
 
                 &:first-of-type {
@@ -286,6 +336,8 @@ export default {
           margin: 15px auto 0;
           width: 122px;
           height: 30px;
+          outline: none;
+          border: none;
           border-radius: 15px;
           opacity: 1;
           background: rgba(136, 78, 34, 1);
@@ -312,11 +364,19 @@ export default {
           justify-content: space-between;
           flex-wrap: wrap;
 
+          & > p {
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+            color: gray;
+          }
+
           .commodity {
             margin-bottom: 10px;
             width: 165px;
             height: 235px;
             box-shadow: 0 5px 10px 0 #dee2e5;
+            border-radius: 0 0 5px 5px;
 
             img {
               width: 100%;

@@ -24,6 +24,7 @@ const errorHandle = (errMsg) => {
       redirect: router.history.current.fullPath,
     },
   });
+  Toast.clear();
   Toast({
     message: errMsg,
     position: "bottom",
@@ -41,7 +42,7 @@ const http = axios.create({
     isId: false, // 是否需要project_id
   },
   // 响应时间
-  timeout: 5000,
+  timeout: 15000,
 });
 
 // 请求拦截器 (每次请求都会触发)
@@ -85,17 +86,15 @@ http.interceptors.request.use(
 // 响应拦截器 (每次响应都会触发)
 http.interceptors.response.use(
   function (response) {
-    // 关闭loadding
+    // 关闭loading
     Toast.clear();
-
     // 响应数据返回出去
     return response.data;
   },
 
   function (error) {
-    // 关闭loadding
+    // 关闭loading
     Toast.clear();
-
     const { status, data } = error.response;
     // token过期
     if (status === 409 && data.msg === "没有该用户信息") {
